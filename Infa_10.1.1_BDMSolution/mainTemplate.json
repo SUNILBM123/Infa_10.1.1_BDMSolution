@@ -244,9 +244,9 @@
       "type": "string",
       "metadata": {
         "description": "Base URL for Marketplace",
-        "artifactsBaseUrl": "https://raw.githubusercontent.com/SUNILBM123/InfaBDM/master/"
+        "artifactsBaseUrl": "https://raw.githubusercontent.com/SUNILBM123/Infa_10.1.1_BDMSolution/master/Infa_10.1.1_BDMSolution/"
       },
-      "defaultValue": "https://raw.githubusercontent.com/SUNILBM123/InfaBDM/master/"
+      "defaultValue": "https://raw.githubusercontent.com/SUNILBM123/Infa_10.1.1_BDMSolution/master/Infa_10.1.1_BDMSolution/"
     },
     "HDIClusterName": {
       "type": "string"
