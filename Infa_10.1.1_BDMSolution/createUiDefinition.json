@@ -602,7 +602,7 @@
                         "defaultValue": "Remote",
                         "toolTip": "Expected value is either Remote or Local",
                         "constraints": {
-                          "allowedvalues": [
+                          "allowedValues": [
 
                             {
                               "label": "Remote",
