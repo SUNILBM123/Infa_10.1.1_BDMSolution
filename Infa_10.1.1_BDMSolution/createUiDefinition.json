@@ -594,8 +594,8 @@
                         "constraints": {
                           "required" :  true
                         }
-                      },
-                      {
+                      }
+                    /*  {
                         "name": "hiveexecutionMode",
                         "type": "Microsoft.Common.DropDown",
                         "label": "Select Hive Execution Mode",
@@ -603,7 +603,6 @@
                         "toolTip": "Expected value is either Remote or Local",
                         "constraints": {
                           "allowedValues": [
-
                             {
                               "label": "Remote",
                               "value": "Remote"
@@ -616,7 +615,7 @@
                           ]
 
                         }
-                      }
+                      }*/
                     ]
 
                   },
