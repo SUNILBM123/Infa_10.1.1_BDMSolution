@@ -594,8 +594,8 @@
                         "constraints": {
                           "required" :  true
                         }
-                      }
-                    /*  {
+                      },
+                     {
                         "name": "hiveexecutionMode",
                         "type": "Microsoft.Common.DropDown",
                         "label": "Select Hive Execution Mode",
@@ -615,7 +615,7 @@
                           ]
 
                         }
-                      }*/
+                      }
                     ]
 
                   },
