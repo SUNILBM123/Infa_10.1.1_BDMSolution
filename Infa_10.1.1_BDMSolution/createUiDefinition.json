@@ -601,7 +601,7 @@
                         "label": "Select Hive Execution Mode",
                         "toolTip": "Expected value is either Remote or Local",
                         "constraints": {
-                          "allowedvalues": {
+                          "allowedvalues": [
 
                             {
                               "label": "Remote",
@@ -612,7 +612,7 @@
                               "value": "Local"
                             }
 
-                          }
+                          ]
                           
                         }
                       }

@@ -323,12 +323,12 @@ runbdmutility()
 }
 
 
-#updateFirewallsettings
-#downloadlicense
+updateFirewallsettings
+downloadlicense
 checkforjoindomain
 editsilentpropertyfilesforserverinstall
 Performspeedupinstalloperation
-#installdomain
+installdomain
 revertspeedupoperations
 configureDebian
 editsilentpropfiletoBDMutil
