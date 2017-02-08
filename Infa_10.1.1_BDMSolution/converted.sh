@@ -50,6 +50,7 @@ IMPERSONATION_USER=${35}
 ZOOKEEPER_HOSTS=${36}
 SPARK_HDFS_STAGING_DIR=${37}
 HIVE_EXECUTION_MODE=${38}
+blazeworkingdir=${39}
 
 echo Number of parameters $#
   if [ $# -ne 38 ]
@@ -310,7 +311,8 @@ editsilentpropfiletoBDMutil()
   sed -i s/^ZOOKEEPER_HOSTS=/ZOOKEEPER_HOSTS=$ZOOKEEPER_HOSTS/ $bdm_silpropfile
   sed -i s/^HIVE_EXECUTION_MODE=Remote/HIVE_EXECUTION_MODE=$HIVE_EXECUTION_MODE/ $bdm_silpropfile
   sed -i s/^SPARK_HDFS_STAGING_DIR=/SPARK_HDFS_STAGING_DIR=$SPARK_EVENTLOG_DIR/ $bdm_silpropfile
-
+  sed -i s/^BLAZE_WORKING_DIR=\\/blaze\\/workdir/BLAZE_WORKING_DIR=$blazeworkingdir/ $bdm_silpropfile
+  
 }
 
 runbdmutility()

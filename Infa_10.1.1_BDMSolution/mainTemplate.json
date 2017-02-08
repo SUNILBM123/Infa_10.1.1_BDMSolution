@@ -609,6 +609,9 @@
                 },
                 "HIVEExecutionMode": {
                   "value": "[parameters('HIVEExecutionMode')]"
+                },
+                "BlazeWorkingDir": {
+                  "value": "[parameters('connectionconfighadoopblazetempdirvar')]"
                 }
 
               }
