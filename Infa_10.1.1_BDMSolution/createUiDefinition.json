@@ -115,22 +115,22 @@
                 },
                 "bladeTitle": "Node Settings",
                 "elements": [
-                    {
-                        "name": "nodeVMOS",
-                        "type": "Microsoft.Common.DropDown",
-                        "label": "Select the OS for the VM",
-                        "defaultValue": "Windows Server 2012 R2 Datacenter",
-                        "toolTip": "OS platform of the VM.",
-                        "constraints": {
-                            "allowedValues": [
-                               
-                                {
-                                    "label": "Red Hat Enterprise Linux 7.3",
-                                    "value": "linux"
-                                }
-                            ]
+                  {
+                    "name": "nodeVMOS",
+                    "type": "Microsoft.Common.DropDown",
+                    "label": "Select the OS for the VM",
+                    "defaultValue": "Red Hat Enterprise Linux 7.3",
+                    "toolTip": "OS platform of the VM.",
+                    "constraints": {
+                      "allowedValues": [
+
+                        {
+                          "label": "Red Hat Enterprise Linux 7.3",
+                          "value": "linux"
                         }
-                    },
+                      ]
+                    }
+                  },
                     {
                         "name": "domainNodeCount",
                         "type": "Microsoft.Common.TextBox",
@@ -599,6 +599,7 @@
                         "name": "hiveexecutionMode",
                         "type": "Microsoft.Common.DropDown",
                         "label": "Select Hive Execution Mode",
+                        "defaultValue": "Remote",
                         "toolTip": "Expected value is either Remote or Local",
                         "constraints": {
                           "allowedvalues": [
@@ -613,7 +614,7 @@
                             }
 
                           ]
-                          
+
                         }
                       }
                     ]
