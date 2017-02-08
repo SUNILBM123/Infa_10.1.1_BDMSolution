@@ -645,7 +645,7 @@
                                 "toolTip": "Hadoop Blaze temporary working directory",
                                 "constraints": {
                                     "required": false,
-                                    "regex": "^[a-z0-9A-Z_]{3,30}$",
+                                    
                                     "validationMessage": "Only alphanumeric characters and underscore are allowed. The value must be 3-30"
                                 }
 
@@ -658,7 +658,7 @@
                                 "toolTip": "Hadoop Blaze Service user name to impersonate the user to run mapping",
                                 "constraints": {
                                     "required": false,
-                                    "regex": "^[a-z0-9A-Z_]{3,30}$",
+                                    
                                     "validationMessage": "Only alphanumeric characters and underscore are allowed. The value must be 3-30"
                                 }
 
@@ -671,7 +671,7 @@
                                 "toolTip": "Hadoop Spark HDFS staging directory ",
                                 "constraints": {
                                     "required": false,
-                                    "regex": "^[a-z0-9A-Z_]{3,30}$",
+                                    
                                     "validationMessage": "Only alphanumeric characters and underscore are allowed. The value must be 3-30"
                                 }
 
@@ -684,7 +684,7 @@
                                 "toolTip": "Hadoop Spark Event Log Directory ",
                                 "constraints": {
                                     "required": false,
-                                    "regex": "^[a-z0-9A-Z_]{3,30}$",
+                                    
                                     "validationMessage": "Only alphanumeric characters and underscore are allowed. The value must be 3-30"
                                 }
 
@@ -697,7 +697,7 @@
                                 "toolTip": "Hadoop Spark Execution Parameters",
                                 "constraints": {
                                     "required": false,
-                                    "regex": "^[a-z0-9A-Z_]{3,30}$",
+                                    
                                     "validationMessage": "Only alphanumeric characters and underscore are allowed. The value must be 3-30"
                                 }
 
