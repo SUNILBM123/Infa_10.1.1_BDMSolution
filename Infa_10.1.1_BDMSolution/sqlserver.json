@@ -57,7 +57,7 @@
 
         "imagePublisher": "informatica",
         "imageOffer": "sqlserver-2014-image",
-        "osVersion": "sqlserver-2014-image-for-pc-bdm",
+        "osVersion": "sqlserver-2014-image-for-pc-bdm"
         
     },
     "resources": [
@@ -123,7 +123,7 @@
         },
         "properties": {
           "hardwareProfile": {
-            "vmSize": "[parameters('DBVMSize')]"
+            "vmSize": "[parameters('dbVMSize')]"
           },
           "osProfile": {
             "computerName": "[parameters('dbVMName')]",
@@ -188,7 +188,7 @@
             "location": "[parameters('location')]",
             "apiVersion": "2016-03-30",
             "dependsOn": [
-              "[concat('Microsoft.Compute/virtualMachines/', parameters('dbVMName'))]"
+              "Microsoft.Compute/CustomScriptExtension/ScriptExtDB"
             ],
             "tags": {
               "displayName": "MRSDBExecutor"
