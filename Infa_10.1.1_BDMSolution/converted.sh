@@ -53,9 +53,9 @@ HIVE_EXECUTION_MODE=${38}
 blazeworkingdir=${39}
 
 echo Number of parameters $#
-  if [ $# -ne 38 ]
+  if [ $# -ne 39 ]
   then
-	echo lininfainstaller.sh domainHost domainName domainUser domainPassword nodeName nodePort dbType dbName dbUser dbPassword dbHost dbPort sitekeyKeyword joinDomain  osUserName storageName storageKey domainLicenseURL
+	echo lininfainstaller.sh domainHost domainName domainUser domainPassword nodeName nodePort dbType dbName dbUser dbPassword dbHost dbPort sitekeyKeyword joinDomain  osUserName storageName storageKey domainLicenseURL mrsdbusername mrsdbpwd mrsservicename disservicename HDIClusterName HDIClusterLoginUsername HDIClusterLoginPassword HDIClusterSSHHostname HDIClusterSSHUsername HDIClusterSSHPassword ambariport HIVE_USER_NAME HDFS_USER_NAME BLAZE_USER SPARK_EVENTLOG_DIR SPARK_PARAMETER_LIST IMPERSONATION_USER ZOOKEEPER_HOSTS SPARK_HDFS_STAGING_DIR HIVE_EXECUTION_MODE blazeworkingdir
 	exit -1
   fi
 
@@ -121,6 +121,16 @@ checkforjoindomain()
 	cd $utilityhome
     java -jar iadutility.jar createAzureFileShare -storageaccesskey $storageKey -storagename $storageName	
    fi
+}
+
+mountsharedir()
+{
+  yum -y install cifs-utils
+  mountdir=/mnt/infaaeshare
+  mkdir $mountdir
+  mount -t cifs //$storageName.file.core.windows.net/infaaeshare $mountdir -o vers=3.0,username=$storageName,password=$storageKey,dir_mode=0777,file_mode=0777
+  echo //$storageName.file.core.windows.net/infaaeshare $mountdir cifs vers=3.0,username=$storageName,password=$storageKey,dir_mode=0777,file_mode=0777 >> /etc/fstab
+  
 }
 
 editsilentpropertyfilesforserverinstall()
@@ -324,10 +334,18 @@ runbdmutility()
 
 }
 
-
+chownership()
+{
+  echo Changing ownership of directories
+  chown -R $osUserName $infainstallionloc
+  chown -R $osUserName /opt/Informatica 
+  chown -R $osUserName /mnt/infaaeshare
+  chown -R $osUserName /home/$osUserName
+}
 updateFirewallsettings
 downloadlicense
 checkforjoindomain
+mountsharedir
 editsilentpropertyfilesforserverinstall
 Performspeedupinstalloperation
 installdomain
@@ -335,3 +353,4 @@ revertspeedupoperations
 configureDebian
 editsilentpropfiletoBDMutil
 runbdmutility
+chownership
