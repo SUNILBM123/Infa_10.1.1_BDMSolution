@@ -188,8 +188,8 @@
             "location": "[parameters('location')]",
             "apiVersion": "2016-03-30",
             "dependsOn": [
-              "[concat('Microsoft.Compute/virtualMachines/', parameters('dbVMName'))]",
-              "Microsoft.Compute/CustomScriptExtension/ScriptExtDB"
+              "[concat('Microsoft.Compute/virtualMachines/', parameters('dbVMName'))]"
+              
             ],
             "tags": {
               "displayName": "MRSDBExecutor"
