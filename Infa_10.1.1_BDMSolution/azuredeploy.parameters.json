@@ -1,6 +1,59 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+
+    "location": {
+      "value": "southeastasia"
+    },
+    "existingStorageRG": {
+      "value": " "
+    },
+    "existingVnetRG": {
+      "value": " "
+    },
+    "vnetAddressPrefix": {
+      "value": "10.0.0.0/16"
+    },
+    "subnetPrefix": {
+      "value": "10.0.0.0/24"
+    },
+    "dbVMAdminUsername": {
+      "value": "azureuser"
+    },
+    "dbVMAdminPassword": {
+      "value": "tempBG@2008isp"
+    },
+    "dbPassword": {
+      "value": "tempBG@2008"
+    },
+    "nodeVMOS": {
+      "value": "windows"
+    },
+    "nodeVMAdminPassword": {
+      "value": "tempBG@2008"
+    },
+    "nodeVMAdminSshPublicKey": {
+      "value": " "
+    },
+    "infaKeyword": {
+      "value": "tempBG@2008isp"
+    },
+    "nodeVMCount": {
+      "value": "1"
+    },
+    "dbVMName": {
+      "value": "DVM"
+    },
+    "infaDomainLicense": {
+      "value": "nolicense"
+    },
+    "storageName": {
+      "value": "infastoragewin01"
+    },
+    "nodeVMNamePrefix": {
+      "value": "WNVM"
     }
+
+  }
 }
