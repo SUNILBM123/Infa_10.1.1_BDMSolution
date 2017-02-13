@@ -52,7 +52,7 @@
       "value": "infastoragetest01"
     },
     "nodeVMNamePrefix": {
-      "value": "WNVM"
+      "value": "LNVM"
     },
       "HDIClusterName": {
           "value": "OneClickHDIMacsetone"
@@ -116,6 +116,9 @@
       },
       "HIVEExecutionMode": {
           "value": "Remote"
+      },
+      "storageType": {
+          "value": "Standard_LRS"
       }
 
   }
