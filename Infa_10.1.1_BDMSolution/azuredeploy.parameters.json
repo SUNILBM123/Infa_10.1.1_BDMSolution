@@ -28,7 +28,7 @@
       "value": "tempBG@2008"
     },
     "nodeVMOS": {
-      "value": "windows"
+      "value": "linux"
     },
     "nodeVMAdminPassword": {
       "value": "tempBG@2008"
@@ -49,7 +49,7 @@
       "value": "nolicense"
     },
     "storageName": {
-      "value": "infastoragewin01"
+      "value": "infastoragetest01"
     },
     "nodeVMNamePrefix": {
       "value": "WNVM"
