@@ -1,6 +1,8 @@
 Param(
   [string]$dbUserName,
-  [string]$dbPassword
+  [string]$dbPassword,
+  [string]$mrsdbUserName,
+  [string]$mrsdbPassword
 )
 
 function writeLog {
@@ -83,3 +85,15 @@ executeSQLStatement $newLogin
 executeSQLStatement $newUser
 executeSQLStatement $updateUserRole
 executeSQLStatement $newSchema
+
+
+$newLoginmrs = "CREATE LOGIN " + $mrsdbUserName +  " WITH PASSWORD = '" + ($mrsdbPassword -replace "'","''") + "'"
+$newUsermrs = "CREATE USER " + $mrsdbUserName + " FOR LOGIN " + $mrsdbUserName + " WITH DEFAULT_SCHEMA = " + $mrsdbUserName
+$updateUserRolemrs = "ALTER ROLE db_datareader ADD MEMBER " + $mrsdbUserName + ";" + 
+                        "ALTER ROLE db_datawriter ADD MEMBER " + $mrsdbUserName + ";" + 
+                        "ALTER ROLE db_ddladmin ADD MEMBER " + $mrsdbUserName
+$newSchemamrs = "CREATE SCHEMA " + $mrsdbUserName + " AUTHORIZATION " + $mrsdbUserName
+executeSQLStatement $newLoginmrs
+executeSQLStatement $newUsermrs
+executeSQLStatement $updateUserRolemrs
+executeSQLStatement $newSchemamrs

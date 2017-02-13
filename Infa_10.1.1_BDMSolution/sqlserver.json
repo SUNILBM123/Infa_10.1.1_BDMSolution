@@ -177,39 +177,12 @@
                 ]
               },
               "protectedSettings": {
-                "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ', variables('extScriptFile'), ' -dbUserName \"', parameters('DBUser'), '\" -dbPassword \"', parameters('DBPassword'), '\"')]"
-
-              }
-            }
-          },
-          {
-            "name": "MRSDBExecutor",
-            "type": "extensions",
-            "location": "[parameters('location')]",
-            "apiVersion": "2016-03-30",
-            "dependsOn": [
-              "[concat('Microsoft.Compute/virtualMachines/', parameters('dbVMName'))]"
-              
-            ],
-            "tags": {
-              "displayName": "MRSDBExecutor"
-            },
-            "properties": {
-              "publisher": "Microsoft.Compute",
-              "type": "CustomScriptExtension",
-              "typeHandlerVersion": "1.8",
-              "autoUpgradeMinorVersion": true,
-              "settings": {
-                "fileUris": [
-                  "[concat(variables('ExtScriptURI'),  variables('extScriptFile'))]"
-                ]
-              },
-              "protectedSettings": {
-                "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ', variables('extScriptFile'), ' -dbUserName \"', parameters('mrsdbuser'), '\" -dbPassword \"', parameters('mrsdbpwd'), '\"')]"
+                "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ', variables('extScriptFile'), ' -dbUserName \"', parameters('DBUser'), '\" -dbPassword \"', parameters('DBPassword'), '\" -mrsdbUserName \"',parameters('mrsdbuser'),'\" -mrsdbPassword \"',parameters('mrsdbpwd'),'\"')]"
 
               }
             }
           }
+          
         ]
 
       }
