@@ -86,6 +86,7 @@ executeSQLStatement $newUser
 executeSQLStatement $updateUserRole
 executeSQLStatement $newSchema
 
+writeLog "Creating user: $mrsdbUserName"
 
 $newLoginmrs = "CREATE LOGIN " + $mrsdbUserName +  " WITH PASSWORD = '" + ($mrsdbPassword -replace "'","''") + "'"
 $newUsermrs = "CREATE USER " + $mrsdbUserName + " FOR LOGIN " + $mrsdbUserName + " WITH DEFAULT_SCHEMA = " + $mrsdbUserName
