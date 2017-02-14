@@ -46,7 +46,7 @@
       "value": "DVM"
     },
     "infaDomainLicense": {
-      "value": "nolicense"
+      "value": "https://bdmvmbackups.blob.core.windows.net/bdmvmackups/1011.key"
     },
     "storageName": {
       "value": "infastoragetest01"
