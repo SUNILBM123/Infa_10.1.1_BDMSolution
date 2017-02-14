@@ -817,7 +817,7 @@
         "infamrspassword": "[steps('infaDomainServicesConfiguration').infamrspassword],",
         "HDIClusterAmbariport": "[steps('infaBDEConfiguration').AmbariPort]",
         "HIVEUserName": "[steps('bdmconnectionConfiguration').hiveconnectionconfig.hiveusername]",
-        "HIVEExecutionMode": "steps('bdmconnectionConfiguration').hiveconnectionconfig.hiveexecutionMode",
+        "HIVEExecutionMode": "[steps('bdmconnectionConfiguration').hiveconnectionconfig.hiveexecutionMode]"
       }
             }
     }
