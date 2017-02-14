@@ -797,14 +797,14 @@
         "subnetName": "[steps('infraConfiguration').infavnet.subnets.subnet1.name]",
         "subnetPrefix": "[steps('infraConfiguration').infavnet.subnets.subnet1.addressPrefix]",
 
-        "hdfsusernamevar": "[steps('connectionconfighdfs').hdfsusername]",
-        "hbasezookeepernamevar": "[steps('connectionconfighbase').hbasezookeepername]",
-        "connectionconfighadoopimpuservar": "[steps('connectionconfighadoop').connectionconfighadoopimpuser]",
-        "connectionconfighadoopblazetempdirvar": "[steps('connectionconfighadoop').connectionconfighadoopblazetempdir]",
-        "connectionconfighadoopblazeusernamevar": "[steps('connectionconfighadoop').connectionconfighadoopblazeusername]",
-        "connectionconfighadoopsparkdirvar": "[steps('connectionconfighadoop').connectionconfighadoopsparkdir]",
-        "connectionconfighadoopsparkeventlogdirvar": "[steps('connectionconfighadoop').connectionconfighadoopsparkeventlogdir]",
-        "connectionconfighadoopsparkparamvar": "[steps('connectionconfighadoop').connectionconfighadoopsparkparam]",
+        "hdfsusernamevar": "[steps('bdmconnectionConfiguration').connectionconfighdfs.hdfsusername]",
+        "hbasezookeepernamevar": "[steps('bdmconnectionConfiguration').connectionconfighbase.hbasezookeepername]",
+        "connectionconfighadoopimpuservar": "[steps('bdmconnectionConfiguration').connectionconfighadoop.connectionconfighadoopimpuser]",
+        "connectionconfighadoopblazetempdirvar": "[steps('bdmconnectionConfiguration').connectionconfighadoop.connectionconfighadoopblazetempdir]",
+        "connectionconfighadoopblazeusernamevar": "[steps('bdmconnectionConfiguration').connectionconfighadoop.connectionconfighadoopblazeusername]",
+        "connectionconfighadoopsparkdirvar": "[steps('bdmconnectionConfiguration').connectionconfighadoop.connectionconfighadoopsparkdir]",
+        "connectionconfighadoopsparkeventlogdirvar": "[steps('bdmconnectionConfiguration').connectionconfighadoop.connectionconfighadoopsparkeventlogdir]",
+        "connectionconfighadoopsparkparamvar": "[steps('bdmconnectionConfiguration').connectionconfighadoop.connectionconfighadoopsparkparam]",
         "HDIClusterName": "[steps('infaBDEConfiguration').HDIClusterName]",
         "HDIClusterLoginUsername": "[steps('infaBDEConfiguration').HDIClusterLoginUsername]",
         "HDIClusterLoginPassword": "[steps('infaBDEConfiguration').HDIClusterLoginPassword]",
@@ -816,10 +816,8 @@
         "infamrsuserName": "[steps('infaDomainServicesConfiguration').infamrsuserName]",
         "infamrspassword": "[steps('infaDomainServicesConfiguration').infamrspassword],",
         "HDIClusterAmbariport": "[steps('infaBDEConfiguration').AmbariPort]",
-        "HIVEUserName": "[steps('hiveconnectionconfig').hiveusername]",
-        "HIVEExecutionMode": "steps('hiveconnectionconfig').hiveexecutionMode"
-
-
+        "HIVEUserName": "[steps('bdmconnectionConfiguration').hiveconnectionconfig.hiveusername]",
+        "HIVEExecutionMode": "steps('bdmconnectionConfiguration').hiveconnectionconfig.hiveexecutionMode",
       }
             }
     }
