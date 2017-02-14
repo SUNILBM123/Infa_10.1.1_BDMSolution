@@ -63,22 +63,23 @@ echo Number of parameters $#
 dbaddress=$dbHost:$dbPort
 hostname=`hostname`
 
-informaticaopt=/home/$osUserName
-#echo "Informatica opt location is:".$informaticaopt
-infainstallerloc=$informaticaopt/InstallerFiles/Server
-#echo "Installer location:".$infainstallerloc
-infainstallionloc=$informaticaopt/Informatica/10.1.1
+informaticaopt=/opt/Informatica/Archive
+infainstallerloc=$informaticaopt/server
+infainstallionloc=/home/Informatica/10.1.1
 defaultkeylocation=$infainstallionloc/isp/config/keys
 licensekeylocation=$informaticaopt/license.key
-#echo "license key location is:".$licensekeylocation
 
 
-informaticaopt1=\\/home\\/$osUserName
-infainstallionloc1=$informaticaopt1\\/Informatica\\/10.1.1
+
+informaticaopt1=\\/opt\\/Informatica\\/Archive
+infainstallionloc1=\\/home\\/Informatica\\/10.1.1
 defaultkeylocation1=$infainstallionloc1\\/isp\\/config\\/keys
 licensekeylocation1=$informaticaopt1\\/license.key
 
-utilityhome=$informaticaopt/utilites
+echo Creating symbolic link to Informatica installation
+ln -s /home/Informatica /home/$osUserName
+
+utilityhome=$informaticaopt/utilities
 createDomain=1
 
 JRE_HOME="$infainstallionloc/java/jre"
@@ -220,6 +221,7 @@ installdomain()
 revertspeedupoperations()
 {
 #sleep 30
+ rm -rf $infainstallerloc/source
  mv $infainstallerloc/source_temp/* $infainstallerloc/source
  rm $infainstallerloc/unjar_esd.sh
  mv $infainstallerloc/unjar_esd.sh_temp $infainstallerloc/unjar_esd.sh
@@ -235,8 +237,8 @@ configureDebian()
 {
   echo $HDIClusterName $HDIClusterLoginUsername $HDIClusterLoginPassword $HDIClusterSSHHostname $HDIClusterSSHUsername $HDIClusterSSHPassword
   #Change sh to bash in server machine
-  #sudo ln -f -s /bin/bash /bin/sh
-  cd $informaticaopt/InstallerFiles/debian/InformaticaHadoop-10.1.1-Deb
+  sudo ln -f -s /bin/bash /bin/sh
+  cd $informaticaopt/debian/InformaticaHadoop-10.1.1-Deb
   
   #Ambari API calls to extract Head node and Data nodes
   #echo "Getting list of hosts from ambari"
@@ -255,9 +257,9 @@ configureDebian()
   echo "headnode0 IP: $headnode0ip"
 
   #Add a new line to the end of hosts file
-  #echo "">>/etc/hosts
-  #echo "Adding headnode IP addresses"
-  #echo "$headnode0ip headnode0">>/etc/hosts
+  echo "">>/etc/hosts
+  echo "Adding headnode IP addresses"
+  echo "$headnode0ip headnode0">>/etc/hosts
 
   echo "Extracting workernode"
   workernodes=$(echo $hosts | grep -Eo '\bwn([^[:space:]]*)\b') 
@@ -266,8 +268,9 @@ configureDebian()
   wnArr=$(echo $workernodes | tr "\n" "\n")
   
   
-  #sudo apt-get install sshpass
-  #rpm -ivh $informaticaopt/sshpass-1.05-5.el7.x86_64.rpm
+  
+  
+  rpm -ivh $informaticaopt/utilities/sshpass-1.05-5.el7.x86_64.rpm
   #Change sh to bash in headnode
   sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo ln -f -s /bin/bash /bin/sh"
 
@@ -320,7 +323,7 @@ editsilentpropfiletoBDMutil()
   sed -i s/^IMPERSONATION_USER=/IMPERSONATION_USER=$IMPERSONATION_USER/ $bdm_silpropfile
   sed -i s/^ZOOKEEPER_HOSTS=/ZOOKEEPER_HOSTS=$ZOOKEEPER_HOSTS/ $bdm_silpropfile
   sed -i s/^HIVE_EXECUTION_MODE=Remote/HIVE_EXECUTION_MODE=$HIVE_EXECUTION_MODE/ $bdm_silpropfile
-  sed -i s/^SPARK_HDFS_STAGING_DIR=/SPARK_HDFS_STAGING_DIR=$SPARK_EVENTLOG_DIR/ $bdm_silpropfile
+  sed -i s/^SPARK_HDFS_STAGING_DIR=\\/tmp\\/sparkdir/SPARK_HDFS_STAGING_DIR=$SPARK_EVENTLOG_DIR/ $bdm_silpropfile
   sed -i s/^BLAZE_WORKING_DIR=\\/blaze\\/workdir/BLAZE_WORKING_DIR=$blazeworkingdir/ $bdm_silpropfile
   
 }
