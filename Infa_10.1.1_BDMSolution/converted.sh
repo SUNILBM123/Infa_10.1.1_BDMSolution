@@ -202,12 +202,17 @@ sed -i s/^DIS_HTTP_PORT=.*/DIS_HTTP_PORT=18059/ $infainstallerloc/SilentInput.pr
 
 Performspeedupinstalloperation()
 {
-  mv $infainstallerloc/source $infainstallerloc/source_temp
-  mkdir $infainstallerloc/source
+  rm $infainstallerloc/tools/BDMUtil/SilentInput.properties
+  mv $infainstallerloc/source/tools/BDMUtil/SilentInput.properties $infainstallerloc/tools/BDMUtil/SilentInput.properties
+  rm -rf $infainstallerloc/source
+  #mkdir $infainstallerloc/source
+  #mv $infainstallerloc/source $infainstallerloc/source_temp
   mv $infainstallerloc/unjar_esd.sh $infainstallerloc/unjar_esd.sh_temp
   head -1 $infainstallerloc/unjar_esd.sh_temp > $infainstallerloc/unjar_esd.sh
   echo exit_value_unjar_esd=0 >> $infainstallerloc/unjar_esd.sh
   chmod 777 $infainstallerloc/unjar_esd.sh
+  mkdir $infainstallerloc/source
+  
 }
 
 
@@ -221,13 +226,13 @@ installdomain()
 revertspeedupoperations()
 {
 #sleep 30
- rm -rf $infainstallerloc/source
- mv $infainstallerloc/source_temp/* $infainstallerloc/source
+ #rm -rf $infainstallerloc/source
+ #mv $infainstallerloc/source_temp/* $infainstallerloc/source
  rm $infainstallerloc/unjar_esd.sh
  mv $infainstallerloc/unjar_esd.sh_temp $infainstallerloc/unjar_esd.sh
  if [ -f $informaticaopt/license.key ]
  then
-	rm $informaticaopt/license.key
+	#rm $informaticaopt/license.key
  fi
  echo Informatica domain setup Complete.
 
@@ -253,14 +258,21 @@ configureDebian()
   headnode0=$(echo $hosts | grep -Eo '\bhn0-([^[:space:]]*)\b') 
   echo $headnode0
   echo "Extracting headnode0 IP addresses"
-  headnode0ip=$(dig +short $headnode0) 
-  echo "headnode0 IP: $headnode0ip"
+  #headnode0ip=$(dig +short $headnode0) 
+  #echo "headnode0 IP: $headnode0ip"
 
   #Add a new line to the end of hosts file
   echo "">>/etc/hosts
   echo "Adding headnode IP addresses"
-  echo "$headnode0ip headnode0">>/etc/hosts
+  #echo "$headnode0ip headnode0">>/etc/hosts
 
+  echo "10.0.0.31 hn0-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net">>/etc/hosts
+  echo "\n">>/etc/hosts
+  echo "10.0.0.25 wn0-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net">>/etc/hosts
+  echo "\n">>/etc/hosts
+  echo "10.0.0.13 wn1-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net">>/etc/hosts
+
+  
   echo "Extracting workernode"
   workernodes=$(echo $hosts | grep -Eo '\bwn([^[:space:]]*)\b') 
   echo "Extracting workernodes IP addresses"
@@ -278,8 +290,9 @@ configureDebian()
   for workernode in $wnArr
   do
     echo "[$workernode]" 
-	workernodeip=$(dig +short $workernode)
-	echo "workernodeip $workernodeip" 
+	#workernodeip=$(dig +short $workernode)
+	workernodeip=$workernode
+        echo "workernode $workernodeip" 
 	#create temp folder
         sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo mkdir ~/rpmtemp" 
 	#Give permission to rpm folder
@@ -353,7 +366,7 @@ editsilentpropertyfilesforserverinstall
 Performspeedupinstalloperation
 installdomain
 revertspeedupoperations
-configureDebian
-editsilentpropfiletoBDMutil
-runbdmutility
+#configureDebian
+#editsilentpropfiletoBDMutil
+#runbdmutility
 chownership
