@@ -225,15 +225,12 @@ installdomain()
 
 revertspeedupoperations()
 {
-#sleep 30
- #rm -rf $infainstallerloc/source
- #mv $infainstallerloc/source_temp/* $infainstallerloc/source
  rm $infainstallerloc/unjar_esd.sh
  mv $infainstallerloc/unjar_esd.sh_temp $infainstallerloc/unjar_esd.sh
  if [ -f $informaticaopt/license.key ]
  then
-	#rm $informaticaopt/license.key
- fi
+   echo bleh	
+  fi
  echo Informatica domain setup Complete.
 
 }
@@ -258,18 +255,18 @@ configureDebian()
   headnode0=$(echo $hosts | grep -Eo '\bhn0-([^[:space:]]*)\b') 
   echo $headnode0
   echo "Extracting headnode0 IP addresses"
-  #headnode0ip=$(dig +short $headnode0) 
-  #echo "headnode0 IP: $headnode0ip"
+   
+  
 
   #Add a new line to the end of hosts file
   echo "">>/etc/hosts
   echo "Adding headnode IP addresses"
-  #echo "$headnode0ip headnode0">>/etc/hosts
+  
 
   echo "10.0.0.31 hn0-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net">>/etc/hosts
-  echo "\n">>/etc/hosts
+  echo "">>/etc/hosts
   echo "10.0.0.25 wn0-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net">>/etc/hosts
-  echo "\n">>/etc/hosts
+  echo "">>/etc/hosts
   echo "10.0.0.13 wn1-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net">>/etc/hosts
 
   
@@ -290,7 +287,6 @@ configureDebian()
   for workernode in $wnArr
   do
     echo "[$workernode]" 
-	#workernodeip=$(dig +short $workernode)
 	workernodeip=$workernode
         echo "workernode $workernodeip" 
 	#create temp folder
@@ -358,6 +354,7 @@ chownership()
   chown -R $osUserName /mnt/infaaeshare
   chown -R $osUserName /home/$osUserName
 }
+
 updateFirewallsettings
 downloadlicense
 checkforjoindomain
