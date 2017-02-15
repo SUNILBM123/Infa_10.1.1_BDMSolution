@@ -104,7 +104,7 @@ downloadlicense()
   then
 	cloudsupportenable=0
 	cd $utilityhome
-	echo Getting Informatica license
+	echo Getting Informatica license from $domainLicenseURL
 	java -jar iadutility.jar downloadHttpUrlFile -url $domainLicenseURL -localpath $informaticaopt/license.key
   fi
 }
