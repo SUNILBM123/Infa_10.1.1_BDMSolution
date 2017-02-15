@@ -93,9 +93,9 @@ updateFirewallsettings()
 {
   rm -rf /etc/hosts
   echo "">>/etc/hosts
-  echo"127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4">>/etc/hosts
+  echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4">>/etc/hosts
   echo "">>/etc/hosts
-  echo"::1     localhost localhost.localdomain localhost6 localhost6.localdomain6">>/etc/hosts
+  echo "::1     localhost localhost.localdomain localhost6 localhost6.localdomain6">>/etc/hosts
   echo Adding firewall rules for Informatica domain service ports
   iptables -A IN_public_allow -p tcp -m tcp --dport 6005:6008 -m conntrack --ctstate NEW -j ACCEPT
   iptables -A IN_public_allow -p tcp -m tcp --dport 6014:6114 -m conntrack --ctstate NEW -j ACCEPT
@@ -207,8 +207,8 @@ sed -i s/^DIS_HTTP_PORT=.*/DIS_HTTP_PORT=18059/ $infainstallerloc/SilentInput.pr
 
 Performspeedupinstalloperation()
 {
-  rm $infainstallerloc/tools/BDMUtil/SilentInput.properties
-  mv $infainstallerloc/source/tools/BDMUtil/SilentInput.properties $infainstallerloc/tools/BDMUtil/SilentInput.properties
+  rm $infainstallionloc/tools/BDMUtil/SilentInput.properties
+  mv $infainstallerloc/source/tools/BDMUtil/SilentInput.properties $infainstallionloc/tools/BDMUtil/SilentInput.properties
   rm -rf $infainstallerloc/source
   #mkdir $infainstallerloc/source
   #mv $infainstallerloc/source $infainstallerloc/source_temp
