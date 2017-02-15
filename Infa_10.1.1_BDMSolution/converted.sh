@@ -91,6 +91,11 @@ chmod -R 777 $JRE_HOME
 
 updateFirewallsettings()
 {
+  rm -rf /etc/hosts
+  echo "">>/etc/hosts
+  echo"127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4">>/etc/hosts
+  echo "">>/etc/hosts
+  echo"::1     localhost localhost.localdomain localhost6 localhost6.localdomain6">>/etc/hosts
   echo Adding firewall rules for Informatica domain service ports
   iptables -A IN_public_allow -p tcp -m tcp --dport 6005:6008 -m conntrack --ctstate NEW -j ACCEPT
   iptables -A IN_public_allow -p tcp -m tcp --dport 6014:6114 -m conntrack --ctstate NEW -j ACCEPT
@@ -221,6 +226,7 @@ installdomain()
   echo Installing Informatica domain
   cd $infainstallerloc
   echo Y Y | sh silentinstall.sh
+  sleep 600
 }
 
 revertspeedupoperations()
