@@ -22,7 +22,7 @@
                     "toolTip": "Informatica Big Data Management version.",
                     "constraints": {
                       "required": true,
-                      "Editable": "false"
+                      "ReadOnly": true                      
                     }
                   },
                     {
