@@ -368,8 +368,7 @@ chownership()
   chown -R $osUserName /home/$osUserName
 }
 
-main()
-{
+
 echo Inside main method
 sleep 20
 updateFirewallsettings
