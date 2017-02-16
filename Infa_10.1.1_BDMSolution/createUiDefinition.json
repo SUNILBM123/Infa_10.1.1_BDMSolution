@@ -14,21 +14,17 @@
                 },
                 "bladeTitle": "Informatica Domain Settings",
                 "elements": [
-                    {
-                        "name": "infaVersion",
-                        "type": "Microsoft.Common.DropDown",
-                        "label": "Informatica PowerCenter version",
-                        "defaultValue": "10.1.1",
-                        "toolTip": "Informatica PowerCenter product version.",
-                        "constraints": {
-                            "allowedValues": [
-                                {
-                                    "label": "10.1.1",
-                                    "value": "1011"
-                                }
-                            ]
-                        }
-                    },
+                  {
+                    "name": "infaVersion",
+                    "type": "Microsoft.Common.TextBox",
+                    "label": "Informatica BDM version",
+                    "defaultValue": "10.1.1",
+                    "toolTip": "Informatica Big Data Management version.",
+                    "constraints": {
+                      "required": true,
+                      "Editable": "false"
+                    }
+                  },
                     {
                         "name": "infaDomainName",
                         "type": "Microsoft.Common.TextBox",
