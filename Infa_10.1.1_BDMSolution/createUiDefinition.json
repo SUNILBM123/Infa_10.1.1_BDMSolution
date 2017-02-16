@@ -22,7 +22,8 @@
                     "toolTip": "Informatica Big Data Management version.",
                     "constraints": {
                       "required": true,
-                      "ReadOnly": true                      
+                      "ReadOnly": true,
+                      "IsEnabled" :  false
                     }
                   },
                     {
@@ -464,20 +465,20 @@
                     ]
                   },
             {
-                "label": "Informatica BDM Services Setting",
+                "label": "BDM Services Setting",
                 "name": "infaDomainServicesConfiguration",
                 "subLabel": {
                     "preValidation": "Configure MRS, DIS for BDM",
                     "postValidation": "Done"
                 },
-                "bladeTitle": "Informatica BDM Services Settings",
+                "bladeTitle": "BDM Services Settings",
                 "elements": [
                     {
                         "name": "infamrsservicename",
                         "type": "Microsoft.Common.TextBox",
-                        "label": "MRS Service Name",
+                        "label": "Model Repository Service Name",
                         "defaultValue": "MRS",
-                        "toolTip": "MRS Service Name for Domain",
+                        "toolTip": "MRS Name to be created in Domain",
                         "constraints": {
                             "required": true,
                             "regex": "^[a-z0-9A-Z_]{3,30}$",
@@ -487,9 +488,9 @@
                     {
                         "name": "infadisservicename",
                         "type": "Microsoft.Common.TextBox",
-                        "label": "DIS Service Name",
+                        "label": "Data Integration Service Name",
                         "defaultValue": "DIS",
-                        "toolTip": "DIS Service Name for Domain",
+                        "toolTip": "DIS Name to be created in Domain",
                         "constraints": {
                             "required": true,
                             "regex": "^[a-z0-9A-Z_]{3,30}$",
