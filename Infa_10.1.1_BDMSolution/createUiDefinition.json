@@ -547,7 +547,7 @@
                             "name": "hdfsusername",
                             "type": "Microsoft.Common.TextBox",
                             "label": "HDFS User Name",
-                            "defaultValue": "steps('infaDomainConfiguration').infaDomainUser",
+                            "defaultValue": "[steps('infaDomainConfiguration').infaDomainUser]",
                             "toolTip": "HDFS username for impersonation",
                             "constraints": {
                               "required": true                             
@@ -585,7 +585,7 @@
                         "name": "hiveusername",
                         "type": "Microsoft.Common.TextBox",
                         "label": "Hive User Name",
-                        "defaultValue": "steps('infaDomainConfiguration').infaDomainUser",
+                        "defaultValue": "[steps('infaDomainConfiguration').infaDomainUser]",
                         "toolTip": "Hive User Name",
                         "constraints": {
                           "required": true
@@ -624,7 +624,7 @@
                             "name": "connectionconfighadoopimpuser",
                             "type": "Microsoft.Common.TextBox",
                             "label": "Hadoop Impersonation User Name",
-                            "defaultValue": "steps('infaDomainConfiguration').infaDomainUser",
+                            "defaultValue": "[steps('infaDomainConfiguration').infaDomainUser]",
                             "toolTip": "Impersonation User Name for hadoop Connection to run mappings",
                             "constraints": {
                               "required": true                  
