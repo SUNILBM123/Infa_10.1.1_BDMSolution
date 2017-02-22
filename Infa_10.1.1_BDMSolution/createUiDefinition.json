@@ -500,9 +500,9 @@
                     {
                         "name": "infamrsuserName",
                         "type": "Microsoft.Common.TextBox",
-                        "label": "MRS Database Username",
+                        "label": "Model Repository Service Database Username",
                         "defaultValue": "mrsuser",
-                        "toolTip": "MRS DataBase username for ",
+                        "toolTip": "Model Repository Service DataBase username",
                         "constraints": {
                             "required": true,
                             "regex": "^[a-z0-9A-Z_]{3,30}$",
@@ -513,8 +513,8 @@
                         "name": "infamrspassword",
                         "type": "Microsoft.Common.PasswordBox",
                         "label": {
-                            "password": "MRS Database password",
-                            "confirmPassword": "MRS Database Confirm password"
+                            "password": "Model Repository Service Database password",
+                            "confirmPassword": "Model Repository Service Database Confirm password"
                         },
                         "constraints": {
                             "required": true,
@@ -547,10 +547,10 @@
                             "name": "hdfsusername",
                             "type": "Microsoft.Common.TextBox",
                             "label": "HDFS User Name",
-                            "defaultValue": "[steps('infaDomainConfiguration').infaDomainUser]",
+                            "defaultValue": "[coalesce(steps('nodeVMConfiguration').nodeVMAdminUsernameWin, steps('nodeVMConfiguration').nodeVMAdminUsernameLin)]",
                             "toolTip": "HDFS username for impersonation",
                             "constraints": {
-                              "required": true                             
+                              "required": true
                             }
 
                           }
@@ -566,10 +566,10 @@
                         "type": "Microsoft.Common.TextBox",
                         "label": "HBase Zookeeper Hosts",
                         "defaultValue": "",
-                        "toolTip": "Hosts Names for Zookeeper, must be a comma saperated Values",
+                        "toolTip": "Hosts Names for Zookeeper, must be a comma saperated Values,If zookeper is not present ignore the Hbase connection creation failure",
                         "constraints": {
-                          "required": true
-                                                   
+                          "required": false
+
                         }
 
                       }
@@ -585,10 +585,10 @@
                         "name": "hiveusername",
                         "type": "Microsoft.Common.TextBox",
                         "label": "Hive User Name",
-                        "defaultValue": "[steps('infaDomainConfiguration').infaDomainUser]",
+                        "defaultValue": "[coalesce(steps('nodeVMConfiguration').nodeVMAdminUsernameWin, steps('nodeVMConfiguration').nodeVMAdminUsernameLin)]",
                         "toolTip": "Hive User Name",
                         "constraints": {
-                          "required": true
+                          "required": false
                         }
                       },
                      {
@@ -624,11 +624,10 @@
                             "name": "connectionconfighadoopimpuser",
                             "type": "Microsoft.Common.TextBox",
                             "label": "Hadoop Impersonation User Name",
-                            "defaultValue": "[steps('infaDomainConfiguration').infaDomainUser]",
+                            "defaultValue": "[coalesce(steps('nodeVMConfiguration').nodeVMAdminUsernameWin, steps('nodeVMConfiguration').nodeVMAdminUsernameLin)]",
                             "toolTip": "Impersonation User Name for hadoop Connection to run mappings",
                             "constraints": {
-                              "required": true                  
-                              
+                              "required": false
                             }
 
                           },
@@ -639,25 +638,22 @@
                                 "defaultValue": "/blaze/workdir",
                                 "toolTip": "Hadoop Blaze temporary working directory",
                                 "constraints": {
-                                    "required": false,
-                                    
-                                    "validationMessage": "Only alphanumeric characters and underscore are allowed. The value must be 3-30"
-                                }
+                                    "required": false
+                                 }
 
                             },
-                            {
-                                "name": "connectionconfighadoopblazeusername",
-                                "type": "Microsoft.Common.TextBox",
-                                "label": "Hadoop Blaze Service UserName",
-                                "defaultValue": "blaze",
-                                "toolTip": "Hadoop Blaze Service user name to impersonate the user to run mapping",
-                                "constraints": {
-                                    "required": false,
-                                    
-                                    "validationMessage": "Only alphanumeric characters and underscore are allowed. The value must be 3-30"
-                                }
+                          {
+                            "name": "connectionconfighadoopblazeusername",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Hadoop Blaze Service UserName",
+                            "defaultValue": "[coalesce(steps('nodeVMConfiguration').nodeVMAdminUsernameWin, steps('nodeVMConfiguration').nodeVMAdminUsernameLin)]",
+                            "toolTip": "Hadoop Blaze Service user name to impersonate the user to run mapping",
+                            "constraints": {
+                              "required": false
 
-                            },
+                            }
+
+                          },
                             {
                                 "name": "connectionconfighadoopsparkdir",
                                 "type": "Microsoft.Common.TextBox",
@@ -665,10 +661,8 @@
                                 "defaultValue": "/tmp/sparkdir",
                                 "toolTip": "Hadoop Spark HDFS staging directory ",
                                 "constraints": {
-                                    "required": false,
-                                    
-                                    "validationMessage": "Only alphanumeric characters and underscore are allowed. The value must be 3-30"
-                                }
+                                    "required": false             
+                                      }
 
                             }, 
                             {
@@ -678,9 +672,7 @@
                                 "defaultValue": "",
                                 "toolTip": "Hadoop Spark Event Log Directory ",
                                 "constraints": {
-                                    "required": false,
-                                    
-                                    "validationMessage": "Only alphanumeric characters and underscore are allowed. The value must be 3-30"
+                                    "required": false                                                                      
                                 }
 
                             }, 
@@ -691,9 +683,7 @@
                                 "defaultValue": "",
                                 "toolTip": "Hadoop Spark Execution Parameters",
                                 "constraints": {
-                                    "required": false,
-                                    
-                                    "validationMessage": "Only alphanumeric characters and underscore are allowed. The value must be 3-30"
+                                    "required": false                                                                       
                                 }
 
                             }  
