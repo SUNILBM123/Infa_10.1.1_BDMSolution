@@ -51,9 +51,10 @@ ZOOKEEPER_HOSTS=${36}
 SPARK_HDFS_STAGING_DIR=${37}
 HIVE_EXECUTION_MODE=${38}
 blazeworkingdir=${39}
+osPwd=${40}
 
 echo Number of parameters $#
-  if [ $# -ne 39 ]
+  if [ $# -ne 40 ]
   then
 	echo lininfainstaller.sh domainHost domainName domainUser domainPassword nodeName nodePort dbType dbName dbUser dbPassword dbHost dbPort sitekeyKeyword joinDomain  osUserName storageName storageKey domainLicenseURL mrsdbusername mrsdbpwd mrsservicename disservicename HDIClusterName HDIClusterLoginUsername HDIClusterLoginPassword HDIClusterSSHHostname HDIClusterSSHUsername HDIClusterSSHPassword ambariport HIVE_USER_NAME HDFS_USER_NAME BLAZE_USER SPARK_EVENTLOG_DIR SPARK_PARAMETER_LIST IMPERSONATION_USER ZOOKEEPER_HOSTS SPARK_HDFS_STAGING_DIR HIVE_EXECUTION_MODE blazeworkingdir
 	exit -1
@@ -226,7 +227,7 @@ installdomain()
   echo Installing Informatica domain
   cd $infainstallerloc
   echo Y Y | sh silentinstall.sh
-  sleep 600
+  #sleep 600
 }
 
 revertspeedupoperations()
@@ -294,8 +295,14 @@ configureDebian()
   rpm -ivh $informaticaopt/utilities/sshpass-1.05-5.el7.x86_64.rpm
   #Change sh to bash in headnode
   sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo ln -f -s /bin/bash /bin/sh"
+  sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo mkdir" $blazeworkingdir
+  sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "chmod -R 777" $blazeworkingdir
+  sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo mkdir" $SPARK_HDFS_STAGING_DIR
+  sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "chmod -R 777" $SPARK_HDFS_STAGING_DIR
+  sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo mkdir" $SPARK_EVENTLOG_DIR
+  sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "chmod -R 777" $SPARK_EVENTLOG_DIR
 
-  
+
   for workernode in $wnArr
   do
     echo "[$workernode]" 
@@ -303,17 +310,17 @@ configureDebian()
 	#workernodeip=$workernode
         echo "workernode $workernodeip" 
 	#create temp folder
-        sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo mkdir ~/rpmtemp" 
+        sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo mkdir ~/rpmtemp" 
 	#Give permission to rpm folder
-	sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo chmod 777 ~/rpmtemp"
+	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo chmod 777 ~/rpmtemp"
 	#SCP infa binaries
-	sshpass -p $HDIClusterSSHPassword scp informatica_10.1.1-1.deb $HDIClusterSSHUsername@$workernodeip:"~/rpmtemp/" 
+	sshpass -p $HDIClusterSSHPassword scp -q -o StrictHostKeyChecking=no informatica_10.1.1-1.deb $HDIClusterSSHUsername@$workernodeip:"~/rpmtemp/" 
 	#extract the binaries
-	sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo dpkg -i ~/rpmtemp/informatica_10.1.1-1.deb"
+	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo dpkg -i ~/rpmtemp/informatica_10.1.1-1.deb"
 	#Clean the temp folder
-	sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo rm -rf ~/rpmtemp"
+	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo rm -rf ~/rpmtemp"
 	#Change sh to bash in worker nodes
-	 sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo ln -f -s /bin/bash /bin/sh"
+	 sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo ln -f -s /bin/bash /bin/sh"
   done
 
   cd /home/$osUserName
@@ -368,9 +375,23 @@ chownership()
   chown -R $osUserName /home/$osUserName
 }
 
+copyhelperfilesfromcluster()
+{
+  
+  currentpython= which python | xargs readlink
+  python_basedir=/usr/lib/$currentpython/dist-packages/hdinsight_common
+ 
+  sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "apt install sshpass "  
+
+  sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwdosPwd "scp -q -o StrictHostKeyChecking=no " $python_basedir"/decrypt.sh" $osUserName"@"$domainHost":~""
+
+  sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwdosPwd "scp -q -o StrictHostKeyChecking=no " $python_basedir"/key_decryption_cert.prv" $osUserName"@"$domainHost":~""
+  
+  
+
+}
 
 echo Inside main method
-sleep 20
 updateFirewallsettings
 downloadlicense
 checkforjoindomain
@@ -380,6 +401,7 @@ Performspeedupinstalloperation
 installdomain
 revertspeedupoperations
 configureDebian
-#editsilentpropfiletoBDMutil
-#runbdmutility
+editsilentpropfiletoBDMutil
+runbdmutility
 chownership
+copyhelperfilesfromcluster
