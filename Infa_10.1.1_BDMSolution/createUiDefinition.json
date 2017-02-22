@@ -116,13 +116,13 @@
                     "name": "nodeVMOS",
                     "type": "Microsoft.Common.DropDown",
                     "label": "Select the OS for the VM",
-                    "defaultValue": "Red Hat Enterprise Linux 7.3",
+                    "defaultValue": "Red Hat Enterprise Linux 7.1",
                     "toolTip": "OS platform of the VM.",
                     "constraints": {
                       "allowedValues": [
 
                         {
-                          "label": "Red Hat Enterprise Linux 7.3",
+                          "label": "Red Hat Enterprise Linux 7.1",
                           "value": "linux"
                         }
                       ]
@@ -132,7 +132,7 @@
                         "name": "domainNodeCount",
                         "type": "Microsoft.Common.TextBox",
                         "label": "Number of nodes",
-                        "defaultValue": "2",
+                        "defaultValue": "1",
                         "toolTip": "",
                         "constraints": {
                             "required": true,
