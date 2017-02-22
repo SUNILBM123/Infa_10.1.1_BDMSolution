@@ -476,7 +476,7 @@
                     {
                         "name": "infamrsservicename",
                         "type": "Microsoft.Common.TextBox",
-                        "label": "Model Repository Service Name",
+                        "label": "Model Repository Service Name(MRS)",
                         "defaultValue": "MRS",
                         "toolTip": "MRS Name to be created in Domain",
                         "constraints": {
@@ -488,7 +488,7 @@
                     {
                         "name": "infadisservicename",
                         "type": "Microsoft.Common.TextBox",
-                        "label": "Data Integration Service Name",
+                        "label": "Data Integration Service Name(DIS)",
                         "defaultValue": "DIS",
                         "toolTip": "DIS Name to be created in Domain",
                         "constraints": {
@@ -500,7 +500,7 @@
                     {
                         "name": "infamrsuserName",
                         "type": "Microsoft.Common.TextBox",
-                        "label": "Model Repository Service Database Username",
+                        "label": "MRS Database Username",
                         "defaultValue": "mrsuser",
                         "toolTip": "Model Repository Service DataBase username",
                         "constraints": {
@@ -513,8 +513,8 @@
                         "name": "infamrspassword",
                         "type": "Microsoft.Common.PasswordBox",
                         "label": {
-                            "password": "Model Repository Service Database password",
-                            "confirmPassword": "Model Repository Service Database Confirm password"
+                            "password": "MRS Database password",
+                            "confirmPassword": "MRS Database Confirm password"
                         },
                         "constraints": {
                             "required": true,
