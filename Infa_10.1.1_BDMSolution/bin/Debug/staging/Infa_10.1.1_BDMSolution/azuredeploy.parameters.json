@@ -73,19 +73,19 @@
           "value": "Bdmrndhdcluster@123"
       },
       "hdfsusernamevar": {
-          "value": "hdfsuser"
+          "value": "azureuser1"
       },
       "hbasezookeepernamevar": {
           "value": "zk2-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net,zk1-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net,zk2-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net"
       },
       "connectionconfighadoopimpuservar": {
-          "value": "Impuser"
+          "value": "azureuser1"
       },
       "connectionconfighadoopblazetempdirvar": {
           "value": "/tmp/blaze"
       },
       "connectionconfighadoopblazeusernamevar": {
-          "value": "Blazeusr"
+          "value": "azureuser1"
       },
       "connectionconfighadoopsparkdirvar": {
           "value": "/tmp/sparkdir"
@@ -109,10 +109,10 @@
           "value": "tempBG@2008"
       },
       "HDIClusterAmbariport": {
-          "value": "443"
+          "value": "8080"
       },
       "HIVEUserName": {
-          "value": "hiveusr"
+          "value": "azureuser1"
       },
       "HIVEExecutionMode": {
           "value": "Remote"
@@ -128,6 +128,9 @@
       },
       "subnetName": {
           "value": "default"
+      },
+      "nodeVMAdminUsername": {
+          "value": "azureuser1"
       }
 
   }
