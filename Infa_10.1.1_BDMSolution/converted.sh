@@ -378,14 +378,51 @@ chownership()
 copyhelperfilesfromcluster()
 {
   
-  currentpython= which python | xargs readlink
-  python_basedir=/usr/lib/$currentpython/dist-packages/hdinsight_common
+  #currentpython= which python | xargs readlink
+  #python_basedir=/usr/lib/$currentpython/dist-packages/hdinsight_common
  
-  sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "apt install sshpass "  
+sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo apt install sshpass "
+sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo find / -name decrypt.sh >>oneclicksnap.txt"
+sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo find / -name key_decryption_cert.prv >>oneclicksnap.txt"  
+sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwdosPwd "scp -q -o StrictHostKeyChecking=no oneclicksnap.txt "$osUserName"@"$domainHost":""~""
 
-  sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwdosPwd "scp -q -o StrictHostKeyChecking=no " $python_basedir"/decrypt.sh" $osUserName"@"$domainHost":~""
+#code to iterate snap.txt and download the file and copy to it to local directory
 
-  sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwdosPwd "scp -q -o StrictHostKeyChecking=no " $python_basedir"/key_decryption_cert.prv" $osUserName"@"$domainHost":~""
+counter=0
+skipcount=2
+filename=oneclicksnap.txt
+while read -r line
+do
+  name="$line"
+  echo "downloading file:"$name
+  
+  sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwdosPwd "scp -q -o StrictHostKeyChecking=no "$name $osUserName"@"$domainHost":""~""  
+
+  IFS='/' read -ra NAMES <<< "$name"
+  counter=${#NAMES[@]}
+  ((chckcounter=$counter - $skipcount))
+   #$basechkcounter=$chckcounter
+
+  intermediatestring=""
+  while [ $chckcounter -gt 0 ]
+  do
+    #echo ${NAMES[$chckcounter]}
+    intermediatestring=${NAMES[$chckcounter]}/$intermediatestring
+    ((chckcounter=$chckcounter - 1))
+  done
+
+  intermediatestring=/$intermediatestring
+  #echo $intermediatestring
+  #echo ${NAMES[(counter-1)]}
+  echo "creating directory:"$intermediatestring
+  mkdir -p $intermediatestring
+  mv ~/${NAMES[(counter-1)]} $intermediatestring
+ done < "$filename"
+
+
+  #sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwdosPwd "scp -q -o StrictHostKeyChecking=no " $python_basedir"/decrypt.sh" $osUserName"@"$domainHost":~""
+
+  #sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwdosPwd "scp -q -o StrictHostKeyChecking=no " $python_basedir"/key_decryption_cert.prv" $osUserName"@"$domainHost":~""
   
   
 
