@@ -296,11 +296,11 @@ configureDebian()
   #Change sh to bash in headnode
   sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo ln -f -s /bin/bash /bin/sh"
   sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo mkdir" $blazeworkingdir
-  sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "chmod -R 777" $blazeworkingdir
+  sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo chmod -R 777" $blazeworkingdir
   sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo mkdir" $SPARK_HDFS_STAGING_DIR
-  sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "chmod -R 777" $SPARK_HDFS_STAGING_DIR
+  sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo chmod -R 777" $SPARK_HDFS_STAGING_DIR
   sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo mkdir" $SPARK_EVENTLOG_DIR
-  sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "chmod -R 777" $SPARK_EVENTLOG_DIR
+  sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo chmod -R 777" $SPARK_EVENTLOG_DIR
 
 
   for workernode in $wnArr
@@ -313,10 +313,16 @@ configureDebian()
         sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo mkdir ~/rpmtemp" 
 	#Give permission to rpm folder
 	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo chmod 777 ~/rpmtemp"
-	#SCP infa binaries
+	 
+        echo "copying Binaries to" $workernodeip
+        #SCP infa binaries
 	sshpass -p $HDIClusterSSHPassword scp -q -o StrictHostKeyChecking=no informatica_10.1.1-1.deb $HDIClusterSSHUsername@$workernodeip:"~/rpmtemp/" 
-	#extract the binaries
+	
+        echo "Installing Debian in" $workernodeip
+        #extract the binaries
 	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo dpkg -i ~/rpmtemp/informatica_10.1.1-1.deb"
+         
+        
 	#Clean the temp folder
 	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo rm -rf ~/rpmtemp"
 	#Change sh to bash in worker nodes
@@ -326,6 +332,27 @@ configureDebian()
   cd /home/$osUserName
   
   echo "Debian installation successful"
+}
+
+separatorintermediatevariable=""
+fileseparator_rep_func()
+{
+  
+  funcpassedvar=$1
+  echo "Inside function fileseparatorfunc, replacing the original value:"$funcpassedvar
+  separatorintermediatevariable=""
+  tstcon=1
+  IFS='/' read -ra Words <<< "$funcpassedvar"
+  for i in "${Words[@]}"
+   do
+     if [ $tstcon -gt 1 ]
+      then
+        separatorintermediatevariable=$separatorintermediatevariable"\\/"$i
+     fi
+  ((tstcon = $tstcon + 1))
+
+   done
+
 }
 
 editsilentpropfiletoBDMutil()
@@ -343,17 +370,26 @@ editsilentpropfiletoBDMutil()
   sed -i s/^UPDATE_DIS=0/UPDATE_DIS=1/ $bdm_silpropfile
   sed -i s/^DOMAIN_USER=/DOMAIN_USER=$domainUser/ $bdm_silpropfile
   sed -i s/^DOMAIN_PSSWD=/DOMAIN_PSSWD=$domainPassword/ $bdm_silpropfile
-  sed -i s/^DIS_SERVICE_NAME=/DIS_SERVICE_NAME=$DIS_SERVICE_NAME/ $bdm_silpropfile
+  sed -i s/^DIS_SERVICE_NAME=/DIS_SERVICE_NAME=$disservicename/ $bdm_silpropfile
   sed -i s/^HIVE_USER_NAME=/HIVE_USER_NAME=$HIVE_USER_NAME/ $bdm_silpropfile
   sed -i s/^HDFS_USER_NAME=/HDFS_USER_NAME=$HDFS_USER_NAME/ $bdm_silpropfile
   sed -i s/^BLAZE_USER=/BLAZE_USER=$BLAZE_USER/ $bdm_silpropfile
-  sed -i s/^SPARK_EVENTLOG_DIR=/SPARK_EVENTLOG_DIR=$SPARK_EVENTLOG_DIR/ $bdm_silpropfile
+  
+  echo "updating SPARK_EVENTLOG_DIR"
+  fileseparator_rep_func $SPARK_EVENTLOG_DIR
+  sed -i s/^SPARK_EVENTLOG_DIR=/SPARK_EVENTLOG_DIR=$separatorintermediatevariable/ $bdm_silpropfile
   sed -i s/^SPARK_PARAMETER_LIST=/SPARK_PARAMETER_LIST=$SPARK_PARAMETER_LIST/ $bdm_silpropfile
   sed -i s/^IMPERSONATION_USER=/IMPERSONATION_USER=$IMPERSONATION_USER/ $bdm_silpropfile
   sed -i s/^ZOOKEEPER_HOSTS=/ZOOKEEPER_HOSTS=$ZOOKEEPER_HOSTS/ $bdm_silpropfile
   sed -i s/^HIVE_EXECUTION_MODE=Remote/HIVE_EXECUTION_MODE=$HIVE_EXECUTION_MODE/ $bdm_silpropfile
-  sed -i s/^SPARK_HDFS_STAGING_DIR=\\/tmp\\/sparkdir/SPARK_HDFS_STAGING_DIR=$SPARK_EVENTLOG_DIR/ $bdm_silpropfile
-  sed -i s/^BLAZE_WORKING_DIR=\\/blaze\\/workdir/BLAZE_WORKING_DIR=$blazeworkingdir/ $bdm_silpropfile
+  
+  echo "updating sparkdir"
+  fileseparator_rep_func $SPARK_HDFS_STAGING_DIR
+  sed -i s/^SPARK_HDFS_STAGING_DIR=\\/tmp\\/sparkdir/SPARK_HDFS_STAGING_DIR=$separatorintermediatevariable/ $bdm_silpropfile
+  
+  echo "updating blazeworking dir"
+  fileseparator_rep_func $blazeworkingdir
+  sed -i s/^BLAZE_WORKING_DIR=\\/blaze\\/workdir/BLAZE_WORKING_DIR=$separatorintermediatevariable/ $bdm_silpropfile
   
 }
 
@@ -380,11 +416,15 @@ copyhelperfilesfromcluster()
   
   #currentpython= which python | xargs readlink
   #python_basedir=/usr/lib/$currentpython/dist-packages/hdinsight_common
- 
+
+echo "Installing sshpass on cluster" 
 sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo apt install sshpass "
+echo "searching for file in remote cluster"
 sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo find / -name decrypt.sh >>oneclicksnap.txt"
 sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo find / -name key_decryption_cert.prv >>oneclicksnap.txt"  
-sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwdosPwd "scp -q -o StrictHostKeyChecking=no oneclicksnap.txt "$osUserName"@"$domainHost":""~""
+
+echo "downloading oneclicksnap.txt"
+sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwd "scp -q -o StrictHostKeyChecking=no oneclicksnap.txt "$osUserName"@"$domainHost":""~""
 
 #code to iterate snap.txt and download the file and copy to it to local directory
 
@@ -396,7 +436,7 @@ do
   name="$line"
   echo "downloading file:"$name
   
-  sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwdosPwd "scp -q -o StrictHostKeyChecking=no "$name $osUserName"@"$domainHost":""~""  
+  sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwd "scp -q -o StrictHostKeyChecking=no "$name $osUserName"@"$domainHost":""~""  
 
   IFS='/' read -ra NAMES <<< "$name"
   counter=${#NAMES[@]}
@@ -420,9 +460,9 @@ do
  done < "$filename"
 
 
-  #sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwdosPwd "scp -q -o StrictHostKeyChecking=no " $python_basedir"/decrypt.sh" $osUserName"@"$domainHost":~""
+  #sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwd "scp -q -o StrictHostKeyChecking=no " $python_basedir"/decrypt.sh" $osUserName"@"$domainHost":~""
 
-  #sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwdosPwd "scp -q -o StrictHostKeyChecking=no " $python_basedir"/key_decryption_cert.prv" $osUserName"@"$domainHost":~""
+  #sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwd "scp -q -o StrictHostKeyChecking=no " $python_basedir"/key_decryption_cert.prv" $osUserName"@"$domainHost":~""
   
   
 
