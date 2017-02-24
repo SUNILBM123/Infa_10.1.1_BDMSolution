@@ -428,13 +428,18 @@ sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDICluster
 echo "downloading oneclicksnap.txt"
 sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwd "scp -q -o StrictHostKeyChecking=no oneclicksnap.txt "$osUserName"@"$domainHost":""~""
 
-cd ~
 sleep 20
+
 #code to iterate snap.txt and download the file and copy to it to local directory
 
 counter=0
 skipcount=2
-filename="oneclicksnap.txt"
+filename="/home/"$osUserName"/oneclicksnap.txt"
+echo "displaying the content of downloaded file"
+cat $filename
+
+echo "parsing and processing the file contents"
+
 while read -r line
 do
   name="$line"
