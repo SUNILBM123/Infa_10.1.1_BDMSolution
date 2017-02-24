@@ -434,7 +434,7 @@ sleep 20
 
 counter=0
 skipcount=2
-filename=oneclicksnap.txt
+filename="oneclicksnap.txt"
 while read -r line
 do
   name="$line"
