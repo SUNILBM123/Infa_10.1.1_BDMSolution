@@ -240,7 +240,7 @@ revertspeedupoperations()
  if [ -f $informaticaopt/license.key ]
  then
    echo bleh	
-   #rm $informaticaopt/license.key
+   rm $informaticaopt/license.key
  fi
  echo Informatica domain setup Complete.
 
@@ -320,7 +320,7 @@ configureDebian()
 	
         echo "Installing Debian in" $workernodeip
         #extract the binaries
-	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo dpkg -i ~/rpmtemp/informatica_10.1.1-1.deb"
+	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo dpkg --force-all -i ~/rpmtemp/informatica_10.1.1-1.deb"
          
         
 	#Clean the temp folder
@@ -414,18 +414,22 @@ chownership()
 copyhelperfilesfromcluster()
 {
   
-  #currentpython= which python | xargs readlink
-  #python_basedir=/usr/lib/$currentpython/dist-packages/hdinsight_common
+#remove already existing authentication id of vm if any
+remote_knownhostsfile="/home/"$HDIClusterSSHUsername"/.ssh/known_hosts"
+sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sudo ssh-keygen -f "$remote_knownhostsfile" -R " $domainHost"
+
 
 echo "Installing sshpass on cluster" 
 sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo apt install sshpass "
 echo "searching for file in remote cluster"
-sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo find / -name decrypt.sh >>oneclicksnap.txt"
+sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo find / -name decrypt.sh >oneclicksnap.txt"
 sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo find / -name key_decryption_cert.prv >>oneclicksnap.txt"  
 
 echo "downloading oneclicksnap.txt"
 sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwd "scp -q -o StrictHostKeyChecking=no oneclicksnap.txt "$osUserName"@"$domainHost":""~""
 
+cd ~
+sleep 20
 #code to iterate snap.txt and download the file and copy to it to local directory
 
 counter=0
@@ -437,7 +441,7 @@ do
   echo "downloading file:"$name
   
   sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwd "scp -q -o StrictHostKeyChecking=no "$name $osUserName"@"$domainHost":""~""  
-
+  
   IFS='/' read -ra NAMES <<< "$name"
   counter=${#NAMES[@]}
   ((chckcounter=$counter - $skipcount))
@@ -464,7 +468,9 @@ do
 
   #sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwd "scp -q -o StrictHostKeyChecking=no " $python_basedir"/key_decryption_cert.prv" $osUserName"@"$domainHost":~""
   
-  
+  echo "Removing sshpass installation on cluster"
+  sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo apt-get --purge remove sshpass --assume-yes"
+
 
 }
 
