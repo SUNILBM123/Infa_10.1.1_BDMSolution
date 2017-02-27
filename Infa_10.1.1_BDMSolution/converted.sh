@@ -465,7 +465,9 @@ do
   #echo ${NAMES[(counter-1)]}
   echo "creating directory:"$intermediatestring
   mkdir -p $intermediatestring
-  mv ~/${NAMES[(counter-1)]} $intermediatestring
+  sleep 5
+  echo "copying file:"${NAMES[(counter-1)]}
+  cp /home/$osUserName/${NAMES[(counter-1)]} $intermediatestring
  done < "$filename"
 
 
