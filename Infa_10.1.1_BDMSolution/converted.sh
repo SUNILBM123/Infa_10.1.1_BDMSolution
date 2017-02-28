@@ -121,6 +121,7 @@ checkforjoindomain()
    then
 	#echo "inside if" >> /home/$osUserName/output.out
     createDomain=0
+    cloudsupportenable=1
 	# This is buffer time for master node to start
 	sleep 600
    else
@@ -193,17 +194,20 @@ sed -i s/^DOMAIN_PSSWD=.*/DOMAIN_PSSWD=$(echo $domainPassword | sed -e 's/\\/\\\
 
 sed -i s/^DOMAIN_CNFRM_PSSWD=.*/DOMAIN_CNFRM_PSSWD=$(echo $domainPassword | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/ $infainstallerloc/SilentInput.properties
 
-sed -i s/^CREATE_SERVICES=.*/CREATE_SERVICES=1/ $infainstallerloc/SilentInput.properties
+if [ $joinDomain -ne 1 ]
+ then
+   sed -i s/^CREATE_SERVICES=.*/CREATE_SERVICES=1/ $infainstallerloc/SilentInput.properties
+   sed -i s/^MRS_DB_TYPE=.*/MRS_DB_TYPE=$dbType/ $infainstallerloc/SilentInput.properties
+   sed -i s/^MRS_DB_UNAME=.*/MRS_DB_UNAME=$mrsdbusername/ $infainstallerloc/SilentInput.properties
+   sed -i s/^MRS_DB_PASSWD=.*/MRS_DB_PASSWD=$(echo $mrsdbpwd | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/ $infainstallerloc/SilentInput.properties
+   sed -i s/^MRS_DB_SERVICENAME=.*/MRS_DB_SERVICENAME=$dbName/ $infainstallerloc/SilentInput.properties
+   sed -i s/^MRS_DB_ADDRESS=.*/MRS_DB_ADDRESS=$dbaddress/ $infainstallerloc/SilentInput.properties
+   sed -i s/^MRS_SERVICE_NAME=.*/MRS_SERVICE_NAME=$mrsservicename/ $infainstallerloc/SilentInput.properties
+   sed -i s/^DIS_SERVICE_NAME=.*/DIS_SERVICE_NAME=$disservicename/ $infainstallerloc/SilentInput.properties
+   sed -i s/^DIS_PROTOCOL_TYPE=.*/DIS_PROTOCOL_TYPE=http/ $infainstallerloc/SilentInput.properties
+   sed -i s/^DIS_HTTP_PORT=.*/DIS_HTTP_PORT=18059/ $infainstallerloc/SilentInput.properties
+fi
 
-sed -i s/^MRS_DB_TYPE=.*/MRS_DB_TYPE=$dbType/ $infainstallerloc/SilentInput.properties
-sed -i s/^MRS_DB_UNAME=.*/MRS_DB_UNAME=$mrsdbusername/ $infainstallerloc/SilentInput.properties
-sed -i s/^MRS_DB_PASSWD=.*/MRS_DB_PASSWD=$(echo $mrsdbpwd | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')/ $infainstallerloc/SilentInput.properties
-sed -i s/^MRS_DB_SERVICENAME=.*/MRS_DB_SERVICENAME=$dbName/ $infainstallerloc/SilentInput.properties
-sed -i s/^MRS_DB_ADDRESS=.*/MRS_DB_ADDRESS=$dbaddress/ $infainstallerloc/SilentInput.properties
-sed -i s/^MRS_SERVICE_NAME=.*/MRS_SERVICE_NAME=$mrsservicename/ $infainstallerloc/SilentInput.properties
-sed -i s/^DIS_SERVICE_NAME=.*/DIS_SERVICE_NAME=$disservicename/ $infainstallerloc/SilentInput.properties
-sed -i s/^DIS_PROTOCOL_TYPE=.*/DIS_PROTOCOL_TYPE=http/ $infainstallerloc/SilentInput.properties
-sed -i s/^DIS_HTTP_PORT=.*/DIS_HTTP_PORT=18059/ $infainstallerloc/SilentInput.properties
 }
 
 Performspeedupinstalloperation()
@@ -468,7 +472,8 @@ do
   sleep 5
   echo "copying file:"${NAMES[(counter-1)]}
   cp /home/$osUserName/${NAMES[(counter-1)]} $intermediatestring
- done < "$filename"
+ 
+done < "$filename"
 
 
   #sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwd "scp -q -o StrictHostKeyChecking=no " $python_basedir"/decrypt.sh" $osUserName"@"$domainHost":~""
@@ -483,15 +488,27 @@ do
 
 echo Inside main method
 updateFirewallsettings
-downloadlicense
+if [ $joinDomain -ne 1 ]
+ then
+  downloadlicense
+fi
 checkforjoindomain
 mountsharedir
 editsilentpropertyfilesforserverinstall
 Performspeedupinstalloperation
 installdomain
 revertspeedupoperations
-configureDebian
-editsilentpropfiletoBDMutil
-runbdmutility
+
+if [ $joinDomain -ne 1 ]
+ then
+   configureDebian
+   editsilentpropfiletoBDMutil
+   runbdmutility
+fi
+
 chownership
-copyhelperfilesfromcluster
+
+if [ $joinDomain -ne 1 ]
+ then
+   copyhelperfilesfromcluster
+fi
