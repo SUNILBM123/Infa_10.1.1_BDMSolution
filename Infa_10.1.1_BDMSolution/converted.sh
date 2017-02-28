@@ -56,7 +56,7 @@ osPwd=${40}
 echo Number of parameters $#
   if [ $# -ne 40 ]
   then
-	echo lininfainstaller.sh domainHost domainName domainUser domainPassword nodeName nodePort dbType dbName dbUser dbPassword dbHost dbPort sitekeyKeyword joinDomain  osUserName storageName storageKey domainLicenseURL mrsdbusername mrsdbpwd mrsservicename disservicename HDIClusterName HDIClusterLoginUsername HDIClusterLoginPassword HDIClusterSSHHostname HDIClusterSSHUsername HDIClusterSSHPassword ambariport HIVE_USER_NAME HDFS_USER_NAME BLAZE_USER SPARK_EVENTLOG_DIR SPARK_PARAMETER_LIST IMPERSONATION_USER ZOOKEEPER_HOSTS SPARK_HDFS_STAGING_DIR HIVE_EXECUTION_MODE blazeworkingdir
+	echo converted.sh domainHost domainName domainUser domainPassword nodeName nodePort dbType dbName dbUser dbPassword dbHost dbPort sitekeyKeyword joinDomain  osUserName storageName storageKey domainLicenseURL mrsdbusername mrsdbpwd mrsservicename disservicename HDIClusterName HDIClusterLoginUsername HDIClusterLoginPassword HDIClusterSSHHostname HDIClusterSSHUsername HDIClusterSSHPassword ambariport HIVE_USER_NAME HDFS_USER_NAME BLAZE_USER SPARK_EVENTLOG_DIR SPARK_PARAMETER_LIST IMPERSONATION_USER ZOOKEEPER_HOSTS SPARK_HDFS_STAGING_DIR HIVE_EXECUTION_MODE blazeworkingdir
 	exit -1
   fi
 
@@ -278,13 +278,8 @@ configureDebian()
   #Add a new line to the end of hosts file
   echo "">>/etc/hosts
   echo "Adding headnode IP addresses"
-  #echo "$headnode0ip headnode0">>/etc/hosts
-
-  #echo "10.0.0.31 hn0-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net">>/etc/hosts
-  #echo "\n">>/etc/hosts
-  #echo "10.0.0.25 wn0-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net">>/etc/hosts
-  #echo "\n">>/etc/hosts
-  #echo "10.0.0.13 wn1-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net">>/etc/hosts
+  echo "$headnode0ip headnodehost $headnode0">>/etc/hosts
+ 
 
   
   echo "Extracting workernode"
