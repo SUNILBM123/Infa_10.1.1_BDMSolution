@@ -439,7 +439,9 @@ cat $filename
 
 echo "parsing and processing the file contents"
 
-while read -r line
+IFS=$'\n' read -d '' -r -a totalfiles < "$filename"
+
+for line in "${totalfiles[@]}"
 do
   name="$line"
   echo "downloading file:"$name
@@ -465,10 +467,10 @@ do
   echo "creating directory:"$intermediatestring
   mkdir -p $intermediatestring
   sleep 5
-  echo "copying file:"${NAMES[(counter-1)]}
-  cp /home/$osUserName/${NAMES[(counter-1)]} $intermediatestring
+  echo "moving file:"${NAMES[(counter-1)]}
+  mv /home/$osUserName/${NAMES[(counter-1)]} $intermediatestring
  
-done < "$filename"
+done
 
 
   #sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwd "scp -q -o StrictHostKeyChecking=no " $python_basedir"/decrypt.sh" $osUserName"@"$domainHost":~""
