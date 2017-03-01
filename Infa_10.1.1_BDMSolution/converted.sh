@@ -274,11 +274,13 @@ configureDebian()
   echo "Extracting headnode0 IP addresses"
   headnode0ip=$(dig +short $headnode0) 
   echo "headnode0 IP: $headnode0ip"
+  resulthost=$(sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "uname -a | cut -d ' ' -f 2")
+  echo "resulthost name is:"$resulthost  
 
   #Add a new line to the end of hosts file
   echo "">>/etc/hosts
   echo "Adding headnode IP addresses"
-  echo "$headnode0ip headnodehost $headnode0">>/etc/hosts
+  echo "$headnode0ip headnodehost $resulthost $headnode0">>/etc/hosts
  
 
   
