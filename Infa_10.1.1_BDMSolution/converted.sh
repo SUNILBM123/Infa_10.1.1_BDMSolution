@@ -52,6 +52,8 @@ SPARK_HDFS_STAGING_DIR=${37}
 HIVE_EXECUTION_MODE=${38}
 blazeworkingdir=${39}
 osPwd=${40}
+oneclicksolutionlog="/home/"$osUserName"/Oneclicksoluion_results.log"
+
 
 echo Number of parameters $#
   if [ $# -ne 40 ]
@@ -231,6 +233,7 @@ installdomain()
   echo Installing Informatica domain
   cd $infainstallerloc
   echo Y Y | sh silentinstall.sh
+  echo -e "\nDomain installation completed\nStarting Debian Configuration\n" >> "$oneclicksolutionlog"
   #sleep 600
 }
 
@@ -333,6 +336,7 @@ configureDebian()
   cd /home/$osUserName
   
   echo "Debian installation successful"
+  echo -e "\nDebian configuration completed.\nStating BDM util" >> "$oneclicksolutionlog"
 }
 
 separatorintermediatevariable=""
@@ -400,7 +404,7 @@ runbdmutility()
   cd $infainstallionloc/tools/BDMUtil
   echo Y Y | sh BDMSilentConfig.sh
   echo "BDM util configuration complete"
-
+  echo -e "\nBDM util configuration completed\n" >> "$oneclicksolutionlog"
 }
 
 chownership()
@@ -486,6 +490,8 @@ done
 }
 
 echo Inside main method
+echo -e "Log accumulator for oneclick solution. \n 1> Informatica installation logs will be created in ~/Informatica/10.1.1/Informatica_10.1.1_Services_*.log \n 2> For any installer failure look into silenterrorlog created in home directory \n 3> Extension script log will be created in the following drectory /var/log/azure/Microsoft.OSTCExtensions.CustomScriptForLinux/<extensionversion>/extension.log. This location may change as per Microsoft Standards." > "$oneclicksolutionlog"
+
 updateFirewallsettings
 if [ $joinDomain -ne 1 ]
  then
