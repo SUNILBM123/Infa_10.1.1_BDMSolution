@@ -94,11 +94,6 @@ chmod -R 777 $JRE_HOME
 
 updateFirewallsettings()
 {
-  rm -rf /etc/hosts
-  echo "">>/etc/hosts
-  echo "127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4">>/etc/hosts
-  echo "">>/etc/hosts
-  echo "::1     localhost localhost.localdomain localhost6 localhost6.localdomain6">>/etc/hosts
   echo Adding firewall rules for Informatica domain service ports
   iptables -A IN_public_allow -p tcp -m tcp --dport 6005:6008 -m conntrack --ctstate NEW -j ACCEPT
   iptables -A IN_public_allow -p tcp -m tcp --dport 6014:6114 -m conntrack --ctstate NEW -j ACCEPT
@@ -214,11 +209,7 @@ fi
 
 Performspeedupinstalloperation()
 {
-  rm $infainstallionloc/tools/BDMUtil/SilentInput.properties
-  mv $infainstallerloc/source/tools/BDMUtil/SilentInput.properties $infainstallionloc/tools/BDMUtil/SilentInput.properties
-  rm -rf $infainstallerloc/source
-  #mkdir $infainstallerloc/source
-  #mv $infainstallerloc/source $infainstallerloc/source_temp
+  mv $infainstallerloc/source $infainstallerloc/source_temp
   mv $infainstallerloc/unjar_esd.sh $infainstallerloc/unjar_esd.sh_temp
   head -1 $infainstallerloc/unjar_esd.sh_temp > $infainstallerloc/unjar_esd.sh
   echo exit_value_unjar_esd=0 >> $infainstallerloc/unjar_esd.sh
@@ -239,14 +230,14 @@ installdomain()
 
 revertspeedupoperations()
 {
-#sleep 30
- #rm -rf $infainstallerloc/source
- #mv $infainstallerloc/source_temp/* $infainstallerloc/source
+
+ rm -rf $infainstallerloc/source
+ mv $infainstallerloc/source_temp $infainstallerloc/source
  rm $infainstallerloc/unjar_esd.sh
  mv $infainstallerloc/unjar_esd.sh_temp $infainstallerloc/unjar_esd.sh
  if [ -f $informaticaopt/license.key ]
  then
-   echo bleh	
+   #echo bleh	
    rm $informaticaopt/license.key
  fi
  echo Informatica domain setup Complete.
@@ -260,7 +251,7 @@ configureDebian()
   sleep 120
   #Change sh to bash in server machine
   sudo ln -f -s /bin/bash /bin/sh
-  cd $informaticaopt/debian/InformaticaHadoop-10.1.1-Deb
+  cd $informaticaopt/debian/InformaticaHadoop-10.1.1U2-Deb
   
   #Ambari API calls to extract Head node and Data nodes
   #echo "Getting list of hosts from ambari"
@@ -320,11 +311,11 @@ configureDebian()
 	 
         echo "copying Binaries to" $workernodeip
         #SCP infa binaries
-	sshpass -p $HDIClusterSSHPassword scp -q -o StrictHostKeyChecking=no informatica_10.1.1-1.deb $HDIClusterSSHUsername@$workernodeip:"~/rpmtemp/" 
+	sshpass -p $HDIClusterSSHPassword scp -q -o StrictHostKeyChecking=no informatica_10.1.1U2-1.deb $HDIClusterSSHUsername@$workernodeip:"~/rpmtemp/" 
 	
         echo "Installing Debian in" $workernodeip
         #extract the binaries
-	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo dpkg --force-all -i ~/rpmtemp/informatica_10.1.1-1.deb"
+	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo dpkg --force-all -i ~/rpmtemp/informatica_10.1.1U2-1.deb"
          
         
 	#Clean the temp folder

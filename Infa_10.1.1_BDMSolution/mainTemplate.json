@@ -300,7 +300,7 @@
       "type": "string"
     },
     "infamrspassword": {
-      "type": "string"
+      "type": "securestring"
     },
     "HDIClusterAmbariport": {
       "type": "string"
