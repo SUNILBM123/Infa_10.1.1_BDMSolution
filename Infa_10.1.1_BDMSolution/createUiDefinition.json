@@ -217,22 +217,27 @@
                         "osPlatform": "Linux",
                         "visible": "[equals(steps('nodeVMConfiguration').nodeVMOS, 'linux')]"
                     },
-                    {
-                        "name": "nodeVMSize",
-                        "type": "Microsoft.Compute.SizeSelector",
-                        "label": "Machine size",
-                        "toolTip": "The size of the machine",
-                        "recommendedSizes": [
-                            "Standard_DS11",
-                            "Standard_DS11_v2",
-                            "Standard_DS2",
-                            "Standard_DS2_v2"
-                        ],
-                        "constraints": {
-                        },
-                        "osPlatform": "Windows",
-                        "count": "[steps('nodeVMConfiguration').domainNodeCount]"
-                    }
+                  {
+                    "name": "nodeVMSize",
+                    "type": "Microsoft.Compute.SizeSelector",
+                    "label": "Machine size",
+                    "toolTip": "The size of the machine",
+                    "recommendedSizes": [
+                      "Standard_DS11",
+                      "Standard_DS11_v2",
+                      "Standard_DS2",
+                      "Standard_DS2_v2"
+                    ],
+
+                    "osPlatform": "Linux",
+                    "imageReference": {
+                      "publisher": "informatica",
+                      "offer": "platform_10_1_1_multi_node_domain_rhel-7-3_byol",
+                      "sku": "byol_rhel_7_3_platform_10_1_1"
+                    },
+                    "count": "[steps('nodeVMConfiguration').domainNodeCount]",
+                    "visible": "[equals(steps('nodeVMConfiguration').nodeVMOS, 'linux')]"
+                  }
                 ]
             },
             {
@@ -255,14 +260,15 @@
                                 "label": "Database type",
                                 "defaultValue": "SQL Server 2014",
                                 "toolTip": "",
-                                "constraints": {
-                                    "allowedValues": [
-                                        {
-                                            "label": "SQL Server 2014",
-                                            "value": "sqlserver"
-                                        }
-                                    ]
-                                }
+                              "constraints": {
+                                "allowedValues": [
+                                  {
+                                    "label": "SQL Server 2014",
+                                    "value": "sqlserver"
+                                  }
+                                ]
+                              },
+                              "visible": true
                             },
                             {
                                 "name": "databaseName",
@@ -273,8 +279,7 @@
                                     "required": true,
                                     "regex": "^([a-zA-Z][a-z0-9A-Z\\-]{2,30})$",
                                     "validationMessage": "Only alphanumeric characters, and hyphen are allowed. The value must be 3-30 characters long"
-                                },
-                                "options": { }
+                                }
                             },
                             {
                                 "name": "dbVMAdminUsername",
@@ -301,22 +306,25 @@
                                     "required": true
                                 }
                             },
-                            {
-                                "name": "databaseVMSize",
-                                "type": "Microsoft.Compute.SizeSelector",
-                                "label": "Database  machine size",
-                                "toolTip": "The size of machine for database",
-                                "recommendedSizes": [
-                                    "Standard_DS3",
-                                    "Standard_DS3_v2",
-                                    "Standard_DS4",
-                                    "Standard_DS4_v2"
-                                ],
-                                "constraints": {
-                                },
-                                "osPlatform": "Windows",
-                                "count": 1
-                            }
+                          {
+                            "name": "databaseVMSize",
+                            "type": "Microsoft.Compute.SizeSelector",
+                            "label": "Database  machine size",
+                            "toolTip": "The size of machine for database",
+                            "recommendedSizes": [
+                              "Standard_DS3",
+                              "Standard_DS3_v2",
+                              "Standard_DS4",
+                              "Standard_DS4_v2"
+                            ],
+                            "osPlatform": "Windows",
+                            "imageReference": {
+                              "publisher": "informatica",
+                              "offer": "sqlserver-2014-image",
+                              "sku": "sqlserver-2014-image-for-pc-bdm"
+                            },
+                            "count": 1
+                          }
                         ]
                     },
                     {

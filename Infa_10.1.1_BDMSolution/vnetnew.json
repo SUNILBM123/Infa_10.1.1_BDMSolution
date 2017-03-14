@@ -1,84 +1,61 @@
 ﻿{
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "location": {
-            "type": "string"
-        },
-        "vnetName": {
-            "type": "string"
-        },
-        "vnetAddressPrefix": {
-            "type": "string"
-        },
-        "subnetName": {
-            "type": "string"
-        },
-        "subnetPrefix": {
-            "type": "string"
-        },
-        "existingVnetRG": {
-            "type": "string"
-        }
+  "parameters": {
+    "location": {
+      "type": "string"
     },
+    "vnetName": {
+      "type": "string"
+    },
+    "vnetAddressPrefix": {
+      "type": "string"
+    },
+    "subnetName": {
+      "type": "string"
+    },
+    "subnetPrefix": {
+      "type": "string"
+    },
+    "existingVnetRG": {
+      "type": "string"
+    },
+    "informaticaTags": {
+      "type": "object"
+    }
+  },
     "variables": {
-        "NetworkSecurityGroupName": "NetworkSecurityGroup"
+        
     },
     "resources": [
-        {
-            "apiVersion": "2016-10-01",
-            "type": "Microsoft.Network/networkSecurityGroups",
-            "name": "[variables('NetworkSecurityGroupName')]",
-            "location": "[parameters('location')]",
-            "tags": {
-                "displayName": "NetworkSecurityGroup"
-            },
-            "properties": {
-                "securityRules": [
-                    {
-                        "name": "EndPointRule",
-                        "properties": {
-                            "description": "Enabling endpoints on ports required for Informatica.",
-                            "protocol": "TCP",
-                            "sourcePortRange": "*",
-                            "destinationPortRange": "*",
-                            "sourceAddressPrefix": "*",
-                            "destinationAddressPrefix": "*",
-                            "access": "Allow",
-                            "priority": 100,
-                            "direction": "Inbound"
-                        }
-                    }
-                ]
-            }
+      {
+        "name": "[parameters('vnetName')]",
+        "type": "Microsoft.Network/virtualNetworks",
+        "location": "[parameters('location')]",
+        "apiVersion": "2016-10-01",
+        "dependsOn": [
+
+        ],
+        "tags": {
+          "displayName": "vnet",
+          "provider": "[toUpper(parameters('informaticaTags').provider)]"
         },
-        {
-            "name": "[parameters('vnetName')]",
-            "type": "Microsoft.Network/virtualNetworks",
-            "location": "[parameters('location')]",
-            "apiVersion": "2016-10-01",
-            "dependsOn": [
-                "[concat('Microsoft.Network/networkSecurityGroups/', variables('NetworkSecurityGroupName'))]"
-            ],
-            "properties": {
-                "addressSpace": {
-                    "addressPrefixes": [
-                        "[parameters('vnetAddressPrefix')]"
-                    ]
-                },
-                "subnets": [
-                    {
-                        "name": "[parameters('subnetName')]",
-                        "properties": {
-                            "addressPrefix": "[parameters('subnetPrefix')]",
-                            "networkSecurityGroup": {
-                                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('NetworkSecurityGroupName'))]"
-                            }
-                        }
-                    }
-                ]
+        "properties": {
+          "addressSpace": {
+            "addressPrefixes": [
+              "[parameters('vnetAddressPrefix')]"
+            ]
+          },
+          "subnets": [
+            {
+              "name": "[parameters('subnetName')]",
+              "properties": {
+                "addressPrefix": "[parameters('subnetPrefix')]"                
+              }
             }
+          ]
         }
+      }
     ],
     "outputs": {
         "vnetId": {

@@ -1,6 +1,6 @@
 ﻿{
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
   "parameters": {
     "location": {
       "type": "string"
@@ -43,154 +43,166 @@
     },
     "baseUrl": {
       "type": "string"
+    },
+    "nsgName": {
+      "type": "string"
+    },
+    "informaticaTags": {
+      "type": "object"
     }
   },
-    "variables": {
-        "publicDNSName": "[toLower(concat(parameters('dbVMName'), uniqueString(resourceGroup().id)))]",
-        "dbVMNicName": "[concat(parameters('dbVMName'), 'Nic')]",
-        "dbOsType": "windows",
+  "variables": {
+    "publicDNSName": "[toLower(concat(parameters('dbVMName'), uniqueString(resourceGroup().id, deployment().name)))]",
+    "dbVMNicName": "[concat(parameters('dbVMName'), 'Nic')]",
+    "dbOsType": "windows",
 
-        "extScriptURI": "[concat(parameters('baseUrl'), '/')]",
-        "extScriptFile": "createsqldbuser.ps1",
+    "extScriptURI": "[concat(parameters('baseUrl'), '/')]",
+    "extScriptFile": "createsqldbuser.ps1",
+       
 
-        "infaCustomVMDisk": "[concat('https://', parameters('storageName'), '.blob.core.windows.net/vhds/', parameters('dbVMName'), '.SQLServer2014.osdisk.vhd')]",
+    "imagePublisher": "informatica",
+    "imageOffer": "sqlserver-2014-image",
+    "osVersion": "sqlserver-2014-image-for-pc-bdm"
 
-        "imagePublisher": "informatica",
-        "imageOffer": "sqlserver-2014-image",
-        "osVersion": "sqlserver-2014-image-for-pc-bdm"
-        
-    },
-    "resources": [
-        {
-            "name": "[variables('publicDNSName')]",
-            "type": "Microsoft.Network/publicIPAddresses",
-            "location": "[parameters('location')]",
-            "apiVersion": "2016-10-01",
-            "dependsOn": [ ],
-            "tags": {
-                "displayName": "PubIP01"
-            },
-            "properties": {
-                "publicIPAllocationMethod": "Dynamic",
-                "dnsSettings": {
-                    "domainNameLabel": "[variables('publicDNSName')]"
-                }
-            }
-        },
-        {
-            "name": "[variables('dbVMNicName')]",
-            "type": "Microsoft.Network/networkInterfaces",
-            "location": "[parameters('location')]",
-            "apiVersion": "2016-10-01",
-            "dependsOn": [
-                "[concat('Microsoft.Network/publicIPAddresses/', variables('publicDNSName'))]"
-            ],
-            "tags": {
-                "displayName": "DBVMNic"
-            },
-            "properties": {
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig1",
-                        "properties": {
-                            "privateIPAllocationMethod": "Dynamic",
-                            "subnet": {
-                                "id": "[parameters('SubnetId')]"
-                            },
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicDNSName'))]"
-                            }
-                        }
-                    }
-                ]
-            }
-        },
-      {
-        "name": "[parameters('dbVMName')]",
-        "type": "Microsoft.Compute/virtualMachines",
-        "location": "[parameters('location')]",
-        "apiVersion": "2016-03-30",
-        "dependsOn": [
-          "[concat('Microsoft.Network/networkInterfaces/', variables('dbVMNicName'))]"
-        ],
-        "plan": {
-          "name": "[variables('osVersion')]",
-          "publisher": "[variables('imagePublisher')]",
-          "product": "[variables('imageOffer')]"
-        },
-        "tags": {
-          "displayName": "VM01"
-        },
-        "properties": {
-          "hardwareProfile": {
-            "vmSize": "[parameters('dbVMSize')]"
-          },
-          "osProfile": {
-            "computerName": "[parameters('dbVMName')]",
-            "adminUsername": "[parameters('dbVMAdminUsername')]",
-            "adminPassword": "[parameters('dbVMAdminPassword')]"
-          },
-          "storageProfile": {
-            "imageReference": {
-              "publisher": "[variables('imagePublisher')]",
-              "offer": "[variables('imageOffer')]",
-              "sku": "[variables('osVersion')]",
-              "version": "latest"
-            },
-            "osDisk": {
-              "name": "InfaOSDisk",
-              "caching": "ReadWrite",
-              "createOption": "FromImage",
-              "vhd": {
-                "uri": "[concat('https://', parameters('storageName'), '.blob.core.windows.net/vhds/', parameters('dbVMName'), uniquestring(resourceGroup().id), '.osdisk.vhd')]"
-              }
-            }
-          },
-          "networkProfile": {
-            "networkInterfaces": [
-              {
-                "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('dbVMNicName'))]"
-              }
-            ]
-          }
-        },
-        "resources": [
-          {
-            "name": "ScriptExtDB",
-            "type": "extensions",
-            "location": "[parameters('location')]",
-            "apiVersion": "2016-03-30",
-            "dependsOn": [
-              "[concat('Microsoft.Compute/virtualMachines/', parameters('dbVMName'))]"
-            ],
-            "tags": {
-              "displayName": "ScriptExtDB"
-            },
-            "properties": {
-              "publisher": "Microsoft.Compute",
-              "type": "CustomScriptExtension",
-              "typeHandlerVersion": "1.8",
-              "autoUpgradeMinorVersion": true,
-              "settings": {
-                "fileUris": [
-                  "[concat(variables('ExtScriptURI'),  variables('extScriptFile'))]"
-                ]
-              },
-              "protectedSettings": {
-                "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ', variables('extScriptFile'), ' -dbUserName \"', parameters('DBUser'), '\" -dbPassword \"', parameters('DBPassword'), '\" -mrsdbUserName \"',parameters('mrsdbuser'),'\" -mrsdbPassword \"',parameters('mrsdbpwd'),'\"')]"
-
-              }
-            }
-          }
-          
-        ]
-
-      }
-    ],
-    "outputs": {
-        "fqdn": {
-            "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses',variables('publicDNSName')), '2016-10-01').dnsSettings.fqdn]",
-            "type": "string"
+  },
+  "resources": [
+    {
+      "name": "[variables('publicDNSName')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "location": "[parameters('location')]",
+      "apiVersion": "2016-10-01",
+      "dependsOn": [],
+      "tags": {
+        "displayName": "dbpublicip",
+        "provider": "[toUpper(parameters('informaticaTags').provider)]"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('publicDNSName')]"
         }
+      }
+    },
+    {
+      "name": "[variables('dbVMNicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "location": "[parameters('location')]",
+      "apiVersion": "2016-10-01",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicDNSName'))]"
+      ],
+      "tags": {
+        "displayName": "dbniccard",
+        "provider": "[toUpper(parameters('informaticaTags').provider)]"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[parameters('SubnetId')]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicDNSName'))]"
+              }
+            }
+          }
+        ],
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
+        }
+      }
+    },
+    {
+      "name": "[parameters('dbVMName')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "location": "[parameters('location')]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', variables('dbVMNicName'))]"
+      ],
+      "plan": {
+        "name": "[variables('osVersion')]",
+        "publisher": "[variables('imagePublisher')]",
+        "product": "[variables('imageOffer')]"
+      },
+      "tags": {
+        "displayName": "dbvm",
+        "provider": "[toUpper(parameters('informaticaTags').provider)]"
+      },
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('dbVMSize')]"
+        },
+        "osProfile": {
+          "computerName": "[parameters('dbVMName')]",
+          "adminUsername": "[parameters('dbVMAdminUsername')]",
+          "adminPassword": "[parameters('dbVMAdminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('imagePublisher')]",
+            "offer": "[variables('imageOffer')]",
+            "sku": "[variables('osVersion')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "InfaOSDisk",
+            "caching": "ReadWrite",
+            "createOption": "FromImage",
+            "vhd": {
+              "uri": "[concat('https://', parameters('storageName'), '.blob.core.windows.net/vhds/', parameters('dbVMName'), uniqueString(resourceGroup().id, deployment().name), '.osdisk.vhd')]"
+            }
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('dbVMNicName'))]"
+            }
+          ]
+        }
+      },
+      "resources": [
+        {
+          "name": "ScriptExtDB",
+          "type": "extensions",
+          "location": "[parameters('location')]",
+          "apiVersion": "2016-03-30",
+          "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', parameters('dbVMName'))]"
+          ],
+          "tags": {
+            "displayName": "informaticadbextension",
+            "provider": "[toUpper(parameters('informaticaTags').provider)]"
+          },
+          "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.8",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "fileUris": [
+                "[concat(variables('ExtScriptURI'),  variables('extScriptFile'))]"
+              ]
+            },
+            "protectedSettings": {
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -file ', variables('extScriptFile'), ' -dbUserName \"', parameters('DBUser'), '\" -dbPassword \"', parameters('DBPassword'), '\" -mrsdbUserName \"',parameters('mrsdbuser'),'\" -mrsdbPassword \"',parameters('mrsdbpwd'),'\"')]"
+
+            }
+          }
+        }
+
+      ]
+
     }
+  ],
+  "outputs": {
+    "fqdn": {
+      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses',variables('publicDNSName')), '2016-10-01').dnsSettings.fqdn]",
+      "type": "string"
+    }
+  }
 }
