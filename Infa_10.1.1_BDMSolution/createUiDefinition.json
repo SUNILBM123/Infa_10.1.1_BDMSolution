@@ -330,11 +330,11 @@
                                 "label": "Informatica domain DB user",
                                 "defaultValue": "",
                                 "toolTip": "Database user to be created for communication between Domain and Domain database",
-                                "constraints": {
-                                    "required": true,
-                                    "regex": "^[a-z0-9A-Z_]{3,30}$",
-                                    "validationMessage": "Only alphanumeric characters and underscore are allowed, and the value must be 3-30"
-                                }
+                              "constraints": {
+                                "required": true,
+                                "regex": "(?!^(p|P)(u|U)(b|B)(l|L)(i|I)(c|C)$)(?!^(d|D)(b|B)(o|O)$)(?!^(s|S)(y|Y)(s|S)$)(?!^(g|G)(u|U)(e|E)(s|S)(t|T)$)(^[a-zA-Z][a-zA-Z0-9_-]{2,127}.*$)",
+                                "validationMessage": "Username must begin with an alphabet, only alphanumeric characters, hyphen and underscore are allowed, and the value must be 3-128 characters in length. Usernames sa, public, dbo, sys, and guest are not allowed"
+                              }
                             },
                             {
                                 "name": "infaDomainDBPassword",
@@ -503,11 +503,11 @@
                         "label": "MRS Database Username",
                         "defaultValue": "mrsuser",
                         "toolTip": "Model Repository Service DataBase username",
-                        "constraints": {
-                            "required": true,
-                            "regex": "^[a-z0-9A-Z_]{3,30}$",
-                            "validationMessage": "Only alphanumeric characters and underscore are allowed. The value must be 3-30"
-                        }
+                      "constraints": {
+                        "required": true,
+                        "regex": "(?!^(p|P)(u|U)(b|B)(l|L)(i|I)(c|C)$)(?!^(d|D)(b|B)(o|O)$)(?!^(s|S)(y|Y)(s|S)$)(?!^(g|G)(u|U)(e|E)(s|S)(t|T)$)(^[a-zA-Z][a-zA-Z0-9_-]{2,127}.*$)",
+                        "validationMessage": "Username must begin with an alphabet, only alphanumeric characters, hyphen and underscore are allowed, and the value must be 3-128 characters in length. Usernames sa, public, dbo, sys, and guest are not allowed"
+                      }
                     },
                     {
                         "name": "infamrspassword",
