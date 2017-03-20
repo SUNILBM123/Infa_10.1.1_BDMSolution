@@ -480,6 +480,58 @@ done
 
 }
 
+fixforBDM7342()
+{
+   workernodehelperdir="/home/helper"
+   for workernode in $wnArr
+   do
+	#statements
+	workernodeip=$(dig +short $workernode)
+	echo "creating directory in :"$workernode
+
+	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip ""sudo mkdir "$workernodehelperdir"
+
+	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip ""sudo ln -sf /etc/hadoop/conf/hdfs-site.xml "$workernodehelperdir"
+	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip ""sudo ln -sf /etc/hadoop/conf/hdfs-site.xml "$workernodehelperdir"
+	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip ""sudo ln -sf /etc/hadoop/conf/hdfs-site.xml "$workernodehelperdir"
+
+   done
+
+   #update DIS property at domain level
+   testline=""
+   hadoopenvfileloc="$infainstallionloc/services/shared/hadoop/HDInsight_3.4/infaConf/hadoopEnv.properties"
+   IFS=$'\n' read -d '' -r -a hadoopenvprops < "$hadoopenvfileloc"
+   for unitline in "${hadoopenvprops[@]}"
+    do
+      #echo $unitline
+      if [[ "$unitline" == "infapdo.env.entry.mapred_classpath"* ]]
+         then
+           testline=$unitline
+      fi
+
+    done
+
+	testlineoriginal=$testline
+	testline+=":$workernodehelperdir"
+
+	fileseparator_rep_func "/"$testline
+    separatorintermediatevariable=${separatorintermediatevariable:2}
+    testline=$separatorintermediatevariable
+	separatorintermediatevariable=""
+    
+	#fileseparator_rep_func "/"$testlineoriginal
+    #separatorintermediatevariable=${separatorintermediatevariable:2}
+    #testlineoriginal=$separatorintermediatevariable
+
+	echo"replacing : "$testlineoriginal
+	echo "with :" $testline
+
+	sed -i s/infapdo.env.entry.mapred_classpath=.*/$testline/  $hadoopenvfileloc
+
+    #sed -i s/^infapdo.env.entry.mapred_classpath=INFA_MAPRED_CLASSPATH=/infapdo.env.entry.mapred_classpath=INFA_MAPRED_CLASSPATH=$:/ $infainstallionloc/services/shared/hadoop/HDInsight_3.4/infaConf/hadoopEnv.properties
+
+}
+
 echo Inside main method
 echo -e "Log accumulator for oneclick solution. \n 1> Informatica installation logs will be created in ~/Informatica/10.1.1/Informatica_10.1.1_Services_*.log \n 2> For any installer failure look into silenterrorlog created in home directory \n 3> Extension script log will be created in the following drectory /var/log/azure/Microsoft.OSTCExtensions.CustomScriptForLinux/<extensionversion>/extension.log. This location may change as per Microsoft Standards." > "$oneclicksolutionlog"
 
@@ -507,4 +559,5 @@ chownership
 if [ $joinDomain -ne 1 ]
  then
    copyhelperfilesfromcluster
+   fixforBDM7342
 fi
