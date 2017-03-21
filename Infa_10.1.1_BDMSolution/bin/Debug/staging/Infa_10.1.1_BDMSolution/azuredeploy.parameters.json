@@ -46,7 +46,7 @@
       "value": "SQLDatabaseVIM"
     },
     "infaDomainLicense": {
-      "value": "https://iaasv2tempstoreneurope.blob.core.windows.net/vmextensionstemporary-10037ffe885077b5-20170317093819540/100License_7263.key?sv=2015-04-05&sr=c&sig=uaDFw1oqTPT97IWEmpaDbY7uUL%2FmggRIm9Rkfret3xk%3D&se=2017-03-18T09%3A38%3A19Z&sp=rw"
+      "value": "https://iaasv2tempstorageam.blob.core.windows.net/vmextensionstemporary-10037ffe885077b5-20170321084808015/100License_7263.key?sv=2015-04-05&sr=c&sig=7%2Bk5Bqz4Qr9Nj1dygAhihiI17mPaPFyA7GnggcY8NN8%3D&se=2017-03-22T08%3A48%3A08Z&sp=rw"
     },
     "storageName": {
       "value": "infastoragetest03"

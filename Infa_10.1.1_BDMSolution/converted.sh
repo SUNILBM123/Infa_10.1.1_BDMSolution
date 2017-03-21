@@ -492,8 +492,8 @@ fixforBDM7342()
 	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip ""sudo mkdir "$workernodehelperdir"
 
 	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip ""sudo ln -sf /etc/hadoop/conf/hdfs-site.xml "$workernodehelperdir"
-	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip ""sudo ln -sf /etc/hadoop/conf/hdfs-site.xml "$workernodehelperdir"
-	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip ""sudo ln -sf /etc/hadoop/conf/hdfs-site.xml "$workernodehelperdir"
+	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip ""sudo ln -sf /etc/hadoop/conf/core-site.xml "$workernodehelperdir"
+	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip ""sudo ln -sf /etc/hadoop/conf/mapred-site.xml "$workernodehelperdir"
 
    done
 

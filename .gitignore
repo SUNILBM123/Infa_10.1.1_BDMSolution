@@ -49,3 +49,6 @@ Temporary Items
 *.suo
 Infa_10.1.1_BDMSolution/converted.sh
 Infa_10.1.1_BDMSolution/bin/Debug/staging/Infa_10.1.1_BDMSolution/azuredeploy.parameters.json
+Infa_10.1.1_BDMSolution/bin/Debug/staging/Infa_10.1.1_BDMSolution/azuredeploy.parameters.json
+Infa_10.1.1_BDMSolution/bin/Debug/staging/Infa_10.1.1_BDMSolution/azuredeploy.parameters.json
+*.json
