@@ -260,6 +260,7 @@ createshellscript()
     echo "sshpass -p \$HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no \$HDIClusterSSHUsername@\$workernodeip \"sudo dpkg --force-all -i ~/rpmtemp/informatica_10.1.1U2-1.deb\"">>$shelltowrite
     echo "sshpass -p \$HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no \$HDIClusterSSHUsername@\$workernodeip \"sudo rm -rf ~/rpmtemp\"">>$shelltowrite
     echo "sshpass -p \$HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no \$HDIClusterSSHUsername@\$workernodeip \"sudo ln -f -s /bin/bash /bin/sh\"">>$shelltowrite
+	echo "echo \"Debian Installation completed\"">>$shelltowrite
 	chmod -R 777 $shelltowrite
 
 }

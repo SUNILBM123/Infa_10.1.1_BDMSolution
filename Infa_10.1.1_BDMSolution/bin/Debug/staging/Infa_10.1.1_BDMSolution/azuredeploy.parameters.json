@@ -40,13 +40,13 @@
       "value": "tempBG@2008isp"
     },
     "nodeVMCount": {
-      "value": "1"
+      "value": "2"
     },
     "dbVMName": {
       "value": "SQLDatabaseVIM"
     },
     "infaDomainLicense": {
-      "value": "https://iaasv2tempstorageam.blob.core.windows.net/vmextensionstemporary-10037ffe885077b5-20170321084808015/100License_7263.key?sv=2015-04-05&sr=c&sig=7%2Bk5Bqz4Qr9Nj1dygAhihiI17mPaPFyA7GnggcY8NN8%3D&se=2017-03-22T08%3A48%3A08Z&sp=rw"
+      "value": "https://iaasv2tempstorageam.blob.core.windows.net/vmextensionstemporary-10037ffe885077b5-20170322102227679/100License_7263.key?sv=2015-04-05&sr=c&sig=yJ5LH0JvLF%2F7SZl9UwIeaSg1gN9hxrUhfwvoze%2B2mVA%3D&se=2017-03-23T10%3A22%3A27Z&sp=rw"
     },
     "storageName": {
       "value": "infastoragetest03"
