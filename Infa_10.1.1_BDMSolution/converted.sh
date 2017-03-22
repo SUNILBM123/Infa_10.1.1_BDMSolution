@@ -244,6 +244,26 @@ revertspeedupoperations()
 
 }
 
+createshellscript()
+{
+    mkdir -p /home/$osUserName/debianscripts
+    shelltowrite="/home/$osUserName/debianscripts/test.sh"
+    echo "#!/bin/sh" > $shelltowrite
+    echo "workernodeip=\$1">>$shelltowrite
+    echo "HDIClusterSSHUsername=\$2">>$shelltowrite
+    echo "HDIClusterSSHPassword=\$3">>$shelltowrite
+    echo "sshpass -p \$HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no \$HDIClusterSSHUsername@\$workernodeip \"sudo mkdir ~/rpmtemp\"">>$shelltowrite
+    echo "sshpass -p \$HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no \$HDIClusterSSHUsername@\$workernodeip \"sudo chmod 777 ~/rpmtemp\"">>$shelltowrite
+    echo "echo \"copying Binaries to\" \$workernodeip">>$shelltowrite
+    echo "sshpass -p \$HDIClusterSSHPassword scp -q -o StrictHostKeyChecking=no informatica_10.1.1U2-1.deb \$HDIClusterSSHUsername@\$workernodeip:\"~/rpmtemp/\"">>$shelltowrite
+    echo "echo \"Installing Debian in\" \$workernodeip">>$shelltowrite
+    echo "sshpass -p \$HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no \$HDIClusterSSHUsername@\$workernodeip \"sudo dpkg --force-all -i ~/rpmtemp/informatica_10.1.1U2-1.deb\"">>$shelltowrite
+    echo "sshpass -p \$HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no \$HDIClusterSSHUsername@\$workernodeip \"sudo rm -rf ~/rpmtemp\"">>$shelltowrite
+    echo "sshpass -p \$HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no \$HDIClusterSSHUsername@\$workernodeip \"sudo ln -f -s /bin/bash /bin/sh\"">>$shelltowrite
+	chmod -R 777 $shelltowrite
+
+}
+
 configureDebian()
 {
   echo Installing Debian sleeping for 2 min
@@ -297,33 +317,17 @@ configureDebian()
   sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo mkdir" $SPARK_EVENTLOG_DIR
   sshpass -p $HDIClusterSSHPassword ssh -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo chmod -R 777" $SPARK_EVENTLOG_DIR
 
+  createshellscript
 
   for workernode in $wnArr
   do
     echo "[$workernode]" 
 	workernodeip=$(dig +short $workernode)
-	#workernodeip=$workernode
-        echo "workernode $workernodeip" 
-	#create temp folder
-        sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo mkdir ~/rpmtemp" 
-	#Give permission to rpm folder
-	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo chmod 777 ~/rpmtemp"
-	 
-        echo "copying Binaries to" $workernodeip
-        #SCP infa binaries
-	sshpass -p $HDIClusterSSHPassword scp -q -o StrictHostKeyChecking=no informatica_10.1.1U2-1.deb $HDIClusterSSHUsername@$workernodeip:"~/rpmtemp/" 
+	echo "workernode $workernodeip"
+	sh  $shelltowrite $workernodeip $HDIClusterSSHUsername $HDIClusterSSHPassword >/home/$osUserName/debianscripts/$workernodeip.txt &
 	
-        echo "Installing Debian in" $workernodeip
-        #extract the binaries
-	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo dpkg --force-all -i ~/rpmtemp/informatica_10.1.1U2-1.deb"
-         
-        
-	#Clean the temp folder
-	sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo rm -rf ~/rpmtemp"
-	#Change sh to bash in worker nodes
-	 sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$workernodeip "sudo ln -f -s /bin/bash /bin/sh"
   done
-
+  wait
   cd /home/$osUserName
   
   echo "Debian installation successful"
