@@ -329,6 +329,7 @@ configureDebian()
 	
   done
   wait
+  echo "out of wait"
   cd /home/$osUserName
   
   echo "Debian installation successful"
