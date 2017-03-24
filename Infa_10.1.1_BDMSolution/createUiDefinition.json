@@ -723,11 +723,11 @@
                             "name": "infavnet",
                             "type": "Microsoft.Network.VirtualNetworkCombo",
                             "label": {
-                                "virtualNetwork": "Virtual network",
+                                "virtualNetwork": "HDI Cluster Virtual network",
                                 "subnets": "Subnets"
                             },
                             "toolTip": {
-                                "virtualNetwork": "Virtual network all resource required to be part of",
+                                "virtualNetwork": "Provide the virtual network where HDI cluster is defined",
                                 "subnets": ""
                             },
                             "defaultValue": {
