@@ -34,19 +34,19 @@
       "value": "tempBG@2008"
     },
     "nodeVMAdminSshPublicKey": {
-      "value": " "
+      "value": "tempBG@2008"
     },
     "infaKeyword": {
       "value": "tempBG@2008isp"
     },
     "nodeVMCount": {
-      "value": "1"
+      "value": "2"
     },
     "dbVMName": {
       "value": "SQLDatabaseVIM"
     },
     "infaDomainLicense": {
-      "value": "https://iaasv2tempstorageam.blob.core.windows.net/vmextensionstemporary-10037ffe885077b5-20170322102227679/100License_7263.key?sv=2015-04-05&sr=c&sig=yJ5LH0JvLF%2F7SZl9UwIeaSg1gN9hxrUhfwvoze%2B2mVA%3D&se=2017-03-23T10%3A22%3A27Z&sp=rw"
+      "value": "https://iaasv2tempstorageam.blob.core.windows.net/vmextensionstemporary-10037ffe885077b5-20170323140003702/100License_7263.key?sv=2015-04-05&sr=c&sig=c4xHWGME2MTW8nxlJHIwJpIjDlHjgnJhnv6vTIn0J%2F8%3D&se=2017-03-24T14%3A00%3A03Z&sp=rw"
     },
     "storageName": {
       "value": "infastoragetest03"
@@ -127,10 +127,13 @@
           "value": "BDMAzureoneclickHDInsight-vnet"
       },
       "subnetName": {
-          "value": "default"
+          "value": "test"
       },
       "nodeVMAdminUsername": {
           "value": "azureuser1"
+      },
+      "infaDomainPassword": {
+          "value": "tempBG@2008isp"
       }
 
   }
