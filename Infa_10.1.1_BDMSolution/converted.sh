@@ -428,7 +428,7 @@ sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDICluster
 sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip "sudo find / -name key_decryption_cert.prv >>oneclicksnap.txt"  
 
 echo "downloading oneclicksnap.txt"
-sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwd "scp -q -o StrictHostKeyChecking=no oneclicksnap.txt "$osUserName"@"$domainHost":""~""
+sshpass -p $HDIClusterSSHPassword ssh -q -o StrictHostKeyChecking=no $HDIClusterSSHUsername@$headnode0ip ""sshpass -p" $osPwd "scp -q -o StrictHostKeyChecking=no oneclicksnap.txt "$osUserName"@"$domainHost":""/home/"$osUserName"
 
 sleep 20
 
