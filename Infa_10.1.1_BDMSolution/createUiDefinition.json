@@ -457,15 +457,15 @@
                   {
                     "name": "AmbariPort",
                     "type": "Microsoft.Common.TextBox",
-                    "label": "Ambari port",
+                    "label": "HDInsight Cluster port",
                     "defaultValue": "443",
-                    "toolTip": "HDInsight cluster's Ambari port",
+                    "toolTip": "HDInsight cluster's port",
                     "constraints": {
                       "required": true,
                       "regex": "^[0-9]{3,5}$",
                       "validationMessage": "Field should contain only numeric values"
                     }
-                    }
+                  }
 
 
 

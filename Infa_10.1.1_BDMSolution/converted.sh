@@ -246,8 +246,8 @@ revertspeedupoperations()
 
 createshellscript()
 {
-    mkdir -p /home/$osUserName/debianscripts
-    shelltowrite="/home/$osUserName/debianscripts/test.sh"
+    mkdir -p /home/$osUserName/debianresults
+    shelltowrite="/home/$osUserName/debianresults/test.sh"
     echo "#!/bin/sh" > $shelltowrite
     echo "workernodeip=\$1">>$shelltowrite
     echo "HDIClusterSSHUsername=\$2">>$shelltowrite
@@ -325,7 +325,7 @@ configureDebian()
     echo "[$workernode]" 
 	workernodeip=$(dig +short $workernode)
 	echo "workernode $workernodeip"
-	sh  $shelltowrite $workernodeip $HDIClusterSSHUsername $HDIClusterSSHPassword >/home/$osUserName/debianscripts/$workernodeip.txt &
+	sh  $shelltowrite $workernodeip $HDIClusterSSHUsername $HDIClusterSSHPassword >/home/$osUserName/debianresults/$workernodeip.txt &
 	
   done
   wait
