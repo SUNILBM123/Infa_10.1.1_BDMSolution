@@ -274,19 +274,24 @@
       "defaultValue": "notdefined"
     },
     "connectionconfighadoopimpuservar": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "notdefined"
     },
     "connectionconfighadoopblazetempdirvar": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "notdefined"
     },
     "connectionconfighadoopblazeusernamevar": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "notdefined"
     },
     "connectionconfighadoopsparkdirvar": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "notdefined"
     },
     "connectionconfighadoopsparkeventlogdirvar": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "notdefined"
     },
     "connectionconfighadoopsparkparamvar": {
       "type": "string",
@@ -308,7 +313,8 @@
       "type": "string"
     },
     "HIVEUserName": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "notdefined"
     },
     "HIVEExecutionMode": {
       "type": "string"
