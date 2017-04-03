@@ -270,7 +270,8 @@
       "type": "string"
     },
     "hbasezookeepernamevar": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "notdefined"
     },
     "connectionconfighadoopimpuservar": {
       "type": "string"
@@ -288,7 +289,8 @@
       "type": "string"
     },
     "connectionconfighadoopsparkparamvar": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "notdefined"
     },
     "infamrsservicename": {
       "type": "string"

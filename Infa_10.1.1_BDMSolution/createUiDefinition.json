@@ -232,8 +232,8 @@
                     "osPlatform": "Linux",
                     "imageReference": {
                       "publisher": "informatica",
-                      "offer": "platform_10_1_1_multi_node_domain_rhel-7-3_byol",
-                      "sku": "byol_rhel_7_3_platform_10_1_1"
+                      "offer": "bdm10-1-1-u2-preview",
+                      "sku": "bdm10-1-1-u2"
                     },
                     "count": "[steps('nodeVMConfiguration').domainNodeCount]",
                     "visible": "[equals(steps('nodeVMConfiguration').nodeVMOS, 'linux')]"
@@ -643,7 +643,7 @@
                                 "name": "connectionconfighadoopblazetempdir",
                                 "type": "Microsoft.Common.TextBox",
                                 "label": "Hadoop Blaze Working Dir",
-                                "defaultValue": "/blaze/workdir",
+                                "defaultValue": "/tmp/blazeworkdir",
                                 "toolTip": "Hadoop Blaze temporary working directory",
                                 "constraints": {
                                     "required": false
@@ -666,24 +666,24 @@
                                 "name": "connectionconfighadoopsparkdir",
                                 "type": "Microsoft.Common.TextBox",
                                 "label": "Hadoop Spark HDFS staging directory",
-                                "defaultValue": "/tmp/sparkdir",
+                                "defaultValue": "/tmp/spark/workdir",
                                 "toolTip": "Hadoop Spark HDFS staging directory ",
                                 "constraints": {
                                     "required": false             
                                       }
 
-                            }, 
-                            {
-                                "name": "connectionconfighadoopsparkeventlogdir",
-                                "type": "Microsoft.Common.TextBox",
-                                "label": "Hadoop Spark Event Log Directory",
-                                "defaultValue": "",
-                                "toolTip": "Hadoop Spark Event Log Directory ",
-                                "constraints": {
-                                    "required": false                                                                      
-                                }
+                            },
+                          {
+                            "name": "connectionconfighadoopsparkeventlogdir",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Hadoop Spark Event Log Directory",
+                            "defaultValue": "/tmp/spark/eventdir",
+                            "toolTip": "Hadoop Spark Event Log Directory ",
+                            "constraints": {
+                              "required": false
+                            }
 
-                            }, 
+                          }, 
                             {
                                 "name": "connectionconfighadoopsparkparam",
                                 "type": "Microsoft.Common.TextBox",
