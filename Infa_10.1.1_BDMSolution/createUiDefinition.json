@@ -88,7 +88,7 @@
                         "name": "infaDomainLicense",
                         "type": "Microsoft.Common.FileUpload",
                         "label": "Informatica license file",
-                        "toolTip": "",
+                        "toolTip": "Provide a valid Informatica License key file",
                         "constraints": {
                             "required": true,
                             "accept": ".key"
