@@ -138,6 +138,18 @@ mountsharedir()
   
 }
 
+checkvalueisundefined()
+{
+   vartochk=$1
+   isvardefined=false
+   if [ $vartochk != "notdefined" ]
+   then
+      isvardefined=true
+   fi
+
+}
+
+
 editsilentpropertyfilesforserverinstall()
 {
     echo Editing Informatica silent installation file
@@ -373,25 +385,65 @@ editsilentpropfiletoBDMutil()
   sed -i s/^DOMAIN_USER=/DOMAIN_USER=$domainUser/ $bdm_silpropfile
   sed -i s/^DOMAIN_PSSWD=/DOMAIN_PSSWD=$domainPassword/ $bdm_silpropfile
   sed -i s/^DIS_SERVICE_NAME=/DIS_SERVICE_NAME=$disservicename/ $bdm_silpropfile
-  sed -i s/^HIVE_USER_NAME=/HIVE_USER_NAME=$HIVE_USER_NAME/ $bdm_silpropfile
-  sed -i s/^HDFS_USER_NAME=/HDFS_USER_NAME=$HDFS_USER_NAME/ $bdm_silpropfile
-  sed -i s/^BLAZE_USER=/BLAZE_USER=$BLAZE_USER/ $bdm_silpropfile
   
-  echo "updating SPARK_EVENTLOG_DIR"
-  fileseparator_rep_func $SPARK_EVENTLOG_DIR
-  sed -i s/^SPARK_EVENTLOG_DIR=/SPARK_EVENTLOG_DIR=$separatorintermediatevariable/ $bdm_silpropfile
-  sed -i s/^SPARK_PARAMETER_LIST=/SPARK_PARAMETER_LIST=$SPARK_PARAMETER_LIST/ $bdm_silpropfile
-  sed -i s/^IMPERSONATION_USER=/IMPERSONATION_USER=$IMPERSONATION_USER/ $bdm_silpropfile
-  sed -i s/^ZOOKEEPER_HOSTS=/ZOOKEEPER_HOSTS=$ZOOKEEPER_HOSTS/ $bdm_silpropfile
+  checkvalueisundefined $HIVE_USER_NAME
+   if [ $isvardefined == "true" ]
+    then
+      sed -i s/^HIVE_USER_NAME=/HIVE_USER_NAME=$HIVE_USER_NAME/ $bdm_silpropfile
+    fi
+  
+  sed -i s/^HDFS_USER_NAME=/HDFS_USER_NAME=$HDFS_USER_NAME/ $bdm_silpropfile
+  
+  checkvalueisundefined $BLAZE_USER
+   if [ $isvardefined == "true" ]
+    then
+      sed -i s/^BLAZE_USER=/BLAZE_USER=$BLAZE_USER/ $bdm_silpropfile
+    fi
+  
+  checkvalueisundefined $SPARK_EVENTLOG_DIR
+   if [ $isvardefined == "true" ]
+    then
+       echo "updating SPARK_EVENTLOG_DIR"
+       fileseparator_rep_func $SPARK_EVENTLOG_DIR
+       sed -i s/^SPARK_EVENTLOG_DIR=/SPARK_EVENTLOG_DIR=$separatorintermediatevariable/ $bdm_silpropfile
+   fi
+  
+  
+  checkvalueisundefined $SPARK_PARAMETER_LIST
+   if [ $isvardefined == "true" ]
+    then
+      sed -i s/^SPARK_PARAMETER_LIST=/SPARK_PARAMETER_LIST=$SPARK_PARAMETER_LIST/ $bdm_silpropfile
+    fi
+  
+  checkvalueisundefined $IMPERSONATION_USER
+   if [ $isvardefined == "true" ]
+    then
+      sed -i s/^IMPERSONATION_USER=/IMPERSONATION_USER=$IMPERSONATION_USER/ $bdm_silpropfile
+    fi
+  
+  checkvalueisundefined $ZOOKEEPER_HOSTS
+   if [ $isvardefined == "true" ]
+    then
+      sed -i s/^ZOOKEEPER_HOSTS=/ZOOKEEPER_HOSTS=$ZOOKEEPER_HOSTS/ $bdm_silpropfile
+    fi
+  
   sed -i s/^HIVE_EXECUTION_MODE=Remote/HIVE_EXECUTION_MODE=$HIVE_EXECUTION_MODE/ $bdm_silpropfile
   
-  echo "updating sparkdir"
-  fileseparator_rep_func $SPARK_HDFS_STAGING_DIR
-  sed -i s/^SPARK_HDFS_STAGING_DIR=\\/tmp\\/sparkdir/SPARK_HDFS_STAGING_DIR=$separatorintermediatevariable/ $bdm_silpropfile
+  checkvalueisundefined $SPARK_HDFS_STAGING_DIR
+   if [ $isvardefined == "true" ]
+    then
+        echo "updating sparkdir"
+        fileseparator_rep_func $SPARK_HDFS_STAGING_DIR
+        sed -i s/^SPARK_HDFS_STAGING_DIR=\\/tmp\\/sparkdir/SPARK_HDFS_STAGING_DIR=$separatorintermediatevariable/ $bdm_silpropfile
+    fi
   
-  echo "updating blazeworking dir"
-  fileseparator_rep_func $blazeworkingdir
-  sed -i s/^BLAZE_WORKING_DIR=\\/blaze\\/workdir/BLAZE_WORKING_DIR=$separatorintermediatevariable/ $bdm_silpropfile
+  checkvalueisundefined $blazeworkingdir
+   if [ $isvardefined == "true" ]
+    then
+        echo "updating blazeworking dir"
+        fileseparator_rep_func $blazeworkingdir
+        sed -i s/^BLAZE_WORKING_DIR=\\/blaze\\/workdir/BLAZE_WORKING_DIR=$separatorintermediatevariable/ $bdm_silpropfile
+    fi
   
 }
 
