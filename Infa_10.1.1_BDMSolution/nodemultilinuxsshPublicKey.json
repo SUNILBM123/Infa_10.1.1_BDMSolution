@@ -150,6 +150,7 @@
     "gatewayCount": "[sub(parameters('nodeVMCount'), 1)]",
 
     "extScriptURI": "[parameters('baseUrl')]",
+    "extScriptFile": "converted.sh",
 
     "sshKeyPath": "[concat('/home/',parameters('nodeVMAdminUsername'),'/.ssh/authorized_keys')]",
 
