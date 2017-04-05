@@ -212,13 +212,14 @@
                 },
                 "publicIPAddress": {
                   "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('nodeVMDNSName'))]"
-                },
-                "networkSecurityGroup": {
-                  "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
                 }
               }
             }
-          ]
+          ],
+
+          "networkSecurityGroup": {
+            "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
+          }
         }
       },
       {
