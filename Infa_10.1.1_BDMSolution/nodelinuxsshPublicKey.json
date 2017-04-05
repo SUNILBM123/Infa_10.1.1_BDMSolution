@@ -20,6 +20,9 @@
     "subnetId": {
       "type": "string"
     },
+    "nsgName": {
+      "type": "string"
+    },
     "dbVMName": {
       "type": "string"
     },
@@ -141,169 +144,179 @@
     },
     "BlazeWorkingDir": {
       "type": "string"
+    },
+    "informaticaTags": {
+      "type": "object"
     }
-  },
-  "variables": {
-    "index": 0,
-    "nodeVMDNSName": "[toLower(concat(parameters('nodeVMNamePrefix'), add(variables('Index'), 1), uniqueString(resourceGroup().id)))]",
-    "nodeVMNicPrefix": "[concat(parameters('nodeVMNamePrefix'),'Nic')]",
+    },
+    "variables": {
+      "index": 0,
+      "nodeVMDNSName": "[toLower(concat(parameters('nodeVMNamePrefix'), add(variables('Index'), 1), uniqueString(resourceGroup().id)))]",
+      "nodeVMNicPrefix": "[concat(parameters('nodeVMNamePrefix'),'Nic')]",
 
-    "extScriptURI": "[parameters('baseUrl')]",
-    "extScriptFile": "converted.sh",
+      "extScriptURI": "[parameters('baseUrl')]",
+      "extScriptFile": "converted.sh",
 
-    "sshKeyPath": "[concat('/home/',parameters('nodeVMAdminUsername'),'/.ssh/authorized_keys')]",
+      "sshKeyPath": "[concat('/home/',parameters('nodeVMAdminUsername'),'/.ssh/authorized_keys')]",
 
-    "infaNodePort": 6005,
-    "dbType": "MSSQLSERVER",
-    "dbInstanceName": "model",
-    "dbPort": "1433",
+      "infaNodePort": 6005,
+      "dbType": "MSSQLSERVER",
+      "dbInstanceName": "model",
+      "dbPort": "1433",
 
-    "imagePublisher": "informatica",
-    "imageOffer": "bdm10-1-1-u2-preview",
-    "osVersion": "bdm-10-1-1-u2"
+      "imagePublisher": "informatica",
+      "imageOffer": "bdm10-1-1-u2-preview",
+      "osVersion": "bdm-10-1-1-u2"
 
-    
-  },
+
+    },
     "resources": [
-        {
-            "name": "[variables('nodeVMDNSName')]",
-            "type": "Microsoft.Network/publicIPAddresses",
-            "location": "[parameters('location')]",
-            "apiVersion": "2016-10-01",
-            "dependsOn": [ ],
+      {
+        "name": "[variables('nodeVMDNSName')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "location": "[parameters('location')]",
+        "apiVersion": "2016-10-01",
+        "dependsOn": [],
 
-            "tags": {
-                "displayName": "publicip"
-            },
-            "properties": {
-                "publicIPAllocationMethod": "Dynamic",
-                "dnsSettings": {
-                    "domainNameLabel": "[variables('nodeVMDNSName')]"
+        "tags": {
+          "displayName": "publicip",
+          "provider": "[toUpper(parameters('informaticaTags').provider)]"
+        },
+        "properties": {
+          "publicIPAllocationMethod": "Dynamic",
+          "dnsSettings": {
+            "domainNameLabel": "[variables('nodeVMDNSName')]"
+          }
+        }
+      },
+      {
+        "name": "[concat(variables('nodeVMNicPrefix'), add(variables('index'), 1))]",
+        "type": "Microsoft.Network/networkInterfaces",
+        "location": "[parameters('location')]",
+        "apiVersion": "2016-10-01",
+        "dependsOn": [
+          "[concat('Microsoft.Network/publicIPAddresses/', variables('nodeVMDNSName'))]"
+        ],
+        "tags": {
+          "displayName": "niccard",
+          "provider": "[toUpper(parameters('informaticaTags').provider)]"
+        },
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "privateIPAllocationMethod": "Dynamic",
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                },
+                "publicIPAddress": {
+                  "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('nodeVMDNSName'))]"
+                },
+                "networkSecurityGroup": {
+                  "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
                 }
+              }
             }
+          ]
+        }
+      },
+      {
+        "name": "[concat(parameters('nodeVMNamePrefix'), add(variables('index'), 1))]",
+        "type": "Microsoft.Compute/virtualMachines",
+        "location": "[parameters('location')]",
+        "apiVersion": "2016-03-30",
+
+        "dependsOn": [
+          "[concat('Microsoft.Network/networkInterfaces/', variables('nodeVMNicPrefix'), add(variables('index'), 1))]"
+        ],
+        "tags": {
+          "displayName": "nodevm",
+          "provider": "[toUpper(parameters('informaticaTags').provider)]"
         },
-        {
-            "name": "[concat(variables('nodeVMNicPrefix'), add(variables('index'), 1))]",
-            "type": "Microsoft.Network/networkInterfaces",
-            "location": "[parameters('location')]",
-            "apiVersion": "2016-10-01",
-            "dependsOn": [
-                "[concat('Microsoft.Network/publicIPAddresses/', variables('nodeVMDNSName'))]"
-            ],
-            "tags": {
-                "displayName": "niccard"
-            },
-            "properties": {
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig1",
-                        "properties": {
-                            "privateIPAllocationMethod": "Dynamic",
-                            "subnet": {
-                                "id": "[parameters('subnetId')]"
-                            },
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('nodeVMDNSName'))]"
-                            }
-                        }
-                    }
+        "plan": {
+          "name": "[variables('osVersion')]",
+          "publisher": "[variables('imagePublisher')]",
+          "product": "[variables('imageOffer')]"
+        },
+        "properties": {
+          "hardwareProfile": {
+            "vmSize": "[parameters('nodeVMSize')]"
+          },
+          "osProfile": {
+            "computerName": "[concat(parameters('nodeVMNamePrefix'), add(variables('Index'), 1))]",
+            "adminUsername": "[parameters('nodeVMAdminUsername')]",
+            "linuxConfiguration": {
+              "disablePasswordAuthentication": "true",
+              "ssh": {
+                "publicKeys": [
+                  {
+                    "path": "[variables('sshKeyPath')]",
+                    "keyData": "[parameters('nodeVMAdminSshPublicKey')]"
+                  }
                 ]
+              }
             }
+          },
+          "storageProfile": {
+            "imageReference": {
+              "publisher": "[variables('imagePublisher')]",
+              "offer": "[variables('imageOffer')]",
+              "sku": "[variables('osVersion')]",
+              "version": "latest"
+            },
+            "osDisk": {
+              "name": "InfaOSDisk",
+              "caching": "ReadWrite",
+              "createOption": "FromImage",
+              "vhd": {
+                "uri": "[concat('https://', parameters('storageName'), '.blob.core.windows.net/vhds/', parameters('nodeVMNamePrefix'), uniquestring(resourceGroup().id, deployment().name), add(variables('index'), 1), '.osdisk.vhd')]"
+              }
+            }
+          },
+          "networkProfile": {
+            "networkInterfaces": [
+              {
+                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nodeVMNicPrefix'), add(variables('index'), 1)))]"
+              }
+            ]
+          }
         },
-        {
-            "name": "[concat(parameters('nodeVMNamePrefix'), add(variables('index'), 1))]",
-            "type": "Microsoft.Compute/virtualMachines",
+        "resources": [
+          {
+            "name": "ScriptExtGVM",
+            "type": "extensions",
             "location": "[parameters('location')]",
             "apiVersion": "2016-03-30",
-
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', variables('nodeVMNicPrefix'), add(variables('index'), 1))]"
+              "[concat('Microsoft.Compute/virtualMachines/', parameters('nodeVMNamePrefix'), add(variables('index'), 1))]"
             ],
             "tags": {
-                "displayName": "nodevm"
-            },
-            "plan": {
-                "name": "[variables('osVersion')]",
-                "publisher": "[variables('imagePublisher')]",
-                "product": "[variables('imageOffer')]"
+              "displayName": "informaticaextension",
+              "provider": "[toUpper(parameters('informaticaTags').provider)]"
             },
             "properties": {
-                "hardwareProfile": {
-                    "vmSize": "[parameters('nodeVMSize')]"
-                },
-                "osProfile": {
-                    "computerName": "[concat(parameters('nodeVMNamePrefix'), add(variables('Index'), 1))]",
-                    "adminUsername": "[parameters('nodeVMAdminUsername')]",
-                    "linuxConfiguration": {
-                        "disablePasswordAuthentication": "true",
-                        "ssh": {
-                            "publicKeys": [
-                                {
-                                    "path": "[variables('sshKeyPath')]",
-                                    "keyData": "[parameters('nodeVMAdminSshPublicKey')]"
-                                }
-                            ]
-                        }
-                    }
-                },
-                "storageProfile": {
-                    "imageReference": {
-                        "publisher": "[variables('imagePublisher')]",
-                        "offer": "[variables('imageOffer')]",
-                        "sku": "[variables('osVersion')]",
-                        "version": "latest"
-                    },
-                    "osDisk": {
-                        "name": "InfaOSDisk",
-                        "caching": "ReadWrite",
-                        "createOption": "FromImage",
-                        "vhd": {
-                            "uri": "[concat('https://', parameters('storageName'), '.blob.core.windows.net/vhds/', parameters('nodeVMNamePrefix'), uniquestring(resourceGroup().id), add(variables('index'), 1), '.osdisk.vhd')]"
-                        }
-                    }
-                },
-                "networkProfile": {
-                    "networkInterfaces": [
-                        {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nodeVMNicPrefix'), add(variables('index'), 1)))]"
-                        }
-                    ]
-                }
-            },
-            "resources": [
-                {
-                    "name": "ScriptExtGVM",
-                    "type": "extensions",
-                    "location": "[parameters('location')]",
-                    "apiVersion": "2016-03-30",
-                    "dependsOn": [
-                        "[concat('Microsoft.Compute/virtualMachines/', parameters('nodeVMNamePrefix'), add(variables('index'), 1))]"
-                    ],
-                    "tags": {
-                        "displayName": "informaticaextension"
-                    },
-                    "properties": {
-                        "publisher": "Microsoft.OSTCExtensions",
-                        "type": "CustomScriptForLinux",
-                        "typeHandlerVersion": "1.5",
-                        "autoUpgradeMinorVersion": true,
-                        "settings": {
-                            "fileUris": [
-                                "[concat(variables('extScriptURI'),  variables('extScriptFile'))]"
-                            ]
-                        },
-                      "protectedSettings": {
-                        "commandToExecute": "[concat('sudo sh ', variables('extScriptFile'), ' ', concat(parameters('nodeVMNamePrefix'), '1'), ' ', parameters('infaDomainName'), ' \"', parameters('infaDomainUser'), '\" \"', parameters('infaDomainPassword'), '\" ', parameters('infaNodeNamePrefix'), add(variables('index'), 1), ' ', variables('infaNodePort'), ' ', variables('dbType'), ' ', variables('dbInstanceName'), ' \"', parameters('dbUser'), '\" \"', parameters('dbPassword'), '\" ', parameters('dbVMName'), ' ', variables('dbPort'), ' \"', parameters('infaKeyword'), '\" ', variables('index'), ' \"', parameters('nodeVMAdminUsername'), '\" \"', parameters('storageName'), '\" ', listKeys(parameters('storageID'), '2016-01-01').keys[0].value, ' \"', parameters('infaDomainLicense'), '\" \"',parameters('MRSDBUser'),'\" \"',parameters('MRSDBPwd'),'\" \"',parameters('MRSName'),'\" \"',parameters('DISName'),'\" \"',parameters('HDIClusterName'),'\" \"',parameters('HDIClusterLoginUsername'),'\" \"',parameters('HDIClusterLoginPassword'),'\" \"',parameters('HDIClusterSSHHostname'),'\" \"',parameters('HDIClusterSSHUsername'),'\" \"',parameters('HDIClusterSSHPassword'),'\" \"',parameters('HDIClusterAmbariport'),'\" \"',parameters('HIVEUserName'),'\" \"',parameters('hdfsusernamevar'),'\" \"',parameters('connectionconfighadoopblazeusernamevar'),'\" \"',parameters('connectionconfighadoopsparkeventlogdirvar'),'\" \"',parameters('connectionconfighadoopsparkparamvar'),'\" \"',parameters('connectionconfighadoopimpuservar'),'\" \"',parameters('hbasezookeepernamevar'),'\" \"',parameters('connectionconfighadoopsparkdirvar'),'\" \"',parameters('HIVEExecutionMode'),'\" \"',parameters('BlazeWorkingDir'),'\"  \"notdefined\"')]"
-                      }
-                    }
-                }
-            ]
-        }
+              "publisher": "Microsoft.OSTCExtensions",
+              "type": "CustomScriptForLinux",
+              "typeHandlerVersion": "1.5",
+              "autoUpgradeMinorVersion": true,
+              "settings": {
+                "fileUris": [
+                  "[concat(variables('extScriptURI'),  variables('extScriptFile'))]"
+                ]
+              },
+              "protectedSettings": {
+                "commandToExecute": "[concat('sh ', variables('extScriptFile'), ' ', concat(parameters('nodeVMNamePrefix'), '1'), ' ', parameters('infaDomainName'), ' \"', parameters('infaDomainUser'), '\" \"', parameters('infaDomainPassword'), '\" ', parameters('infaNodeNamePrefix'), add(variables('index'), 1), ' ', variables('infaNodePort'), ' ', variables('dbType'), ' ', variables('dbInstanceName'), ' \"', parameters('dbUser'), '\" \"', parameters('dbPassword'), '\" ', parameters('dbVMName'), ' ', variables('dbPort'), ' \"', parameters('infaKeyword'), '\" ', variables('index'), ' \"', parameters('nodeVMAdminUsername'), '\" \"', parameters('storageName'), '\" ', listKeys(parameters('storageID'), '2016-01-01').keys[0].value, ' \"', parameters('infaDomainLicense'), '\" \"',parameters('MRSDBUser'),'\" \"',parameters('MRSDBPwd'),'\" \"',parameters('MRSName'),'\" \"',parameters('DISName'),'\" \"',parameters('HDIClusterName'),'\" \"',parameters('HDIClusterLoginUsername'),'\" \"',parameters('HDIClusterLoginPassword'),'\" \"',parameters('HDIClusterSSHHostname'),'\" \"',parameters('HDIClusterSSHUsername'),'\" \"',parameters('HDIClusterSSHPassword'),'\" \"',parameters('HDIClusterAmbariport'),'\" \"',parameters('HIVEUserName'),'\" \"',parameters('hdfsusernamevar'),'\" \"',parameters('connectionconfighadoopblazeusernamevar'),'\" \"',parameters('connectionconfighadoopsparkeventlogdirvar'),'\" \"',parameters('connectionconfighadoopsparkparamvar'),'\" \"',parameters('connectionconfighadoopimpuservar'),'\" \"',parameters('hbasezookeepernamevar'),'\" \"',parameters('connectionconfighadoopsparkdirvar'),'\" \"',parameters('HIVEExecutionMode'),'\" \"',parameters('BlazeWorkingDir'),'\"  \"notdefined\"')]"
+              }
+            }
+          }
+        ]
+      }
     ],
     "outputs": {
-        "fqdn": {
-            "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses',variables('nodeVMDNSName')), '2016-10-01').dnsSettings.fqdn]",
-            "type": "string"
-        }
+      "fqdn": {
+        "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses',variables('nodeVMDNSName')), '2016-10-01').dnsSettings.fqdn]",
+        "type": "string"
+      }
     }
-}
+  }

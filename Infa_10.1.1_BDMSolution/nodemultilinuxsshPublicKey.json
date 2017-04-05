@@ -20,6 +20,9 @@
     "subnetId": {
       "type": "string"
     },
+    "nsgName": {
+      "type": "string"
+    },
     "dbVMName": {
       "type": "string"
     },
@@ -141,6 +144,9 @@
     },
     "BlazeWorkingDir": {
       "type": "string"
+    },
+    "informaticaTags": {
+      "type": "object"
     }
   },
   "variables": {
@@ -171,9 +177,10 @@
             "apiVersion": "2016-10-01",
             "dependsOn": [ ],
 
-            "tags": {
-                "displayName": "publicip"
-            },
+          "tags": {
+            "displayName": "publicip",
+            "provider": "[toUpper(parameters('informaticaTags').provider)]"
+          },
             "properties": {
                 "publicIPAllocationMethod": "Dynamic",
                 "dnsSettings": {
@@ -189,25 +196,29 @@
             "dependsOn": [
                 "[concat('Microsoft.Network/publicIPAddresses/', variables('nodeVMDNSName'), '1')]"
             ],
-            "tags": {
-                "displayName": "niccard"
-            },
-            "properties": {
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig1",
-                        "properties": {
-                            "privateIPAllocationMethod": "Dynamic",
-                            "subnet": {
-                                "id": "[parameters('subnetId')]"
-                            },
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('nodeVMDNSName'), '1'))]"
-                            }
-                        }
-                    }
-                ]
+          "tags": {
+            "displayName": "niccard",
+            "provider": "[toUpper(parameters('informaticaTags').provider)]"
+          },
+          "properties": {
+            "ipConfigurations": [
+              {
+                "name": "ipconfig1",
+                "properties": {
+                  "privateIPAllocationMethod": "Dynamic",
+                  "subnet": {
+                    "id": "[parameters('subnetId')]"
+                  },
+                  "publicIPAddress": {
+                    "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('nodeVMDNSName'), '1'))]"
+                  }
+                }
+              }
+            ],
+            "networkSecurityGroup": {
+              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
             }
+          }
         },
         {
             "name": "[concat(parameters('nodeVMNamePrefix'), '1')]",
@@ -222,9 +233,10 @@
                 "publisher": "[variables('imagePublisher')]",
                 "product": "[variables('imageOffer')]"
             },
-            "tags": {
-                "displayName": "nodevm"
-            },
+          "tags": {
+            "displayName": "nodevm",
+            "provider": "[toUpper(parameters('informaticaTags').provider)]"
+          },
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "[parameters('nodeVMSize')]"
@@ -255,9 +267,9 @@
                         "name": "InfaOSDisk",
                         "caching": "ReadWrite",
                         "createOption": "FromImage",
-                        "vhd": {
-                            "uri": "[concat('https://', parameters('storageName'), '.blob.core.windows.net/vhds/', parameters('nodeVMNamePrefix'), uniquestring(resourceGroup().id), '1', '.osdisk.vhd')]"
-                        }
+                      "vhd": {
+                        "uri": "[concat('https://', parameters('storageName'), '.blob.core.windows.net/vhds/', parameters('nodeVMNamePrefix'), uniquestring(resourceGroup().id, deployment().name), '1', '.osdisk.vhd')]"
+                      }
                     }
                 },
                 "networkProfile": {
@@ -277,9 +289,10 @@
                     "dependsOn": [
                         "[concat('Microsoft.Compute/virtualMachines/', parameters('nodeVMNamePrefix'), '1')]"
                     ],
-                    "tags": {
-                        "displayName": "informaticaextension"
-                    },
+                  "tags": {
+                    "displayName": "informaticaextension",
+                    "provider": "[toUpper(parameters('informaticaTags').provider)]"
+                  },
                     "properties": {
                         "publisher": "Microsoft.OSTCExtensions",
                         "type": "CustomScriptForLinux",
@@ -291,7 +304,7 @@
                             ]
                         },
                       "protectedSettings": {
-                        "commandToExecute": "[concat('sudo sh ', variables('extScriptFile'), ' ', concat(parameters('nodeVMNamePrefix'), '1'), ' ', parameters('infaDomainName'), ' \"', parameters('infaDomainUser'), '\" \"', parameters('infaDomainPassword'), '\" ', parameters('infaNodeNamePrefix'), add(variables('index'), 1), ' ', variables('infaNodePort'), ' ', variables('dbType'), ' ', variables('dbInstanceName'), ' \"', parameters('dbUser'), '\" \"', parameters('dbPassword'), '\" ', parameters('dbVMName'), ' ', variables('dbPort'), ' \"', parameters('infaKeyword'), '\" ', variables('index'), ' \"', parameters('nodeVMAdminUsername'), '\" \"', parameters('storageName'), '\" ', listKeys(parameters('storageID'), '2016-01-01').keys[0].value, ' \"', parameters('infaDomainLicense'), '\" \"',parameters('MRSDBUser'),'\" \"',parameters('MRSDBPwd'),'\" \"',parameters('MRSName'),'\" \"',parameters('DISName'),'\" \"',parameters('HDIClusterName'),'\" \"',parameters('HDIClusterLoginUsername'),'\" \"',parameters('HDIClusterLoginPassword'),'\" \"',parameters('HDIClusterSSHHostname'),'\" \"',parameters('HDIClusterSSHUsername'),'\" \"',parameters('HDIClusterSSHPassword'),'\" \"',parameters('HDIClusterAmbariport'),'\" \"',parameters('HIVEUserName'),'\" \"',parameters('hdfsusernamevar'),'\" \"',parameters('connectionconfighadoopblazeusernamevar'),'\" \"',parameters('connectionconfighadoopsparkeventlogdirvar'),'\" \"',parameters('connectionconfighadoopsparkparamvar'),'\" \"',parameters('connectionconfighadoopimpuservar'),'\" \"',parameters('hbasezookeepernamevar'),'\" \"',parameters('connectionconfighadoopsparkdirvar'),'\" \"',parameters('HIVEExecutionMode'),'\" \"',parameters('BlazeWorkingDir'),'\"  \"notdefined\"')]"
+                        "commandToExecute": "[concat('sh ', variables('extScriptFile'), ' ', concat(parameters('nodeVMNamePrefix'), '1'), ' ', parameters('infaDomainName'), ' \"', parameters('infaDomainUser'), '\" \"', parameters('infaDomainPassword'), '\" ', parameters('infaNodeNamePrefix'),'1',  ' ', variables('infaNodePort'), ' ', variables('dbType'), ' ', variables('dbInstanceName'), ' \"', parameters('dbUser'), '\" \"', parameters('dbPassword'), '\" ', parameters('dbVMName'), ' ', variables('dbPort'), ' \"', parameters('infaKeyword'), '\" 0 \"', parameters('nodeVMAdminUsername'), '\" \"', parameters('storageName'), '\" ', listKeys(parameters('storageID'), '2016-01-01').keys[0].value, ' \"', parameters('infaDomainLicense'), '\" \"',parameters('MRSDBUser'),'\" \"',parameters('MRSDBPwd'),'\" \"',parameters('MRSName'),'\" \"',parameters('DISName'),'\" \"',parameters('HDIClusterName'),'\" \"',parameters('HDIClusterLoginUsername'),'\" \"',parameters('HDIClusterLoginPassword'),'\" \"',parameters('HDIClusterSSHHostname'),'\" \"',parameters('HDIClusterSSHUsername'),'\" \"',parameters('HDIClusterSSHPassword'),'\" \"',parameters('HDIClusterAmbariport'),'\" \"',parameters('HIVEUserName'),'\" \"',parameters('hdfsusernamevar'),'\" \"',parameters('connectionconfighadoopblazeusernamevar'),'\" \"',parameters('connectionconfighadoopsparkeventlogdirvar'),'\" \"',parameters('connectionconfighadoopsparkparamvar'),'\" \"',parameters('connectionconfighadoopimpuservar'),'\" \"',parameters('hbasezookeepernamevar'),'\" \"',parameters('connectionconfighadoopsparkdirvar'),'\" \"',parameters('HIVEExecutionMode'),'\" \"',parameters('BlazeWorkingDir'),'\"  \"notdefined\"')]"
                       }
                     }
                 }
@@ -307,9 +320,10 @@
                 "name": "gatewayCount",
                 "count": "[variables('gatewayCount')]"
             },
-            "tags": {
-                "displayName": "gwpublicip"
-            },
+          "tags": {
+            "displayName": "gwpublicip",
+            "provider": "[toUpper(parameters('informaticaTags').provider)]"
+          },
             "properties": {
                 "publicIPAllocationMethod": "Dynamic",
                 "dnsSettings": {
@@ -329,25 +343,30 @@
                 "name": "gatewayCount",
                 "count": "[variables('gatewayCount')]"
             },
-            "tags": {
-                "displayName": "gwniccard"
-            },
-            "properties": {
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig1",
-                        "properties": {
-                            "privateIPAllocationMethod": "Dynamic",
-                            "subnet": {
-                                "id": "[parameters('subnetId')]"
-                            },
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('nodeVMDNSName'), add(copyIndex(), 2)))]"
-                            }
-                        }
-                    }
-                ]
+          "tags": {
+            "displayName": "gwniccard",
+            "provider": "[toUpper(parameters('informaticaTags').provider)]"
+          },
+          "properties": {
+            "ipConfigurations": [
+              {
+                "name": "ipconfig1",
+                "properties": {
+                  "privateIPAllocationMethod": "Dynamic",
+                  "subnet": {
+                    "id": "[parameters('subnetId')]"
+                  },
+                  "publicIPAddress": {
+                    "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('nodeVMDNSName'), add(copyIndex(), 2)))]"
+                  }
+                }
+              }
+            ],
+
+            "networkSecurityGroup": {
+              "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
             }
+          }
         },
         {
             "name": "[concat(parameters('nodeVMNamePrefix'), add(copyIndex(), 2))]",
@@ -367,9 +386,10 @@
                 "name": "gatewayCount",
                 "count": "[variables('gatewayCount')]"
             },
-            "tags": {
-                "displayName": "gwnodevm"
-            },
+          "tags": {
+            "displayName": "gwnodevm",
+            "provider": "[toUpper(parameters('informaticaTags').provider)]"
+          },
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "[parameters('nodeVMSize')]"
@@ -400,9 +420,9 @@
                         "name": "InfaOSDisk",
                         "caching": "ReadWrite",
                         "createOption": "FromImage",
-                        "vhd": {
-                            "uri": "[concat('https://', parameters('storageName'), '.blob.core.windows.net/vhds/', parameters('nodeVMNamePrefix'), uniquestring(resourceGroup().id), add(copyIndex(), 2), '.osdisk.vhd')]"
-                        }
+                      "vhd": {
+                        "uri": "[concat('https://', parameters('storageName'), '.blob.core.windows.net/vhds/', parameters('nodeVMNamePrefix'), uniquestring(resourceGroup().id, deployment().name), add(copyIndex(), 2), '.osdisk.vhd')]"
+                      }
                     }
                 },
                 "networkProfile": {
@@ -422,9 +442,10 @@
                     "dependsOn": [
                         "[concat('Microsoft.Compute/virtualMachines/', parameters('nodeVMNamePrefix'), add(copyIndex(), 2))]"
                     ],
-                    "tags": {
-                        "displayName": "informaticaextension"
-                    },
+                  "tags": {
+                    "displayName": "informaticaextension",
+                    "provider": "[toUpper(parameters('informaticaTags').provider)]"
+                  },
                     "properties": {
                         "publisher": "Microsoft.OSTCExtensions",
                         "type": "CustomScriptForLinux",
@@ -436,7 +457,7 @@
                             ]
                         },
                       "protectedSettings": {
-                        "commandToExecute": "[concat('sudo sh ', variables('extScriptFile'), ' ', concat(parameters('nodeVMNamePrefix'), '1'), ' ', parameters('infaDomainName'), ' \"', parameters('infaDomainUser'), '\" \"', parameters('infaDomainPassword'), '\" ', parameters('infaNodeNamePrefix'), add(variables('index'), 1), ' ', variables('infaNodePort'), ' ', variables('dbType'), ' ', variables('dbInstanceName'), ' \"', parameters('dbUser'), '\" \"', parameters('dbPassword'), '\" ', parameters('dbVMName'), ' ', variables('dbPort'), ' \"', parameters('infaKeyword'), '\" ', variables('index'), ' \"', parameters('nodeVMAdminUsername'), '\" \"', parameters('storageName'), '\" ', listKeys(parameters('storageID'), '2016-01-01').keys[0].value, ' \"', parameters('infaDomainLicense'), '\" \"',parameters('MRSDBUser'),'\" \"',parameters('MRSDBPwd'),'\" \"',parameters('MRSName'),'\" \"',parameters('DISName'),'\" \"',parameters('HDIClusterName'),'\" \"',parameters('HDIClusterLoginUsername'),'\" \"',parameters('HDIClusterLoginPassword'),'\" \"',parameters('HDIClusterSSHHostname'),'\" \"',parameters('HDIClusterSSHUsername'),'\" \"',parameters('HDIClusterSSHPassword'),'\" \"',parameters('HDIClusterAmbariport'),'\" \"',parameters('HIVEUserName'),'\" \"',parameters('hdfsusernamevar'),'\" \"',parameters('connectionconfighadoopblazeusernamevar'),'\" \"',parameters('connectionconfighadoopsparkeventlogdirvar'),'\" \"',parameters('connectionconfighadoopsparkparamvar'),'\" \"',parameters('connectionconfighadoopimpuservar'),'\" \"',parameters('hbasezookeepernamevar'),'\" \"',parameters('connectionconfighadoopsparkdirvar'),'\" \"',parameters('HIVEExecutionMode'),'\" \"',parameters('BlazeWorkingDir'),'\"  \"notdefined\"')]"
+                        "commandToExecute": "[concat('sh ', variables('extScriptFile'), ' ', concat(parameters('nodeVMNamePrefix'), '1'), ' ', parameters('infaDomainName'), ' \"', parameters('infaDomainUser'), '\" \"', parameters('infaDomainPassword'), '\" ', parameters('infaNodeNamePrefix'), add(copyIndex(), 2), ' ', variables('infaNodePort'), ' ', variables('dbType'), ' ', variables('dbInstanceName'), ' \"', parameters('dbUser'), '\" \"', parameters('dbPassword'), '\" ', parameters('dbVMName'), ' ', variables('dbPort'), ' \"', parameters('infaKeyword'), '\" 1 \"', parameters('nodeVMAdminUsername'), '\" \"', parameters('storageName'), '\" ', listKeys(parameters('storageID'), '2016-01-01').keys[0].value, ' \"', parameters('infaDomainLicense'), '\" \"',parameters('MRSDBUser'),'\" \"',parameters('MRSDBPwd'),'\" \"',parameters('MRSName'),'\" \"',parameters('DISName'),'\" \"',parameters('HDIClusterName'),'\" \"',parameters('HDIClusterLoginUsername'),'\" \"',parameters('HDIClusterLoginPassword'),'\" \"',parameters('HDIClusterSSHHostname'),'\" \"',parameters('HDIClusterSSHUsername'),'\" \"',parameters('HDIClusterSSHPassword'),'\" \"',parameters('HDIClusterAmbariport'),'\" \"',parameters('HIVEUserName'),'\" \"',parameters('hdfsusernamevar'),'\" \"',parameters('connectionconfighadoopblazeusernamevar'),'\" \"',parameters('connectionconfighadoopsparkeventlogdirvar'),'\" \"',parameters('connectionconfighadoopsparkparamvar'),'\" \"',parameters('connectionconfighadoopimpuservar'),'\" \"',parameters('hbasezookeepernamevar'),'\" \"',parameters('connectionconfighadoopsparkdirvar'),'\" \"',parameters('HIVEExecutionMode'),'\" \"',parameters('BlazeWorkingDir'),'\"  \"notdefined\"')]"
                       }
                     }
                 }
