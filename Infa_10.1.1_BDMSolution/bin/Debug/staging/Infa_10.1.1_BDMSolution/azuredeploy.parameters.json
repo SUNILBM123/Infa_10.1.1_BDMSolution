@@ -30,11 +30,14 @@
     "nodeVMOS": {
       "value": "linux"
     },
+    "nodeVMAuthType": {
+      "value": "sshPublicKey"
+    },
     "nodeVMAdminPassword": {
-      "value": "tempBG@2008"
+      "value": ""
     },
     "nodeVMAdminSshPublicKey": {
-      "value": "tempBG@2008"
+      "value": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAjWyULU/czJF/MG4CQ6XLSIkFane/1qQQicvTO7BKngq8h+66RHsBEK4mrmZd0+BiA7D6diZae7yH4/7P804SSSbg0a+57Pb4fkM9LWLEvUEftivoOC8muluuo+J8WWP1jm+H3MotWg2x+XhT2UAHngiBnp9rNlntHi7LdAfcRT19klHN77u4RlvWRh0CrlEI1+e8issjQ42DggHLc0HZthG9CdEF9IORz4usP6gj8UCCAuwLtCKTjZ4fyYviAvFSDiPNQPnEcYXy86AwdFZ5lHKogKwKIS9wnhjcDbpxMDEIh3J1/VhxacRbuiIKvxTdQxtPFqhk8bIUhzNMs7KeSQ== rsa-key-20170405"
     },
     "infaKeyword": {
       "value": "tempBG@2008isp"
@@ -46,7 +49,7 @@
       "value": "SQLDatabaseVIM"
     },
     "infaDomainLicense": {
-      "value": "https://iaasv2tempstorageam.blob.core.windows.net/vmextensionstemporary-10037ffe885077b5-20170328092454495/100License_7263.key?sv=2015-04-05&sr=c&sig=gkTr3cp3ZtcTe%2BS3ZkH1C%2Bp%2FdYqcbWV6cT4DAMTdANQ%3D&se=2017-03-29T09%3A24%3A54Z&sp=rw"
+      "value": "https://iaasv2tempstorageam.blob.core.windows.net/vmextensionstemporary-10037ffe885077b5-20170405100049597/100License_7263.key?sv=2015-04-05&sr=c&sig=h%2FLxeyA4XeHCNTlw5jNG1dYVOv7v%2FtHcRifEGNxqJms%3D&se=2017-04-06T10%3A00%3A49Z&sp=rw"
     },
     "storageName": {
       "value": "infastoragetest03"

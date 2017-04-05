@@ -570,7 +570,7 @@ fixforBDM7342()
     done
 
 	testlineoriginal=$testline
-	testline+=":$workernodehelperdir"
+	testline+=":$workernodehelperdir/*"
 
 	fileseparator_rep_func "/"$testline
     separatorintermediatevariable=${separatorintermediatevariable:2}
