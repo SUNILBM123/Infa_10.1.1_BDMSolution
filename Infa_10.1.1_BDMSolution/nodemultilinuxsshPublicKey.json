@@ -1,104 +1,167 @@
 ﻿{
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "location": {
-            "type": "string"
-        },
-        "storageName": {
-            "type": "string"
-        },
-        "storageID": {
-            "type": "string"
-        },
-        "vnetName": {
-            "type": "string"
-        },
-        "subnetName": {
-            "type": "string"
-        },
-        "subnetId": {
-            "type": "string"
-        },
-        "dbVMName": {
-            "type": "string"
-        },
-        "dbUser": {
-            "type": "string"
-        },
-        "dbPassword": {
-            "type": "securestring"
-        },
-        "nodeVMSize": {
-            "type": "string"
-        },
-        "nodeVMOSType": {
-            "type": "string"
-        },
-        "nodeVMAdminUsername": {
-            "type": "string",
-            "minLength": 1
-        },
-        "nodeVMAdminPassword": {
-            "type": "securestring"
-        },
-        "nodeVMAdminSshPublicKey": {
-            "type": "securestring"
-        },
-        "nodeVMNamePrefix": {
-            "type": "string",
-            "minLength": 1
-        },
-        "nodeVMCount": {
-            "type": "int"
-        },
-        "infaDomainName": {
-            "type": "string",
-            "minLength": 4
-        },
-        "infaDomainUser": {
-            "type": "string",
-            "minLength": 4
-        },
-        "infaDomainPassword": {
-            "type": "securestring",
-            "minLength": 4
-        },
-        "infaNodeNamePrefix": {
-            "type": "string",
-            "minLength": 4
-        },
-        "infaKeyword": {
-            "type": "securestring",
-            "minLength": 4
-        },
-        "infaDomainLicense": { 
-            "type": "securestring"
-        },
-        "baseUrl": {
-            "type": "string"
-        }
+  "parameters": {
+    "location": {
+      "type": "string"
     },
-    "variables": {
-        "nodeVMDNSName": "[toLower(concat(parameters('nodeVMNamePrefix'), uniqueString(resourceGroup().id)))]",
-        "nodeVMNicPrefix": "[concat(parameters('nodeVMNamePrefix'),'Nic')]",
-
-        "gatewayCount": "[sub(parameters('nodeVMCount'), 1)]",
-
-        "extScriptURI": "[parameters('baseUrl')]",
-        "extScriptFile": "lininfainstaller.sh",
-
-        "sshKeyPath": "[concat('/home/',parameters('nodeVMAdminUsername'),'/.ssh/authorized_keys')]",
-
-        "infaNodePort": 6005,
-        "dbType": "MSSQLSERVER",
-        "dbInstanceName": "model",
-        "dbPort": "1433",
-
-        "imagePublisher": "informatica",
-        "imageOffer": "platform_10_1_1_multi_node_domain_rhel_byol-preview",
-        "osVersion": "byol_rhel_7_2_platform_10_1_1"
+    "storageName": {
+      "type": "string"
     },
+    "storageID": {
+      "type": "string"
+    },
+    "vnetName": {
+      "type": "string"
+    },
+    "subnetName": {
+      "type": "string"
+    },
+    "subnetId": {
+      "type": "string"
+    },
+    "dbVMName": {
+      "type": "string"
+    },
+    "dbUser": {
+      "type": "string"
+    },
+    "dbPassword": {
+      "type": "securestring"
+    },
+    "nodeVMSize": {
+      "type": "string"
+    },
+    "nodeVMOSType": {
+      "type": "string"
+    },
+    "nodeVMAdminUsername": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nodeVMAdminPassword": {
+      "type": "securestring"
+    },
+    "nodeVMAdminSshPublicKey": {
+      "type": "securestring"
+    },
+    "nodeVMNamePrefix": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nodeVMCount": {
+      "type": "int"
+    },
+    "infaDomainName": {
+      "type": "string",
+      "minLength": 4
+    },
+    "infaDomainUser": {
+      "type": "string",
+      "minLength": 4
+    },
+    "infaDomainPassword": {
+      "type": "securestring",
+      "minLength": 4
+    },
+    "infaNodeNamePrefix": {
+      "type": "string",
+      "minLength": 4
+    },
+    "infaKeyword": {
+      "type": "securestring",
+      "minLength": 4
+    },
+    "infaDomainLicense": {
+      "type": "securestring"
+    },
+    "baseUrl": {
+      "type": "string"
+    },
+    "MRSName": {
+      "type": "string"
+    },
+    "MRSDBUser": {
+      "type": "string"
+    },
+    "MRSDBPwd": {
+      "type": "securestring"
+    },
+    "DISName": {
+      "type": "string"
+    },
+    "HDIClusterName": {
+      "type": "string"
+    },
+    "HDIClusterLoginUsername": {
+      "type": "string"
+    },
+    "HDIClusterLoginPassword": {
+      "type": "securestring"
+    },
+    "HDIClusterSSHHostname": {
+      "type": "string"
+    },
+    "HDIClusterSSHUsername": {
+      "type": "string"
+    },
+    "HDIClusterSSHPassword": {
+      "type": "securestring"
+    },
+    "hdfsusernamevar": {
+      "type": "string"
+    },
+    "hbasezookeepernamevar": {
+      "type": "string"
+    },
+    "connectionconfighadoopimpuservar": {
+      "type": "string"
+    },
+    "connectionconfighadoopblazeusernamevar": {
+      "type": "string"
+    },
+    "connectionconfighadoopsparkdirvar": {
+      "type": "string"
+    },
+    "connectionconfighadoopsparkeventlogdirvar": {
+      "type": "string"
+    },
+    "connectionconfighadoopsparkparamvar": {
+      "type": "string"
+    },
+    "HDIClusterAmbariport": {
+      "type": "string"
+    },
+    "HIVEUserName": {
+
+      "type": "string"
+    },
+    "HIVEExecutionMode": {
+      "type": "string"
+    },
+    "BlazeWorkingDir": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "nodeVMDNSName": "[toLower(concat(parameters('nodeVMNamePrefix'), uniqueString(resourceGroup().id)))]",
+    "nodeVMNicPrefix": "[concat(parameters('nodeVMNamePrefix'),'Nic')]",
+
+    "gatewayCount": "[sub(parameters('nodeVMCount'), 1)]",
+
+    "extScriptURI": "[parameters('baseUrl')]",
+
+    "sshKeyPath": "[concat('/home/',parameters('nodeVMAdminUsername'),'/.ssh/authorized_keys')]",
+
+    "infaNodePort": 6005,
+    "dbType": "MSSQLSERVER",
+    "dbInstanceName": "model",
+    "dbPort": "1433",
+
+    "imagePublisher": "informatica",
+    "imageOffer": "bdm10-1-1-u2-preview",
+    "osVersion": "bdm-10-1-1-u2"
+  },
     "resources": [
         {
             "name": "[concat(variables('nodeVMDNSName'), '1')]",
@@ -226,9 +289,9 @@
                                 "[concat(variables('extScriptURI'),  variables('extScriptFile'))]"
                             ]
                         },
-                        "protectedSettings": {
-                            "commandToExecute": "[concat('sh ', variables('extScriptFile'), ' ', concat(parameters('nodeVMNamePrefix'), '1'), ' ', parameters('infaDomainName'), ' \"', parameters('infaDomainUser'), '\" \"', parameters('infaDomainPassword'), '\" ', parameters('infaNodeNamePrefix'), '1', ' ', variables('infaNodePort'), ' ', variables('dbType'), ' ', variables('dbInstanceName'), ' \"', parameters('dbUser'), '\" \"', parameters('dbPassword'), '\" ', parameters('dbVMName'), ' ', variables('dbPort'), ' \"', parameters('infaKeyword'), '\" 0 \"', parameters('nodeVMAdminUsername'), '\" \"', parameters('storageName'), '\" ', listKeys(parameters('storageID'), '2016-01-01').keys[0].value, ' \"', parameters('infaDomainLicense'), '\"')]"
-                        }
+                      "protectedSettings": {
+                        "commandToExecute": "[concat('sudo sh ', variables('extScriptFile'), ' ', concat(parameters('nodeVMNamePrefix'), '1'), ' ', parameters('infaDomainName'), ' \"', parameters('infaDomainUser'), '\" \"', parameters('infaDomainPassword'), '\" ', parameters('infaNodeNamePrefix'), add(variables('index'), 1), ' ', variables('infaNodePort'), ' ', variables('dbType'), ' ', variables('dbInstanceName'), ' \"', parameters('dbUser'), '\" \"', parameters('dbPassword'), '\" ', parameters('dbVMName'), ' ', variables('dbPort'), ' \"', parameters('infaKeyword'), '\" ', variables('index'), ' \"', parameters('nodeVMAdminUsername'), '\" \"', parameters('storageName'), '\" ', listKeys(parameters('storageID'), '2016-01-01').keys[0].value, ' \"', parameters('infaDomainLicense'), '\" \"',parameters('MRSDBUser'),'\" \"',parameters('MRSDBPwd'),'\" \"',parameters('MRSName'),'\" \"',parameters('DISName'),'\" \"',parameters('HDIClusterName'),'\" \"',parameters('HDIClusterLoginUsername'),'\" \"',parameters('HDIClusterLoginPassword'),'\" \"',parameters('HDIClusterSSHHostname'),'\" \"',parameters('HDIClusterSSHUsername'),'\" \"',parameters('HDIClusterSSHPassword'),'\" \"',parameters('HDIClusterAmbariport'),'\" \"',parameters('HIVEUserName'),'\" \"',parameters('hdfsusernamevar'),'\" \"',parameters('connectionconfighadoopblazeusernamevar'),'\" \"',parameters('connectionconfighadoopsparkeventlogdirvar'),'\" \"',parameters('connectionconfighadoopsparkparamvar'),'\" \"',parameters('connectionconfighadoopimpuservar'),'\" \"',parameters('hbasezookeepernamevar'),'\" \"',parameters('connectionconfighadoopsparkdirvar'),'\" \"',parameters('HIVEExecutionMode'),'\" \"',parameters('BlazeWorkingDir'),'\"  \"notdefined\"')]"
+                      }
                     }
                 }
             ]
@@ -371,9 +434,9 @@
                                 "[concat(variables('extScriptURI'),  variables('extScriptFile'))]"
                             ]
                         },
-                        "protectedSettings": {
-                            "commandToExecute": "[concat('sh ', variables('extScriptFile'), ' ', concat(parameters('nodeVMNamePrefix'), '1'), ' ', parameters('infaDomainName'), ' \"', parameters('infaDomainUser'), '\" \"', parameters('infaDomainPassword'), '\" ', parameters('infaNodeNamePrefix'), add(copyIndex(), 2), ' ', variables('infaNodePort'), ' ', variables('dbType'), ' ', variables('dbInstanceName'), ' \"', parameters('dbUser'), '\" \"', parameters('dbPassword'), '\" ', parameters('dbVMName'), ' ', variables('dbPort'), ' \"', parameters('infaKeyword'), '\" 1 \"', parameters('nodeVMAdminUsername'), '\" \"', parameters('storageName'), '\" ', listKeys(parameters('storageID'), '2016-01-01').keys[0].value, ' \"', parameters('infaDomainLicense'), '\"')]"
-                        }
+                      "protectedSettings": {
+                        "commandToExecute": "[concat('sudo sh ', variables('extScriptFile'), ' ', concat(parameters('nodeVMNamePrefix'), '1'), ' ', parameters('infaDomainName'), ' \"', parameters('infaDomainUser'), '\" \"', parameters('infaDomainPassword'), '\" ', parameters('infaNodeNamePrefix'), add(variables('index'), 1), ' ', variables('infaNodePort'), ' ', variables('dbType'), ' ', variables('dbInstanceName'), ' \"', parameters('dbUser'), '\" \"', parameters('dbPassword'), '\" ', parameters('dbVMName'), ' ', variables('dbPort'), ' \"', parameters('infaKeyword'), '\" ', variables('index'), ' \"', parameters('nodeVMAdminUsername'), '\" \"', parameters('storageName'), '\" ', listKeys(parameters('storageID'), '2016-01-01').keys[0].value, ' \"', parameters('infaDomainLicense'), '\" \"',parameters('MRSDBUser'),'\" \"',parameters('MRSDBPwd'),'\" \"',parameters('MRSName'),'\" \"',parameters('DISName'),'\" \"',parameters('HDIClusterName'),'\" \"',parameters('HDIClusterLoginUsername'),'\" \"',parameters('HDIClusterLoginPassword'),'\" \"',parameters('HDIClusterSSHHostname'),'\" \"',parameters('HDIClusterSSHUsername'),'\" \"',parameters('HDIClusterSSHPassword'),'\" \"',parameters('HDIClusterAmbariport'),'\" \"',parameters('HIVEUserName'),'\" \"',parameters('hdfsusernamevar'),'\" \"',parameters('connectionconfighadoopblazeusernamevar'),'\" \"',parameters('connectionconfighadoopsparkeventlogdirvar'),'\" \"',parameters('connectionconfighadoopsparkparamvar'),'\" \"',parameters('connectionconfighadoopimpuservar'),'\" \"',parameters('hbasezookeepernamevar'),'\" \"',parameters('connectionconfighadoopsparkdirvar'),'\" \"',parameters('HIVEExecutionMode'),'\" \"',parameters('BlazeWorkingDir'),'\"  \"notdefined\"')]"
+                      }
                     }
                 }
             ]

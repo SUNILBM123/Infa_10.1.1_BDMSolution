@@ -616,6 +616,12 @@ chownership
 
 if [ $joinDomain -ne 1 ]
  then
-   copyhelperfilesfromcluster
+    
+	checkvalueisundefined $osPwd
+	if [ $isvardefined == "true" ]
+    then
+      copyhelperfilesfromcluster
+    fi
+	   
    fixforBDM7342
 fi

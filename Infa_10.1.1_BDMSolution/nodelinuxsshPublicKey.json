@@ -159,8 +159,10 @@
     "dbPort": "1433",
 
     "imagePublisher": "informatica",
-    "imageOffer": "platform_10_1_1_multi_node_domain_rhel_byol-preview",
-    "osVersion": "byol_rhel_7_2_platform_10_1_1"
+    "imageOffer": "bdm10-1-1-u2-preview",
+    "osVersion": "bdm-10-1-1-u2"
+
+    
   },
     "resources": [
         {
@@ -291,7 +293,7 @@
                             ]
                         },
                       "protectedSettings": {
-                        "commandToExecute": "[concat('sudo sh ', variables('extScriptFile'), ' ', concat(parameters('nodeVMNamePrefix'), '1'), ' ', parameters('infaDomainName'), ' \"', parameters('infaDomainUser'), '\" \"', parameters('infaDomainPassword'), '\" ', parameters('infaNodeNamePrefix'), add(variables('index'), 1), ' ', variables('infaNodePort'), ' ', variables('dbType'), ' ', variables('dbInstanceName'), ' \"', parameters('dbUser'), '\" \"', parameters('dbPassword'), '\" ', parameters('dbVMName'), ' ', variables('dbPort'), ' \"', parameters('infaKeyword'), '\" ', variables('index'), ' \"', parameters('nodeVMAdminUsername'), '\" \"', parameters('storageName'), '\" ', listKeys(parameters('storageID'), '2016-01-01').keys[0].value, ' \"', parameters('infaDomainLicense'), '\" \"',parameters('MRSDBUser'),'\" \"',parameters('MRSDBPwd'),'\" \"',parameters('MRSName'),'\" \"',parameters('DISName'),'\" \"',parameters('HDIClusterName'),'\" \"',parameters('HDIClusterLoginUsername'),'\" \"',parameters('HDIClusterLoginPassword'),'\" \"',parameters('HDIClusterSSHHostname'),'\" \"',parameters('HDIClusterSSHUsername'),'\" \"',parameters('HDIClusterSSHPassword'),'\" \"',parameters('HDIClusterAmbariport'),'\" \"',parameters('HIVEUserName'),'\" \"',parameters('hdfsusernamevar'),'\" \"',parameters('connectionconfighadoopblazeusernamevar'),'\" \"',parameters('connectionconfighadoopsparkeventlogdirvar'),'\" \"',parameters('connectionconfighadoopsparkparamvar'),'\" \"',parameters('connectionconfighadoopimpuservar'),'\" \"',parameters('hbasezookeepernamevar'),'\" \"',parameters('connectionconfighadoopsparkdirvar'),'\" \"',parameters('HIVEExecutionMode'),'\" \"',parameters('BlazeWorkingDir'),'\"')]"
+                        "commandToExecute": "[concat('sudo sh ', variables('extScriptFile'), ' ', concat(parameters('nodeVMNamePrefix'), '1'), ' ', parameters('infaDomainName'), ' \"', parameters('infaDomainUser'), '\" \"', parameters('infaDomainPassword'), '\" ', parameters('infaNodeNamePrefix'), add(variables('index'), 1), ' ', variables('infaNodePort'), ' ', variables('dbType'), ' ', variables('dbInstanceName'), ' \"', parameters('dbUser'), '\" \"', parameters('dbPassword'), '\" ', parameters('dbVMName'), ' ', variables('dbPort'), ' \"', parameters('infaKeyword'), '\" ', variables('index'), ' \"', parameters('nodeVMAdminUsername'), '\" \"', parameters('storageName'), '\" ', listKeys(parameters('storageID'), '2016-01-01').keys[0].value, ' \"', parameters('infaDomainLicense'), '\" \"',parameters('MRSDBUser'),'\" \"',parameters('MRSDBPwd'),'\" \"',parameters('MRSName'),'\" \"',parameters('DISName'),'\" \"',parameters('HDIClusterName'),'\" \"',parameters('HDIClusterLoginUsername'),'\" \"',parameters('HDIClusterLoginPassword'),'\" \"',parameters('HDIClusterSSHHostname'),'\" \"',parameters('HDIClusterSSHUsername'),'\" \"',parameters('HDIClusterSSHPassword'),'\" \"',parameters('HDIClusterAmbariport'),'\" \"',parameters('HIVEUserName'),'\" \"',parameters('hdfsusernamevar'),'\" \"',parameters('connectionconfighadoopblazeusernamevar'),'\" \"',parameters('connectionconfighadoopsparkeventlogdirvar'),'\" \"',parameters('connectionconfighadoopsparkparamvar'),'\" \"',parameters('connectionconfighadoopimpuservar'),'\" \"',parameters('hbasezookeepernamevar'),'\" \"',parameters('connectionconfighadoopsparkdirvar'),'\" \"',parameters('HIVEExecutionMode'),'\" \"',parameters('BlazeWorkingDir'),'\"  \"notdefined\"')]"
                       }
                     }
                 }
