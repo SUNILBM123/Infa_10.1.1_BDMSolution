@@ -140,7 +140,8 @@ mountsharedir()
 
 check_installation_successful()
 {
-   installationstatus=false
+   installationstatus=true
+   sleep 60
    #check for silent error log
    cd ~
    silenterrorlog=$(ls -ltr | grep silentErrorLog* | cut -d ' ' -f 12)
@@ -648,9 +649,9 @@ if [ $joinDomain -ne 1 ]
    configureDebian
    if [ $installationstatus == "false" ]
    then
-     echo "\nsince installation completed with some error, BDE util Configuration will be skipped. User has to manually run BDM util after fixing the errors">>"$oneclicksolutionlog"
+     echo "since installation completed with some error, BDE util Configuration will be skipped. User has to manually run BDM util after fixing the errors">>"$oneclicksolutionlog"
    else
-     echo "\nStarting BDM util">>"$oneclicksolutionlog"
+     echo "Starting BDM util">>"$oneclicksolutionlog"
      editsilentpropfiletoBDMutil
      runbdmutility
    fi
