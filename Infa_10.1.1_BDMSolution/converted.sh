@@ -138,6 +138,37 @@ mountsharedir()
   
 }
 
+check_installation_successful()
+{
+   installationstatus=false
+   #check for silent error log
+   cd ~
+   silenterrorlog=$(ls -ltr | grep silentErrorLog* | cut -d ' ' -f 12)
+   if [ $silenterrorlog ]
+     then
+        echo "there is some problem with installation. Please check silent error log">>"$oneclicksolutionlog"
+        installationstatus=false
+     else
+        cd ~/Informatica/10.1.1
+        logfiletogrep=$(ls -ltr | grep *Services*.log | cut -d ' ' -f 12)
+        echo $logfiletogrep
+        if [ $logfiletogrep ]
+        then
+          while read LINE
+          do
+            case "$LINE" in
+              *"Installation Status:SUCCESS"*) echo "Installation completed successfully">>"$oneclicksolutionlog"; installationstatus=true;;
+              *"Installation Status:ERROR"*) echo "Installation failed with status error">>"$oneclicksolutionlog"; installationstatus=false ;;
+            esac
+          done <$logfiletogrep
+        fi
+   fi
+
+}
+
+
+
+
 checkvalueisundefined()
 {
    vartochk=$1
@@ -236,7 +267,14 @@ installdomain()
   echo Installing Informatica domain
   cd $infainstallerloc
   echo Y Y | sh silentinstall.sh
-  echo -e "\nDomain installation completed\nStarting Debian Configuration\n" >> "$oneclicksolutionlog"
+  echo -e "\nDomain installation completed" >> "$oneclicksolutionlog"
+  check_installation_successful
+  
+
+  if [ $joinDomain -ne 1 ]
+   then
+     echo -e "\nStarting Debian Configuration. For results browse the logs created in ~/debianresults folder">> "$oneclicksolutionlog"
+  fi
   #sleep 600
 }
 
@@ -345,7 +383,7 @@ configureDebian()
   cd /home/$osUserName
   
   echo "Debian installation successful"
-  echo -e "\nDebian configuration completed.\nStating BDM util" >> "$oneclicksolutionlog"
+  echo -e "\nDebian configuration completed." >> "$oneclicksolutionlog"
 }
 
 separatorintermediatevariable=""
@@ -591,7 +629,7 @@ fixforBDM7342()
 }
 
 echo Inside main method
-echo -e "Log accumulator for oneclick solution. \n 1> Informatica installation logs will be created in ~/Informatica/10.1.1/Informatica_10.1.1_Services_*.log \n 2> For any installer failure look into silenterrorlog created in home directory \n 3> Extension script log will be created in the following drectory /var/log/azure/Microsoft.OSTCExtensions.CustomScriptForLinux/<extensionversion>/extension.log. This location may change as per Microsoft Standards." > "$oneclicksolutionlog"
+echo -e "Logging and debugging details for oneclick solution. \n 1> Informatica installation details will be logged in ~/Informatica/10.1.1/Informatica_10.1.1_Services_*.log \n 2> For installer failures look into silenterrorlog created in home directory \n 3> Extension script log will be created in the following drectory /var/log/azure/Microsoft.OSTCExtensions.CustomScriptForLinux/<extensionversion>/extension.log. This location may change as per Microsoft Standards." > "$oneclicksolutionlog"
 
 updateFirewallsettings
 if [ $joinDomain -ne 1 ]
@@ -608,20 +646,34 @@ revertspeedupoperations
 if [ $joinDomain -ne 1 ]
  then
    configureDebian
-   editsilentpropfiletoBDMutil
-   runbdmutility
+   if [ $installationstatus == "false" ]
+   then
+     echo "\nsince installation completed with some error, BDE util Configuration will be skipped. User has to manually run BDM util after fixing the errors">>"$oneclicksolutionlog"
+   else
+     echo "\nStarting BDM util">>"$oneclicksolutionlog"
+     editsilentpropfiletoBDMutil
+     runbdmutility
+   fi
 fi
 
 chownership
 
 if [ $joinDomain -ne 1 ]
  then
-    
+    # will be executed only for password environment,public ssh key user has to manually follow this step  
 	checkvalueisundefined $osPwd
 	if [ $isvardefined == "true" ]
     then
       copyhelperfilesfromcluster
+	else
+	  echo "\n Since the deployed environment is SSH public key, the decryption files decrypt.sh and key_decryption_cert.prv needs to copied manually from cluster environment">>"$oneclicksolutionlog"
     fi
-	   
-   fixforBDM7342
+
+	if [ $installationstatus == "true" ]
+      then
+	    fixforBDM7342
+      else
+	   echo "\n Since BDE util is not configured, update the mapred_classpath in hadoopEnv property file. For more details go through the update2 documentation">>"$oneclicksolutionlog"
+    fi   
+   
 fi
