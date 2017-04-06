@@ -667,14 +667,14 @@ if [ $joinDomain -ne 1 ]
     then
       copyhelperfilesfromcluster
 	else
-	  echo "\n Since the deployed environment is SSH public key, the decryption files decrypt.sh and key_decryption_cert.prv needs to copied manually from cluster environment">>"$oneclicksolutionlog"
+	  echo "Since the deployed environment is SSH public key, the decryption files decrypt.sh and key_decryption_cert.prv needs to copied manually from cluster environment">>"$oneclicksolutionlog"
     fi
 
 	if [ $installationstatus == "true" ]
       then
 	    fixforBDM7342
       else
-	   echo "\n Since BDE util is not configured, update the mapred_classpath in hadoopEnv property file. For more details go through the update2 documentation">>"$oneclicksolutionlog"
+	   echo "Since BDE util is not configured, update the mapred_classpath in hadoopEnv property file. For more details go through the update2 documentation">>"$oneclicksolutionlog"
     fi   
    
 fi
