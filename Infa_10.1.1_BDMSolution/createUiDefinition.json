@@ -380,7 +380,7 @@
                         "type": "Microsoft.Common.TextBox",
                         "label": "HDInsight Cluster hostname",
                         "defaultValue": "",
-                        "toolTip": "Check the HDInsight cluster properties under settings",
+                        "toolTip": "Cluster name as listed in HDInsight cluster properties",
                         "constraints": {
                             "required": true,
                             "regex": "^([a-zA-Z][a-z0-9A-Z\\-]{1,59})$",
@@ -392,7 +392,7 @@
                         "type": "Microsoft.Common.TextBox",
                         "label": "HDInsight Cluster Login Username",
                         "defaultValue": "",
-                        "toolTip": "Check the HDInsight cluster login under settings. This is usually the credential to login into Ambari",
+                        "toolTip": "Check the HDInsight cluster login under settings. This is the login credential to Ambari",
                         "constraints": {
                             "required": true,
                             "regex": "^([a-zA-Z][a-z0-9A-Z\\-\\!\\#\\$\\%\\&\\'\\(\\)\\-\\^\\_\\`\\{\\}\\~]{2,100})$",
@@ -404,7 +404,7 @@
                         "type": "Microsoft.Common.PasswordBox",
                         "label": "HDInsight Cluster Login Password",
                         "defaultValue": "",
-                        "toolTip": "Check the HDInsight cluster login under settings. This is usually the credential to login into Ambari",
+                        "toolTip": "Check the HDInsight cluster login under settings. This is the credential to login into Ambari",
                         "constraints": {
                             "required": true,
                             "regex": "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[^\\s\\w]).{10,123}$",
@@ -417,9 +417,9 @@
                     {
                         "name": "HDIClusterSSHHostname",
                         "type": "Microsoft.Common.TextBox",
-                        "label": "HDInsight Cluster SSH hostname",
+                        "label": "HDInsight Cluster SSH Hostname",
                         "defaultValue": "hostname-ssh.azurehdinsight.net",
-                        "toolTip": "HDInsight cluster's headnode SSH hostname",
+                        "toolTip": "HDInsight cluster SSH hostname",
                         "constraints": {
                             "required": true,
                             "regex": "^([a-zA-Z][a-z0-9A-Z.\\-]{1,59})$",
@@ -431,7 +431,7 @@
                         "type": "Microsoft.Common.TextBox",
                         "label": "HDInsight Cluster SSH Username",
                         "defaultValue": "",
-                        "toolTip": "HDInsight cluster's headnode SSH username",
+                        "toolTip": "HDInsight cluster SSH Login Username",
                         "constraints": {
                             "required": true,
                             "regex": "^([a-zA-Z][a-z0-9A-Z\\-\\#\\$\\%\\&\\'\\(\\)\\-\\^\\_\\`\\{\\}\\~]{2,100})$",
@@ -443,7 +443,7 @@
                     "type": "Microsoft.Common.PasswordBox",
                     "label": "HDInsight Cluster SSH Password",
                     "defaultValue": "",
-                    "toolTip": "HDInsight cluster's headnode SSH password",
+                    "toolTip": "HDInsight cluster SSH Login Password",
                     "constraints": {
                       "required": true,
                       "regex": "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[^\\s\\w]).{10,123}$",
