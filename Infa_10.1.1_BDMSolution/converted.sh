@@ -143,14 +143,14 @@ check_installation_successful()
    installationstatus=true
    sleep 60
    #check for silent error log
-   cd ~
+   cd /root
    silenterrorlog=$(ls -ltr | grep silentErrorLog* | cut -d ' ' -f 12)
    if [ $silenterrorlog ]
      then
         echo "there is some problem with installation. Please check silent error log">>"$oneclicksolutionlog"
         installationstatus=false
      else
-        cd ~/Informatica/10.1.1
+        cd /home/Informatica/10.1.1
         logfiletogrep=$(ls -ltr | grep *Services*.log | cut -d ' ' -f 12)
         echo $logfiletogrep
         if [ $logfiletogrep ]
