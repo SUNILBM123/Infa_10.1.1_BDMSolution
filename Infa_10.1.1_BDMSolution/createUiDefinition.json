@@ -579,10 +579,10 @@
                         "name": "hbasezookeepername",
                         "type": "Microsoft.Common.TextBox",
                         "label": "HBase Zookeeper Hosts",
-                        "defaultValue": "",
+                        "defaultValue": "host1,host2",
                         "toolTip": "Hosts Names for Zookeeper, must be a comma saperated Values,If zookeper is not present ignore the Hbase connection creation failure",
                         "constraints": {
-                          "required": false
+                          "required": true
 
                         }
 

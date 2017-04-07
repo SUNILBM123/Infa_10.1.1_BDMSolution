@@ -271,7 +271,7 @@
     },
     "hbasezookeepernamevar": {
       "type": "string",
-      "defaultValue": "notdefined"
+      "defaultValue": "host1,host2"
     },
     "connectionconfighadoopimpuservar": {
       "type": "string",
