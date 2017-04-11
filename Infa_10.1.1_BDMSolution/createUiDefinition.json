@@ -20,14 +20,11 @@
                     "label": "Informatica BDM version",
                     "defaultValue": "10.1.1",
                     "toolTip": "Informatica Big Data Management version.",
-                    "options": {
-                      "ReadOnly": true,
-                      "IsEnabled": false
-                    },
+                   
                     "constraints": {
                       "required": true,
                       "ReadOnly": true,
-                      "IsEnabled": false
+                      "Enable": false
                     }
                   },
                     {
