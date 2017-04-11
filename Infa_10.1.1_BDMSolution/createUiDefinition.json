@@ -12,7 +12,7 @@
                     "preValidation": "Configure domain settings",
                     "postValidation": "Done"
                 },
-                "bladeTitle": "Informatica Domain Settings",
+                "bladeTitle": "Informatica 10.1.1U2 Domain Settings",
                 "elements": [
                   {
                     "name": "infaVersion",
@@ -20,12 +20,13 @@
                     "label": "Informatica BDM version",
                     "defaultValue": "10.1.1",
                     "toolTip": "Informatica Big Data Management version.",
-                   
+
                     "constraints": {
                       "required": true,
                       "ReadOnly": true,
                       "Enable": false
-                    }
+                    },
+                    "visible": false
                   },
                     {
                         "name": "infaDomainName",
