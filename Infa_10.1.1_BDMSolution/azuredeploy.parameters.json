@@ -30,23 +30,26 @@
     "nodeVMOS": {
       "value": "linux"
     },
+    "nodeVMAuthType": {
+      "value": "sshPublicKey"
+    },
     "nodeVMAdminPassword": {
-      "value": "tempBG@2008"
+      "value": ""
     },
     "nodeVMAdminSshPublicKey": {
-      "value": " "
+      "value": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAjWyULU/czJF/MG4CQ6XLSIkFane/1qQQicvTO7BKngq8h+66RHsBEK4mrmZd0+BiA7D6diZae7yH4/7P804SSSbg0a+57Pb4fkM9LWLEvUEftivoOC8muluuo+J8WWP1jm+H3MotWg2x+XhT2UAHngiBnp9rNlntHi7LdAfcRT19klHN77u4RlvWRh0CrlEI1+e8issjQ42DggHLc0HZthG9CdEF9IORz4usP6gj8UCCAuwLtCKTjZ4fyYviAvFSDiPNQPnEcYXy86AwdFZ5lHKogKwKIS9wnhjcDbpxMDEIh3J1/VhxacRbuiIKvxTdQxtPFqhk8bIUhzNMs7KeSQ== rsa-key-20170405"
     },
     "infaKeyword": {
       "value": "tempBG@2008isp"
     },
     "nodeVMCount": {
-      "value": "1"
+      "value": "2"
     },
     "dbVMName": {
       "value": "SQLDatabaseVIM"
     },
     "infaDomainLicense": {
-      "value": "https://iaasv2tempstorageam.blob.core.windows.net/vmextensionstemporary-10037ffe885077b5-20170321084808015/100License_7263.key?sv=2015-04-05&sr=c&sig=7%2Bk5Bqz4Qr9Nj1dygAhihiI17mPaPFyA7GnggcY8NN8%3D&se=2017-03-22T08%3A48%3A08Z&sp=rw"
+      "value": "https://iaasv2tempstoragehk.blob.core.windows.net/vmextensionstemporary-10037ffe885077b5-20170407055136208/100License_7263.key?sv=2015-04-05&sr=c&sig=FmtdwTC2kPlVOwXOpZLClSDqFv2%2FA%2FzUguPmc0lVYn0%3D&se=2017-04-08T05%3A51%3A36Z&sp=rw"
     },
     "storageName": {
       "value": "infastoragetest03"
@@ -54,84 +57,90 @@
     "nodeVMNamePrefix": {
       "value": "LINUXVM"
     },
-      "HDIClusterName": {
-          "value": "OneClickHDIMacsetone"
-      },
-      "HDIClusterLoginUsername": {
-          "value": "admin"
-      },
-      "HDIClusterLoginPassword": {
-          "value": "Bdmrndhdcluster@123"
-      },
-      "HDIClusterSSHHostname": {
-          "value": "OneClickHDIMacsetone-ssh.azurehdinsight.net"
-      },
-      "HDIClusterSSHUsername": {
-          "value": "hdssh"
-      },
-      "HDIClusterSSHPassword": {
-          "value": "Bdmrndhdcluster@123"
-      },
-      "hdfsusernamevar": {
-          "value": "azureuser1"
-      },
-      "hbasezookeepernamevar": {
-          "value": "zk2-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net,zk1-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net,zk2-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net"
-      },
-      "connectionconfighadoopimpuservar": {
-          "value": "azureuser1"
-      },
-      "connectionconfighadoopblazetempdirvar": {
-          "value": "/tmp/blaze"
-      },
-      "connectionconfighadoopblazeusernamevar": {
-          "value": "azureuser1"
-      },
-      "connectionconfighadoopsparkdirvar": {
-          "value": "/tmp/sparkdir"
-      },
-      "connectionconfighadoopsparkeventlogdirvar": {
-          "value": "/tmp/eventlogdir"
-      },
-      "connectionconfighadoopsparkparamvar": {
-          "value": "param1"
-      },
-      "infamrsservicename": {
-          "value": "MRS"
-      },
-      "infadisservicename": {
-          "value": "DIS"
-      },
-      "infamrsuserName": {
-          "value": "mrsuser"
-      },
-      "infamrspassword": {
-          "value": "tempBG@2008"
-      },
-      "HDIClusterAmbariport": {
-          "value": "443"
-      },
-      "HIVEUserName": {
-          "value": "azureuser1"
-      },
-      "HIVEExecutionMode": {
-          "value": "Remote"
-      },
-      "storageType": {
-          "value": "Standard_LRS"
-      },
-      "vnetExistingOrNew": {
-          "value": "existing"
-      },
-      "vnetName": {
-          "value": "BDMAzureoneclickHDInsight-vnet"
-      },
-      "subnetName": {
-          "value": "default"
-      },
-      "nodeVMAdminUsername": {
-          "value": "azureuser1"
-      }
+    "HDIClusterName": {
+      "value": "OneClickHDIMacsetone"
+    },
+    "HDIClusterLoginUsername": {
+      "value": "admin"
+    },
+    "HDIClusterLoginPassword": {
+      "value": "Bdmrndhdcluster@123"
+    },
+    "HDIClusterSSHHostname": {
+      "value": "OneClickHDIMacsetone-ssh.azurehdinsight.net"
+    },
+    "HDIClusterSSHUsername": {
+      "value": "hdssh"
+    },
+    "HDIClusterSSHPassword": {
+      "value": "Bdmrndhdcluster@123"
+    },
+    "hdfsusernamevar": {
+      "value": "azureuser1"
+    },
+    "hbasezookeepernamevar": {
+      "value": "zk2-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net,zk1-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net,zk2-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net"
+    },
+    "connectionconfighadoopimpuservar": {
+      "value": "azureuser1"
+    },
+    "connectionconfighadoopblazetempdirvar": {
+      "value": "/tmp/blaze"
+    },
+    "connectionconfighadoopblazeusernamevar": {
+      "value": "azureuser1"
+    },
+    "connectionconfighadoopsparkdirvar": {
+      "value": "/tmp/sparkdir"
+    },
+    "connectionconfighadoopsparkeventlogdirvar": {
+      "value": "/tmp/eventlogdir"
+    },
+    "connectionconfighadoopsparkparamvar": {
+      "value": "param1"
+    },
+    "infamrsservicename": {
+      "value": "MRS"
+    },
+    "infadisservicename": {
+      "value": "DIS"
+    },
+    "infamrsuserName": {
+      "value": "mrsuser"
+    },
+    "infamrspassword": {
+      "value": "tempBG@2008"
+    },
+    "HDIClusterAmbariport": {
+      "value": "443"
+    },
+    "HIVEUserName": {
+      "value": "azureuser1"
+    },
+    "HIVEExecutionMode": {
+      "value": "Remote"
+    },
+    "storageType": {
+      "value": "Standard_LRS"
+    },
+    "vnetExistingOrNew": {
+      "value": "existing"
+    },
+    "vnetName": {
+      "value": "BDMAzureoneclickHDInsight-vnet"
+    },
+    "subnetName": {
+      "value": "test"
+    },
+    "nodeVMAdminUsername": {
+      "value": "azureuser1"
+    },
+    "infaDomainPassword": {
+      "value": "Administrator"
+    },
+    "nodeVMSize": {
+      "value": "Standard_DS5_v2"
+    }
 
   }
 }
