@@ -12,7 +12,7 @@
                     "preValidation": "Configure domain settings",
                     "postValidation": "Done"
                 },
-                "bladeTitle": "Informatica 10.1.1U2 Domain Settings",
+                "bladeTitle": "Informatica 10.1.1U2 Settings",
                 "elements": [
                   {
                     "name": "infaVersion",
