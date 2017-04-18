@@ -406,9 +406,9 @@
                         "name": "HDIClusterLoginPassword",
                         "type": "Microsoft.Common.PasswordBox",
                       "label": {
-                        
-                        "password": "HDInsight Cluster Login Password",
-                        "confirmPassword": "Confirm HDInsight Cluster Login Password"
+
+                        "password": "Password",
+                        "confirmPassword": "Confirm password"
                       },
                         
                         "toolTip": "Check the HDInsight cluster login under settings. This is the credential to login into Ambari",
@@ -449,9 +449,9 @@
                     "name": "HDIClusterSSHPassword",
                     "type": "Microsoft.Common.PasswordBox",
                     "label": {
-                      
-                      "password": "HDInsight Cluster SSH Password",
-                      "confirmPassword": "Confirm HDInsight Cluster SSH Password"
+
+                      "password": "Password",
+                      "confirmPassword": "Confirm password"
                     },
                   
                     "toolTip": "HDInsight cluster SSH Login Password",
