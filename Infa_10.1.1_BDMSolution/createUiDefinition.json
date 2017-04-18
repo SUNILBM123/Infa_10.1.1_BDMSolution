@@ -179,10 +179,11 @@
                     {
                         "name": "nodeVMAdminPasswordWin",
                         "type": "Microsoft.Compute.CredentialsCombo",
-                        "label": {
-                            "password": "Password",
-                            "confirmPassword": "Confirm password"
-                        },
+                      "label": {
+                        "authenticationType": "Authentication type",
+                        "password": "Password",
+                        "confirmPassword": "Confirm password"
+                      },
                         "toolTip": {
                             "password": ""
                         },
@@ -405,10 +406,11 @@
                         "name": "HDIClusterLoginPassword",
                         "type": "Microsoft.Common.PasswordBox",
                       "label": {
+                        
                         "password": "HDInsight Cluster Login Password",
                         "confirmPassword": "Confirm HDInsight Cluster Login Password"
                       },
-                        "defaultValue": "",
+                        
                         "toolTip": "Check the HDInsight cluster login under settings. This is the credential to login into Ambari",
                         "constraints": {
                             "required": true,
@@ -447,10 +449,11 @@
                     "name": "HDIClusterSSHPassword",
                     "type": "Microsoft.Common.PasswordBox",
                     "label": {
+                      
                       "password": "HDInsight Cluster SSH Password",
                       "confirmPassword": "Confirm HDInsight Cluster SSH Password"
                     },
-                    "defaultValue": "",
+                  
                     "toolTip": "HDInsight cluster SSH Login Password",
                     "constraints": {
                       "required": true,
