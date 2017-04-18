@@ -130,18 +130,18 @@
                       ]
                     }
                   },
-                    {
-                        "name": "domainNodeCount",
-                        "type": "Microsoft.Common.TextBox",
-                        "label": "Number of nodes",
-                        "defaultValue": "1",
-                        "toolTip": "",
-                        "constraints": {
-                            "required": true,
-                            "regex": "^(([1-3]?[1-9]$)|([1-3][0]$)){1,2}",
-                            "validationMessage": "Only postive number is allowed. Should be less than or equal to 39"
-                        }
-                    },
+                  {
+                    "name": "domainNodeCount",
+                    "type": "Microsoft.Common.TextBox",
+                    "label": "Number of nodes",
+                    "defaultValue": "1",
+                    "toolTip": "Number of nodes required in the Informatica domain. Allowed number of nodes is 1 to 30",
+                    "constraints": {
+                      "required": true,
+                      "regex": "^(([1-2]?[1-9]$)|([1-3][0]$)){1,2}",
+                      "validationMessage": "Only postive number is allowed. Should be less than or equal to 39"
+                    }
+                  },
                     {
                         "name": "nodeVMPrefix",
                         "type": "Microsoft.Common.TextBox",
@@ -228,9 +228,31 @@
                     "recommendedSizes": [
                       "Standard_DS11",
                       "Standard_DS11_v2",
-                      "Standard_DS2",
-                      "Standard_DS2_v2"
+                      "Standard_DS3",
+                      "Standard_DS3_v2",
+                      "Standard_DS4",
+                      "Standard_DS4_v2"
                     ],
+                    "constraints": {
+                      "excludedSizes": [
+                        "Standard_DS1_v2",
+                        "Standard_D1_v2",
+                        "Standard_DS1",
+                        "Standard_D1",
+                        "Standard_A1_v2",
+                        "Standard_A2_v2",
+                        "Standard_A0",
+                        "Standard_A1",
+                        "Standard_A2",
+                        "Standard_F1s",
+                        "Standard_F2s",
+                        "Standard_F1",
+                        "Standard_F2",
+                        "Basic_A0",
+                        "Basic_A1",
+                        "Basic_A2"
+                      ]
+                    },
 
                     "osPlatform": "Linux",
                     "imageReference": {
@@ -262,7 +284,7 @@
                                 "type": "Microsoft.Common.DropDown",
                                 "label": "Database type",
                                 "defaultValue": "SQL Server 2014",
-                                "toolTip": "",
+                                
                               "constraints": {
                                 "allowedValues": [
                                   {
@@ -320,6 +342,26 @@
                               "Standard_DS4",
                               "Standard_DS4_v2"
                             ],
+                            "constraints": {
+                              "excludedSizes": [
+                                "Standard_DS1_v2",
+                                "Standard_D1_v2",
+                                "Standard_DS1",
+                                "Standard_D1",
+                                "Standard_A1_v2",
+                                "Standard_A2_v2",
+                                "Standard_A0",
+                                "Standard_A1",
+                                "Standard_A2",
+                                "Standard_F1s",
+                                "Standard_F2s",
+                                "Standard_F1",
+                                "Standard_F2",
+                                "Basic_A0",
+                                "Basic_A1",
+                                "Basic_A2"
+                              ]
+                            },
                             "osPlatform": "Windows",
                             "imageReference": {
                               "publisher": "informatica",
@@ -340,7 +382,7 @@
                                 "type": "Microsoft.Common.TextBox",
                                 "label": "Informatica domain DB user",
                                 "defaultValue": "",
-                                "toolTip": "Database user to be created for communication between Domain and Domain database",
+                                "toolTip": "Database user to be created for communication between Domain and database",
                               "constraints": {
                                 "required": true,
                                 "regex": "(?!^(p|P)(u|U)(b|B)(l|L)(i|I)(c|C)$)(?!^(d|D)(b|B)(o|O)$)(?!^(s|S)(y|Y)(s|S)$)(?!^(g|G)(u|U)(e|E)(s|S)(t|T)$)(^[a-zA-Z][a-zA-Z0-9_-]{2,127}.*$)",
@@ -737,10 +779,10 @@
                                 "virtualNetwork": "HDI Cluster Virtual network",
                                 "subnets": "Subnets"
                             },
-                            "toolTip": {
-                                "virtualNetwork": "Provide the virtual network where HDI cluster is defined",
-                                "subnets": ""
-                            },
+                          "toolTip": {
+                            "virtualNetwork": "Provide the virtual network where HDI cluster is defined",
+                            "subnets": "Subnet all resource required to be part of"
+                          },
                             "defaultValue": {
                                 "name": "InfaVNET",
                                 "addressPrefixSize": "/16"
