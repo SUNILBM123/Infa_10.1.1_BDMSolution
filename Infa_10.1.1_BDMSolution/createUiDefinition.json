@@ -497,7 +497,7 @@
           {
             "name": "AmbariPort",
             "type": "Microsoft.Common.TextBox",
-            "label": "HDInsight Cluster port",
+            "label": "HDInsight cluster port",
             "defaultValue": "443",
             "toolTip": "HDInsight cluster's port",
             "constraints": {
