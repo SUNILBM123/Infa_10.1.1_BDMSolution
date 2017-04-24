@@ -21,9 +21,7 @@
             "defaultValue": "10.1.1",
             "toolTip": "Informatica Big Data Management version.",
             "constraints": {
-              "required": true,
-              "ReadOnly": true,
-              "Enable": false
+              "required": true              
             },
             "visible": false
           },
@@ -177,7 +175,6 @@
             "name": "nodeVMAdminPasswordWin",
             "type": "Microsoft.Compute.CredentialsCombo",
             "label": {
-              "authenticationType": "Authentication type",
               "password": "Password",
               "confirmPassword": "Confirm password"
             },
