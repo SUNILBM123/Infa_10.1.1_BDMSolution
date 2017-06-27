@@ -12,7 +12,7 @@ function writeLog {
 }
 
 function waitTillDatabaseIsAlive {
-    $connectionString = "Data Source=localhost;Integrated Security=true;Initial Catalog=model;Connect Timeout=3;"
+    $connectionString = "Data Source=localhost;Integrated Security=true;Initial Catalog=infadb;Connect Timeout=3;"
     $sqlConn = new-object ("Data.SqlClient.SqlConnection") $connectionString
     $sqlConn.Open()
 
@@ -47,7 +47,7 @@ function executeSQLStatement {
         sleep 1
         $tryCount++
         try {
-            Invoke-Sqlcmd -ServerInstance '(local)' -Database 'model' -Query $sqlStatement
+            Invoke-Sqlcmd -ServerInstance '(local)' -Database 'infadb' -Query $sqlStatement
             $errorFlag = $error.Count
         } catch {
             $errorFlag = $error.Count
