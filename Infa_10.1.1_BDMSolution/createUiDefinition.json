@@ -114,12 +114,12 @@
             "name": "nodeVMOS",
             "type": "Microsoft.Common.DropDown",
             "label": "Select the OS for the VM",
-            "defaultValue": "Red Hat Enterprise Linux 7.2",
+            "defaultValue": "Red Hat Enterprise Linux 7.3",
             "toolTip": "OS platform of the VM.",
             "constraints": {
               "allowedValues": [
                 {
-                  "label": "Red Hat Enterprise Linux 7.2",
+                  "label": "Red Hat Enterprise Linux 7.3",
                   "value": "linux"
                 }
               ]
