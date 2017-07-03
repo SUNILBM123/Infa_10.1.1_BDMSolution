@@ -31,19 +31,19 @@
       "value": "linux"
     },
     "nodeVMAuthType": {
-      "value": "sshPublicKey"
+      "value": "password"
     },
     "nodeVMAdminPassword": {
-      "value": ""
+      "value": "tempBG#200817"
     },
     "nodeVMAdminSshPublicKey": {
-      "value": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAjWyULU/czJF/MG4CQ6XLSIkFane/1qQQicvTO7BKngq8h+66RHsBEK4mrmZd0+BiA7D6diZae7yH4/7P804SSSbg0a+57Pb4fkM9LWLEvUEftivoOC8muluuo+J8WWP1jm+H3MotWg2x+XhT2UAHngiBnp9rNlntHi7LdAfcRT19klHN77u4RlvWRh0CrlEI1+e8issjQ42DggHLc0HZthG9CdEF9IORz4usP6gj8UCCAuwLtCKTjZ4fyYviAvFSDiPNQPnEcYXy86AwdFZ5lHKogKwKIS9wnhjcDbpxMDEIh3J1/VhxacRbuiIKvxTdQxtPFqhk8bIUhzNMs7KeSQ== rsa-key-20170405"
+      "value": ""
     },
     "infaKeyword": {
       "value": "tempBG@2008isp"
     },
     "nodeVMCount": {
-      "value": "2"
+      "value": "1"
     },
     "dbVMName": {
       "value": "SQLDatabaseVIM"
