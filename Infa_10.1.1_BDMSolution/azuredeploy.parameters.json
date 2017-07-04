@@ -37,7 +37,7 @@
       "value": "tempBG#200817"
     },
     "nodeVMAdminSshPublicKey": {
-      "value": ""
+      "value": "tempBG@2008"
     },
     "infaKeyword": {
       "value": "tempBG@2008isp"
@@ -136,7 +136,7 @@
       "value": "suniluser1"
     },
     "infaDomainPassword": {
-      "value": "Administrator"
+      "value": "tempBG@2008isp"
     },
     "nodeVMSize": {
       "value": "Standard_DS5_v2"

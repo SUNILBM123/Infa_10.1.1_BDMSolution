@@ -10,7 +10,7 @@
       "value": " "
     },
     "existingVnetRG": {
-      "value": "BDMAzureoneclickHDInsight"
+      "value": "sunilhdirg"
     },
     "vnetAddressPrefix": {
       "value": ""
@@ -31,25 +31,25 @@
       "value": "linux"
     },
     "nodeVMAuthType": {
-      "value": "sshPublicKey"
+      "value": "password"
     },
     "nodeVMAdminPassword": {
-      "value": ""
+      "value": "tempBG#200817"
     },
     "nodeVMAdminSshPublicKey": {
-      "value": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAjWyULU/czJF/MG4CQ6XLSIkFane/1qQQicvTO7BKngq8h+66RHsBEK4mrmZd0+BiA7D6diZae7yH4/7P804SSSbg0a+57Pb4fkM9LWLEvUEftivoOC8muluuo+J8WWP1jm+H3MotWg2x+XhT2UAHngiBnp9rNlntHi7LdAfcRT19klHN77u4RlvWRh0CrlEI1+e8issjQ42DggHLc0HZthG9CdEF9IORz4usP6gj8UCCAuwLtCKTjZ4fyYviAvFSDiPNQPnEcYXy86AwdFZ5lHKogKwKIS9wnhjcDbpxMDEIh3J1/VhxacRbuiIKvxTdQxtPFqhk8bIUhzNMs7KeSQ== rsa-key-20170405"
+      "value": "tempBG@2008"
     },
     "infaKeyword": {
       "value": "tempBG@2008isp"
     },
     "nodeVMCount": {
-      "value": "2"
+      "value": "1"
     },
     "dbVMName": {
       "value": "SQLDatabaseVIM"
     },
     "infaDomainLicense": {
-      "value": "https://iaasv2tempstorageam.blob.core.windows.net/vmextensionstemporary-10037ffe885077b5-20170406090855326/100License_7263.key?sv=2015-04-05&sr=c&sig=XD9XOkuuGSDeKsf5JpudJ05wPWrLMDW8IdYVk0TnnwY%3D&se=2017-04-07T09%3A08%3A55Z&sp=rw"
+      "value": "https://iaasv2tempstoreseasia.blob.core.windows.net/vmextensionstemporary-10037ffe885077b5-20170703084619340/License_10.00.key?sv=2015-04-05&sr=c&sig=CvG7nvKxoDIoPwhU%2BNAJ3aHEOh8VM4wjx%2BfwSBUI8Hg%3D&se=2017-07-04T08%3A46%3A19Z&sp=rw"
     },
     "storageName": {
       "value": "infastoragetest03"
@@ -58,7 +58,7 @@
       "value": "LINUXVM"
     },
     "HDIClusterName": {
-      "value": "OneClickHDIMacsetone"
+      "value": "sunilhdicluster"
     },
     "HDIClusterLoginUsername": {
       "value": "admin"
@@ -67,7 +67,7 @@
       "value": "Bdmrndhdcluster@123"
     },
     "HDIClusterSSHHostname": {
-      "value": "OneClickHDIMacsetone-ssh.azurehdinsight.net"
+      "value": "sunilhdicluster-ssh.azurehdinsight.net"
     },
     "HDIClusterSSHUsername": {
       "value": "hdssh"
@@ -76,19 +76,19 @@
       "value": "Bdmrndhdcluster@123"
     },
     "hdfsusernamevar": {
-      "value": "azureuser1"
+      "value": "suniluser1"
     },
     "hbasezookeepernamevar": {
-      "value": "zk2-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net,zk1-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net,zk2-onecli.i4bjbtkebszebhpwsfxbhvfekc.ix.internal.cloudapp.net"
+      "value": "zk1-sunilh.u3sbrkgdkhdevea22k5ranbpih.ix.internal.cloudapp.net,zk5-sunilh.u3sbrkgdkhdevea22k5ranbpih.ix.internal.cloudapp.net,zk6-sunilh.u3sbrkgdkhdevea22k5ranbpih.ix.internal.cloudapp.net"
     },
     "connectionconfighadoopimpuservar": {
-      "value": "azureuser1"
+      "value": "suniluser1"
     },
     "connectionconfighadoopblazetempdirvar": {
       "value": "/tmp/blaze"
     },
     "connectionconfighadoopblazeusernamevar": {
-      "value": "azureuser1"
+      "value": "suniluser1"
     },
     "connectionconfighadoopsparkdirvar": {
       "value": "/tmp/sparkdir"
@@ -127,16 +127,16 @@
       "value": "existing"
     },
     "vnetName": {
-      "value": "BDMAzureoneclickHDInsight-vnet"
+      "value": "hditestvnet"
     },
     "subnetName": {
-      "value": "test"
+      "value": "default"
     },
     "nodeVMAdminUsername": {
-      "value": "azureuser1"
+      "value": "suniluser1"
     },
     "infaDomainPassword": {
-      "value": "Administrator"
+      "value": "tempBG@2008isp"
     },
     "nodeVMSize": {
       "value": "Standard_DS5_v2"
