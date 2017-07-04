@@ -251,7 +251,7 @@
             "imageReference": {
               "publisher": "informatica",
               "offer": "bdm10-1-1-u2-preview",
-              "sku": "bdm-10-1-1-u2"
+              "sku": "bdm10-1-1-u2"
             },
             "count": "[steps('nodeVMConfiguration').domainNodeCount]",
             "visible": "[equals(steps('nodeVMConfiguration').nodeVMOS, 'linux')]"
