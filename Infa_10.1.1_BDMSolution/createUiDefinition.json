@@ -250,7 +250,7 @@
             "osPlatform": "Linux",
             "imageReference": {
               "publisher": "informatica",
-              "offer": "bdm10-1-1-u2-preview",
+              "offer": "bdm10-1-1-u2",
               "sku": "bdm10-1-1-u2"
             },
             "count": "[steps('nodeVMConfiguration').domainNodeCount]",
