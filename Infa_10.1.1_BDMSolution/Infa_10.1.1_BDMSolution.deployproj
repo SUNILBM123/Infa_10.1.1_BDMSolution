@@ -43,6 +43,7 @@
     <None Include="nodemultilinuxpassword.json" />
     <None Include="nodemultilinuxsshPublicKey.json" />
     <None Include="sqlserver.json" />
+    <None Include="start.sh" />
     <None Include="storageexisting.json" />
     <None Include="storagenew.json" />
     <None Include="vnetexisting.json" />
