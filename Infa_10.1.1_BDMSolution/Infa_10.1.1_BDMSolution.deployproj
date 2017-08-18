@@ -34,6 +34,7 @@
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
+    <None Include="hdireconfigure.sh" />
     <None Include="lininfainstaller.sh" />
     <None Include="mainTemplate.json" />
     <None Include="networksecuritygroup.json" />
