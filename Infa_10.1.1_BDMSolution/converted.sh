@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#Script arguments
+#Script argument
 domainHost=${1}
 domainName=${2}
 domainUser=${3}
