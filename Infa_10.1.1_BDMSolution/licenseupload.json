@@ -35,7 +35,7 @@
       }
     ],
     "outputs": {
-
+      "infaDomainLicense": "[steps('licenseuploader').infaDomainLicense]"
     }
   }
 
